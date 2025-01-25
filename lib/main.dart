@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/features/auth/data/datasources/auth_remote_datasource.dart';
@@ -23,45 +23,82 @@ import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+final getIt = GetIt.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Configuración de dependencias con GetIt
   final dioClient = DioClient();
-  final authRemoteDataSource = AuthRemoteDataSourceImpl(dioClient: dioClient);
-  final authRepository = AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
-  final loginUseCase = LoginUseCase(repository: authRepository);
-  final registerUseCase = RegisterUseCase(repository: authRepository);
+  getIt.registerSingleton<DioClient>(dioClient);
 
-  final productRemoteDataSource = ProductRemoteDataSourceImpl(dioClient: dioClient);
-  final productRepository = ProductRepositoryImpl(remoteDataSource: productRemoteDataSource);
+  final authRemoteDataSource = AuthRemoteDataSourceImpl(dioClient: dioClient);
+  getIt.registerSingleton<AuthRemoteDataSource>(authRemoteDataSource);
+
+  final authRepository =
+      AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
+  getIt.registerSingleton<AuthRepository>(authRepository);
+
+  final loginUseCase = LoginUseCase(repository: authRepository);
+  getIt.registerSingleton<LoginUseCase>(loginUseCase);
+
+  final registerUseCase = RegisterUseCase(repository: authRepository);
+  getIt.registerSingleton<RegisterUseCase>(registerUseCase);
+
+  final productRemoteDataSource =
+      ProductRemoteDataSourceImpl(dioClient: dioClient);
+  getIt.registerSingleton<ProductRemoteDataSource>(productRemoteDataSource);
+
+  final productRepository =
+      ProductRepositoryImpl(remoteDataSource: productRemoteDataSource);
+  getIt.registerSingleton<ProductRepository>(productRepository);
+
   final getProductsUseCase = GetProductsUseCase(repository: productRepository);
+  getIt.registerSingleton<GetProductsUseCase>(getProductsUseCase);
 
   final userRemoteDataSource = UserRemoteDataSourceImpl(dioClient: dioClient);
-  final userRepository = UserRepositoryImpl(remoteDataSource: userRemoteDataSource);
-  final getUsersUseCase = GetUsersUseCase(repository: userRepository);
+  getIt.registerSingleton<UserRemoteDataSource>(userRemoteDataSource);
 
+  final userRepository =
+      UserRepositoryImpl(remoteDataSource: userRemoteDataSource);
+  getIt.registerSingleton<UserRepository>(userRepository);
+
+  final getUsersUseCase = GetUsersUseCase(repository: userRepository);
+  getIt.registerSingleton<GetUsersUseCase>(getUsersUseCase);
 
   final prefs = await SharedPreferences.getInstance();
+   getIt.registerSingleton<SharedPreferences>(prefs);
   const storage = FlutterSecureStorage();
+    getIt.registerSingleton<FlutterSecureStorage>(storage);
 
-   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-   String? primaryColorString = prefs.getString('primaryColor');
+  final themeManager = ThemeManager();
+   getIt.registerSingleton<ThemeManager>(themeManager);
 
-    Color primaryColor = Colors.blue;
-    if (primaryColorString != null) {
-        primaryColor = Color(int.parse(primaryColorString));
-    }
+  bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  String? primaryColorString = prefs.getString('primaryColor');
+
+  Color primaryColor = Colors.teal;
+  if (primaryColorString != null) {
+    primaryColor = Color(int.parse(primaryColorString));
+  }
+
+  themeManager.initTheme(isDarkMode, primaryColor);
+
   runApp(
-    ProviderScope(
-        child: MultiBlocProvider(
-            providers: [
-                BlocProvider(create: (context) => AuthBloc(loginUseCase: loginUseCase, registerUseCase: registerUseCase)),
-                 BlocProvider(create: (context) => ProductBloc(getProductsUseCase: getProductsUseCase)),
-                 BlocProvider(create: (context) => UserBloc(getUsersUseCase: getUsersUseCase)),
-                  ],
-             child:  MyApp(),
-           ),
-         ),
-      );
-        ThemeManager().initTheme(isDarkMode, primaryColor);
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => AuthBloc(
+                loginUseCase: getIt<LoginUseCase>(),
+                registerUseCase: getIt<RegisterUseCase>())),
+        BlocProvider(
+            create: (context) =>
+                ProductBloc(getProductsUseCase: getIt<GetProductsUseCase>())),
+        BlocProvider(
+            create: (context) =>
+                UserBloc(getUsersUseCase: getIt<GetUsersUseCase>())),
+      ],
+      child: MyApp(),
+    ),
+  );
 }

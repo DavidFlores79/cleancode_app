@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cleancode_app/core/theme/app_theme.dart';
 
-class ThemeManager extends StateNotifier<ThemeData>{
-  ThemeManager() : super(AppTheme.lightTheme);
+class ThemeManager{
+  ThemeManager() : _isDarkMode = false, _primaryColor = Colors.blue;
 
-  bool _isDarkMode = false;
-  Color _primaryColor = Colors.blue;
+  bool _isDarkMode;
+  Color _primaryColor;
 
-  bool get isDarkMode => _isDarkMode;
+   bool get isDarkMode => _isDarkMode;
   Color get primaryColor => _primaryColor;
+  ThemeData get currentTheme =>  AppTheme.getTheme(_isDarkMode, _primaryColor);
+
 
   void toggleTheme(){
     _isDarkMode = !_isDarkMode;
-    state = AppTheme.getTheme(_isDarkMode, _primaryColor);
   }
 
   void changeColor(Color color){
     _primaryColor = color;
-    state = AppTheme.getTheme(_isDarkMode, _primaryColor);
   }
-
-  void initTheme(bool isDarkMode, Color color) {
-    _isDarkMode = isDarkMode;
-    _primaryColor = color;
-    state = AppTheme.getTheme(_isDarkMode, _primaryColor);
+    void initTheme(bool isDarkMode, Color color) {
+      _isDarkMode = isDarkMode;
+      _primaryColor = color;
   }
 }
-
-final themeProvider = StateNotifierProvider<ThemeManager, ThemeData>((ref) => ThemeManager());
