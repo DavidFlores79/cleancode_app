@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UserRemoteDataSource {
   Future<List<UserModel>> getUsers();
@@ -14,11 +16,17 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<List<UserModel>> getUsers() async {
-     try {
-      final response = await dioClient.dio.get(ApiConfig.usersEndpoint);
+    final prefs = await SharedPreferences.getInstance();
+    
+    try {
+      final token = prefs.getString('token');
+      final options = Options(headers: {'Authorization': token});
+
+      final response = await dioClient.dio.get(ApiConfig.usersEndpoint, options: options);
+      debugPrint("response ${response.data}");
       if (response.statusCode == 200) {
-        return (response.data as List)
-            .map((json) => UserModel.fromJson(json))
+        return (response.data['data'] as List)
+            .map((json) => UserModel.fromMap(json))
             .toList();
       } else {
         throw Exception('Failed to get users');

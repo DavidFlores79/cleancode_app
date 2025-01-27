@@ -20,7 +20,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
+      appBar: AppBar(title: const Text('Posters')),
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
@@ -31,8 +31,14 @@ class _ProductScreenState extends State<ProductScreen> {
               itemBuilder: (context, index) {
                 final product = state.products[index];
                 return ListTile(
-                  title: Text(product.name),
-                  subtitle: Text('\$${product.price}'),
+                  title: Text(product.name ?? ''),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${product.code}'),
+                      Text('${product.authors}'),
+                    ],
+                  ),
                 );
               },
             );

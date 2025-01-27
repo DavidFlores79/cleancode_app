@@ -32,8 +32,8 @@ class _UserScreenState extends State<UserScreen> {
               itemBuilder: (context, index) {
                 final user = state.users[index];
                 return ListTile(
-                  title: Text(user.name),
-                  subtitle: Text(user.email),
+                  title: Text(user.name ?? ''),
+                  subtitle: Text(user.email ?? ''),
                 );
               },
             );

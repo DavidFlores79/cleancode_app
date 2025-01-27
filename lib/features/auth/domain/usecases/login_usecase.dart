@@ -1,6 +1,6 @@
+import 'package:cleancode_app/core/domain/entities/user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cleancode_app/core/errors/failures.dart';
-import 'package:cleancode_app/features/auth/domain/entities/user.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
 
 class LoginUseCase {

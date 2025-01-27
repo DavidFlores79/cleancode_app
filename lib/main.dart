@@ -1,3 +1,4 @@
+import 'package:cleancode_app/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -67,12 +68,12 @@ void main() async {
   getIt.registerSingleton<GetUsersUseCase>(getUsersUseCase);
 
   final prefs = await SharedPreferences.getInstance();
-   getIt.registerSingleton<SharedPreferences>(prefs);
+  getIt.registerSingleton<SharedPreferences>(prefs);
   const storage = FlutterSecureStorage();
-    getIt.registerSingleton<FlutterSecureStorage>(storage);
+  getIt.registerSingleton<FlutterSecureStorage>(storage);
 
   final themeManager = ThemeManager();
-   getIt.registerSingleton<ThemeManager>(themeManager);
+  getIt.registerSingleton<ThemeManager>(themeManager);
 
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   String? primaryColorString = prefs.getString('primaryColor');
@@ -95,8 +96,11 @@ void main() async {
             create: (context) =>
                 ProductBloc(getProductsUseCase: getIt<GetProductsUseCase>())),
         BlocProvider(
-            create: (context) =>
-                UserBloc(getUsersUseCase: getIt<GetUsersUseCase>())),
+          create: (context) => UserBloc(
+            getUsersUseCase: getIt<GetUsersUseCase>(),
+          ),
+        ),
+        BlocProvider(create: (context) => SettingsBloc()),
       ],
       child: MyApp(),
     ),

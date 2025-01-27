@@ -1,4 +1,4 @@
-import 'package:cleancode_app/features/products/domain/entities/product.dart';
+import 'package:cleancode_app/features/products/data/models/product_model.dart';
 
 abstract class ProductState {}
 
@@ -7,7 +7,7 @@ class ProductInitial extends ProductState {}
 class ProductLoading extends ProductState {}
 
 class ProductSuccess extends ProductState {
-  final List<Product> products;
+  final List<ProductModel> products;
 
   ProductSuccess(this.products);
 }

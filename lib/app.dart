@@ -16,7 +16,7 @@ final _router = GoRouter(
       path: '/',
       builder: (context, state) => const LoginScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
@@ -24,11 +24,11 @@ final _router = GoRouter(
       path: '/home',
       builder: (context, state) => const HomeScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/users',
       builder: (context, state) => const UserScreen(),
     ),
-      GoRoute(
+    GoRoute(
       path: '/products',
       builder: (context, state) => const ProductScreen(),
     ),
@@ -39,10 +39,24 @@ final _router = GoRouter(
   ],
 );
 
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
- final themeManager = GetIt.I<ThemeManager>();
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final themeManager = GetIt.I<ThemeManager>();
+
+  @override
+  void initState() {
+    super.initState();
+    themeManager.callback = () {
+      setState(() {});
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

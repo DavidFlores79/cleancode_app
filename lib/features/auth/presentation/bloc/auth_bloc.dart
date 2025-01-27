@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cleancode_app/features/auth/domain/entities/user.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
