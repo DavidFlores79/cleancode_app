@@ -17,12 +17,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<List<ProductModel>> getProducts() async {
-    final prefs = await SharedPreferences.getInstance();
-
     try {
-      final token = prefs.getString('token');
-      final options = Options(headers: {'Authorization': token});
-      final response = await dioClient.dio.get(ApiConfig.productsEndpoint, options: options);
+      final response = await dioClient.dio.get(ApiConfig.productsEndpoint);
+      
       if (response.statusCode == 200) {
         return (response.data['data'] as List<dynamic>)
             .map((json) => ProductModel.fromMap(json))

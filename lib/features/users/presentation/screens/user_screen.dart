@@ -32,6 +32,9 @@ class _UserScreenState extends State<UserScreen> {
               itemBuilder: (context, index) {
                 final user = state.users[index];
                 return ListTile(
+                  leading: CircleAvatar(
+                    child: Image.network('${user.image}'),
+                  ),
                   title: Text(user.name ?? ''),
                   subtitle: Text(user.email ?? ''),
                 );

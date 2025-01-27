@@ -16,14 +16,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<List<UserModel>> getUsers() async {
-    final prefs = await SharedPreferences.getInstance();
-    
+  
     try {
-      final token = prefs.getString('token');
-      final options = Options(headers: {'Authorization': token});
+      final response = await dioClient.dio.get(ApiConfig.usersEndpoint);
 
-      final response = await dioClient.dio.get(ApiConfig.usersEndpoint, options: options);
-      debugPrint("response ${response.data}");
       if (response.statusCode == 200) {
         return (response.data['data'] as List)
             .map((json) => UserModel.fromMap(json))

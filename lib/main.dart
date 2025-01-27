@@ -88,19 +88,23 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => SettingsBloc()),
         BlocProvider(
-            create: (context) => AuthBloc(
-                loginUseCase: getIt<LoginUseCase>(),
-                registerUseCase: getIt<RegisterUseCase>())),
+          create: (context) => AuthBloc(
+            loginUseCase: getIt<LoginUseCase>(),
+            registerUseCase: getIt<RegisterUseCase>(),
+          ),
+        ),
         BlocProvider(
-            create: (context) =>
-                ProductBloc(getProductsUseCase: getIt<GetProductsUseCase>())),
+          create: (context) => ProductBloc(
+            getProductsUseCase: getIt<GetProductsUseCase>(),
+          ),
+        ),
         BlocProvider(
           create: (context) => UserBloc(
             getUsersUseCase: getIt<GetUsersUseCase>(),
           ),
         ),
-        BlocProvider(create: (context) => SettingsBloc()),
       ],
       child: MyApp(),
     ),
