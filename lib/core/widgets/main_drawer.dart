@@ -1,6 +1,9 @@
 import 'package:cleancode_app/core/domain/entities/user.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -67,6 +70,16 @@ class _MainDrawerState extends State<MainDrawer> {
             onTap: () {
               context.pop();
               context.push('/settings');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Salir'),
+            onTap: () {
+              context.read<AuthBloc>().add(
+                    LogoutRequested(),
+                  );
+              context.go('/');
             },
           ),
         ],

@@ -29,3 +29,22 @@ class AuthResponse {
         "jwt": jwt,
     };
 }
+class ErrorResponse {
+    String? msg;
+
+    ErrorResponse({
+        this.msg,
+    });
+
+    factory ErrorResponse.fromJson(String str) => ErrorResponse.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory ErrorResponse.fromMap(Map<String, dynamic> json) => ErrorResponse(
+        msg: json["msg"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "msg": msg,
+    };
+}

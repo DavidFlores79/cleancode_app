@@ -1,3 +1,4 @@
+import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,9 @@ void main() async {
 
   final loginUseCase = LoginUseCase(repository: authRepository);
   getIt.registerSingleton<LoginUseCase>(loginUseCase);
+
+  final logoutUseCase = LogoutUseCase(repository: authRepository);
+  getIt.registerSingleton<LogoutUseCase>(logoutUseCase);
 
   final registerUseCase = RegisterUseCase(repository: authRepository);
   getIt.registerSingleton<RegisterUseCase>(registerUseCase);
@@ -93,6 +97,7 @@ void main() async {
           create: (context) => AuthBloc(
             loginUseCase: getIt<LoginUseCase>(),
             registerUseCase: getIt<RegisterUseCase>(),
+            logoutUseCase: getIt<LogoutUseCase>(),
           ),
         ),
         BlocProvider(

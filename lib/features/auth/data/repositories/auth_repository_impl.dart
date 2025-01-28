@@ -7,7 +7,6 @@ import 'package:cleancode_app/features/auth/data/datasources/auth_remote_datasou
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -16,21 +15,23 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, User>> login(String email, String password) async {
-      try {
+    try {
       final result = await remoteDataSource.login(email, password);
       _setLoggedInUser(result.user ?? User(), result.jwt ?? '');
       return Right(result.user!);
     } on Exception catch (e) {
-        return Left(AuthFailure(e.toString()));
+      return Left(AuthFailure(e.toString()));
     }
   }
-    @override
-  Future<Either<Failure, User>> register(String name, String email, String password) async {
-     try {
+
+  @override
+  Future<Either<Failure, User>> register(
+      String name, String email, String password) async {
+    try {
       final result = await remoteDataSource.register(name, email, password);
       return Right(result);
     } on Exception catch (e) {
-        return Left(AuthFailure(e.toString()));
+      return Left(AuthFailure(e.toString()));
     }
   }
 
@@ -38,41 +39,46 @@ class AuthRepositoryImpl implements AuthRepository {
     final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
     final userJson = json.encode(user.toJson());
     await storage.write(key: 'user', value: userJson);
-    if(token.isNotEmpty) {
-         await storage.write(key: 'token', value: token);
-     }
+    if (token.isNotEmpty) {
+      await storage.write(key: 'token', value: token);
+    }
   }
-  
+
   @override
   Future<User?> getLoggedInUser() async {
     final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
     final userJson = await storage.read(key: 'user');
     if (userJson == null) {
-        return null;
+      return null;
     }
     final userMap = json.decode(userJson);
     return User.fromJson(userMap);
   }
-  
+
   @override
   Future<bool> isLoggedIn() async {
     final user = await getLoggedInUser();
     return user != null;
   }
-  
+
   @override
-  Future<void> logout() async {
-    final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
-     await storage.delete(key: 'token');
-     await storage.delete(key: 'user');
+  Future<Either<Failure, String>> logout() async {
+    try {
+      final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
+      await storage.delete(key: 'token');
+      await storage.delete(key: 'user');
+      return Right("Logout Exitoso");
+    } on Exception catch (e) {
+      return Left(AuthFailure(e.toString()));
+    }
   }
-  
+
   @override
   Future<String?> getToken() async {
     final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
     final token = await storage.read(key: 'token');
     if (token == null) {
-        return null;
+      return null;
     }
     return token;
   }

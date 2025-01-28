@@ -4,7 +4,6 @@ import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/auth/data/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthRemoteDataSource {
   Future<AuthResponse> login(String email, String password);
@@ -27,7 +26,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Failed to login');
       }
     } on DioException catch(e) {
-      throw Exception(e.message);
+      throw Exception(e.response!.data['message']);
     }
     catch (e) {
         throw Exception(e.toString());
@@ -44,7 +43,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Failed to register');
       }
     } on DioException catch(e) {
-       throw Exception(e.message);
+       throw Exception(e);
     }
     catch (e) {
         throw Exception(e.toString());

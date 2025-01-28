@@ -11,36 +11,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Inicio'),
-          actions: [
-          IconButton(
-              onPressed: (){
-                context.read<AuthBloc>().add(LogoutRequested());
-                context.go('/');
-              },
-              icon: const Icon(Icons.logout)),
-           IconButton(
-                onPressed: () {
-                  context.push('/settings');
-                },
-                icon: const Icon(Icons.settings)),
-        ],
-        ),
-        drawer: MainDrawer(),
-        body:  Center(
+      appBar: AppBar(
+        title: const Text('Inicio'),
+        actions: [],
+      ),
+      drawer: MainDrawer(),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
-                 context.push('/users');
+                context.push('/users');
               },
               child: const Text('Ir a Usuarios'),
             ),
             ElevatedButton(
               onPressed: () {
-                 context.push('/products');
+                context.push('/products');
               },
               child: const Text('Ir a Productos'),
             ),
