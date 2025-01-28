@@ -15,3 +15,6 @@ class CacheFailure extends Failure {
 class AuthFailure extends Failure {
     AuthFailure(String message) : super(message);
 }
+class ForbiddenFailure extends Failure {
+    ForbiddenFailure(String message) : super(message);
+}

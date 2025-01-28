@@ -1,4 +1,9 @@
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
+import 'package:cleancode_app/features/roles/data/repositories/role_repository_impl.dart';
+import 'package:cleancode_app/features/roles/domain/repositories/role_repository.dart';
+import 'package:cleancode_app/features/roles/domain/usecases/get_roles_usecase.dart';
+import 'package:cleancode_app/features/roles/presentation/bloc/role_bloc.dart';
 import 'package:cleancode_app/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +65,17 @@ void main() async {
   final getProductsUseCase = GetProductsUseCase(repository: productRepository);
   getIt.registerSingleton<GetProductsUseCase>(getProductsUseCase);
 
+  final roleRemoteDataSource =
+      RoleRemoteDataSourceImpl(dioClient: dioClient);
+  getIt.registerSingleton<RoleRemoteDataSource>(roleRemoteDataSource);
+
+  final roleRepository =
+      RoleRepositoryImpl(remoteDataSource: roleRemoteDataSource);
+  getIt.registerSingleton<RoleRepository>(roleRepository);
+
+  final getRolesUseCase = GetRolesUsecase(repository: roleRepository);
+  getIt.registerSingleton<GetRolesUsecase>(getRolesUseCase);
+
   final userRemoteDataSource = UserRemoteDataSourceImpl(dioClient: dioClient);
   getIt.registerSingleton<UserRemoteDataSource>(userRemoteDataSource);
 
@@ -110,6 +126,11 @@ void main() async {
         BlocProvider(
           create: (context) => UserBloc(
             getUsersUseCase: getIt<GetUsersUseCase>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RoleBloc(
+            getRolesUserCase: getIt<GetRolesUsecase>(),
           ),
         ),
       ],

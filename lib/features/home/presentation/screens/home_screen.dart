@@ -32,6 +32,12 @@ class HomeScreen extends StatelessWidget {
               },
               child: const Text('Ir a Productos'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/roles');
+              },
+              child: const Text('Ir a Roles (Super)'),
+            ),
           ],
         ),
       ),

@@ -49,7 +49,13 @@ class AuthInterceptor extends Interceptor {
     }
     err.response!.data['message'] = message;
 
-    if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
+    if (err.response?.statusCode == 403) {     
+      // Lanzar una excepción personalizada para 403
+      // debugPrint("403 ${message}");
+      // throw Exception(message);
+    }
+
+    if (err.response?.statusCode == 401) {
       debugPrint("Code ${err.response?.statusCode}");
       final routerContext = navigatorKey.currentContext;
       if(routerContext != null){

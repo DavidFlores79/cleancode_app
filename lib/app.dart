@@ -1,5 +1,6 @@
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -37,6 +38,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/products',
       builder: (context, state) => const ProductScreen(),
+    ),
+    GoRoute(
+      path: '/roles',
+      builder: (context, state) => const RolesScreen(),
     ),
     GoRoute(
       path: '/settings',
