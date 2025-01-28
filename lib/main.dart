@@ -37,8 +37,7 @@ void main() async {
   final authRemoteDataSource = AuthRemoteDataSourceImpl(dioClient: dioClient);
   getIt.registerSingleton<AuthRemoteDataSource>(authRemoteDataSource);
 
-  final authRepository =
-      AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
+  final authRepository = AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
   getIt.registerSingleton<AuthRepository>(authRepository);
 
   final loginUseCase = LoginUseCase(repository: authRepository);
@@ -78,6 +77,9 @@ void main() async {
 
   final themeManager = ThemeManager();
   getIt.registerSingleton<ThemeManager>(themeManager);
+
+  final navigatorKey = GlobalKey<NavigatorState>();
+  getIt.registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
 
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   String? primaryColorString = prefs.getString('primaryColor');

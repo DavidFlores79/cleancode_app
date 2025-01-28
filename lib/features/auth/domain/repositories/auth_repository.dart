@@ -9,7 +9,7 @@ abstract class AuthRepository {
     String email,
     String password,
   );
-  Future<Either<Failure,String>> logout();
+  Future<Either<Failure,void>> logout();
   Future<User?> getLoggedInUser();
   Future<String?> getToken();
   Future<bool> isLoggedIn();

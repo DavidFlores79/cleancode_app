@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:cleancode_app/core/errors/failures.dart';
 import 'package:cleancode_app/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -67,6 +68,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
       await storage.delete(key: 'token');
       await storage.delete(key: 'user');
+      debugPrint("Logout!!!!***");
       return Right("Logout Exitoso");
     } on Exception catch (e) {
       return Left(AuthFailure(e.toString()));

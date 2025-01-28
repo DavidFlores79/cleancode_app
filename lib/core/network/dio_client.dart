@@ -1,8 +1,12 @@
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 class DioClient {
   final Dio _dio = Dio(
@@ -20,6 +24,8 @@ class DioClient {
 }
 
 class AuthInterceptor extends Interceptor {
+  final navigatorKey = GetIt.I<GlobalKey<NavigatorState>>();
+
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
@@ -33,15 +39,24 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    String message = 'xxx';
+    String message = '${err.response?.statusCode} - Error en la petición Http';
     debugPrint("${err.response?.data['msg']}");
-    
+
     if("${err.response?.data['msg']}" != 'null'){
       message = "${err.response?.data?['msg']}";
     } else if("${err.response?.data?['errors']?[0]?['msg']}" != 'null') {
       message = "${err.response?.data?['errors']?[0]?['msg']}";
     }
     err.response!.data['message'] = message;
+
+    if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
+      debugPrint("Code ${err.response?.statusCode}");
+      final routerContext = navigatorKey.currentContext;
+      if(routerContext != null){
+        routerContext.read<AuthBloc>().add(LogoutRequested());
+      }
+    }
+
     super.onError(err, handler);
   }
 }

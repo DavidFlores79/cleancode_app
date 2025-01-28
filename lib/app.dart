@@ -1,4 +1,7 @@
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cleancode_app/core/theme/theme_manager.dart';
@@ -9,7 +12,10 @@ import 'package:cleancode_app/features/products/presentation/screens/product_scr
 import 'package:cleancode_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:cleancode_app/features/users/presentation/screens/user_screen.dart';
 
+final navigatorKey = GetIt.I<GlobalKey<NavigatorState>>();
+
 final _router = GoRouter(
+  navigatorKey: navigatorKey,
   initialLocation: '/',
   routes: [
     GoRoute(
@@ -59,10 +65,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'My App',
-      theme: themeManager.currentTheme,
-      routerConfig: _router,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is Unauthenticated) {
+              debugPrint("si se salio");
+              final routerContext = navigatorKey.currentContext;
+              if(routerContext != null){
+                 GoRouter.of(routerContext).go('/');
+              }
+            }
+          },
+        )
+      ],
+      child: MaterialApp.router(
+        title: 'My App',
+        theme: themeManager.currentTheme,
+        routerConfig: _router,
+      ),
     );
   }
 }

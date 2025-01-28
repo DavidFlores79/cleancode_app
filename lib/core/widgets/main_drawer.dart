@@ -77,9 +77,9 @@ class _MainDrawerState extends State<MainDrawer> {
             title: const Text('Salir'),
             onTap: () {
               context.read<AuthBloc>().add(
-                    LogoutRequested(),
-                  );
-              context.go('/');
+                LogoutRequested(),
+              );
+              // context.go('/');
             },
           ),
         ],

@@ -35,11 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
    void _onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) async {
-    emit(AuthInitial());
+    emit(AuthLoading());
     final result = await logoutUseCase();
     result.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (data) => emit(AuthLogoutSuccess()),
+      (data) => emit(Unauthenticated("salida del sistema")),
     );
   }
 }
