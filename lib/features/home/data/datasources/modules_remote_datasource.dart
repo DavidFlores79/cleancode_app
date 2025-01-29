@@ -16,7 +16,11 @@ class ModulesRemoteDataSourceImpl extends ModulesRemoteDataSource{
       var response = await sl<DioClient>().get(ApiConfig.modulesEndpoint('644dc7bc999ad1fe7e0471a9'));
       return Right(response);
     } on DioException catch (e) {
-      return Left(e.response?.data ?? e.response?.data?['message'] ?? 'Error al obtener los módulos');
+      String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
+      if(e.response?.statusCode == 403){
+        message = '$message (${e.response?.statusCode})';
+      }
+      return Left(message);
     }
   }
 }

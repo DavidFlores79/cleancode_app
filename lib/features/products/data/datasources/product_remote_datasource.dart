@@ -24,7 +24,11 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         throw Exception('Failed to get products');
       }
     } on DioException catch(e) {
-      throw Exception(e.message);
+      String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
+      if(e.response?.statusCode == 403){
+        message = '$message (${e.response?.statusCode})';
+      }
+      throw Exception(message);
     }
      catch(e) {
          throw Exception(e.toString());

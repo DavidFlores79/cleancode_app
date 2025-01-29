@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
@@ -22,29 +23,34 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Users')),
-      body: BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          if (state is UserLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is UserSuccess) {
-            return ListView.builder(
-              itemCount: state.users.length,
-              itemBuilder: (context, index) {
-                final user = state.users[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    child: Image.network('${user.image}'),
-                  ),
-                  title: Text(user.name ?? ''),
-                  subtitle: Text(user.email ?? ''),
-                );
-              },
-            );
-          } else if (state is UserFailure) {
-            return Center(child: Text('Error: ${state.message}'));
+      body: BlocListener<UserBloc, UserState>(
+        listener: (context, state) {
+          if (state is UserFailure) {
+            AppUtils.showSnackBar(context, state.message);
           }
-          return const Center(child: Text('No se cargaron usuarios'));
         },
+        child: BlocBuilder<UserBloc, UserState>(
+          builder: (context, state) {
+            if (state is UserLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is UserSuccess) {
+              return ListView.builder(
+                itemCount: state.users.length,
+                itemBuilder: (context, index) {
+                  final user = state.users[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Image.network('${user.image}'),
+                    ),
+                    title: Text(user.name ?? ''),
+                    subtitle: Text(user.email ?? ''),
+                  );
+                },
+              );
+            }
+            return const Center(child: Text('No se cargaron usuarios'));
+          },
+        ),
       ),
     );
   }

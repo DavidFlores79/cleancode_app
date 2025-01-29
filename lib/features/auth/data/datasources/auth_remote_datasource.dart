@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cleancode_app/core/domain/entities/auth_response.dart';
+import 'package:cleancode_app/core/errors/api_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
@@ -25,10 +28,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       } else {
         throw Exception('Failed to login');
       }
-    } on DioException catch(e) {
-      throw Exception(e.response!.data['message']);
+    } on ApiException catch (e) {
+      String message = 'ApiException en auth datasource';
+      throw Exception(message);
     }
     catch (e) {
+        debugPrint("Ex auth datasource $e");
         throw Exception(e.toString());
     }
   }

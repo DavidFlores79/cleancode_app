@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is AuthSuccess) {
             context.go('/home');
           } else if (state is AuthFailure) {
+            // debugPrint("hola mundo **** ${state.message} **********");
             AppUtils.showSnackBar(context, state.message);
           }
         },

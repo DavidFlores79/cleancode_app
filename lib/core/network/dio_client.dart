@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/network/error_interceptor.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -18,6 +19,7 @@ class DioClient {
   );
 
   Dio get dio {
+    _dio.interceptors.add(ErrorInterceptor());
     _dio.interceptors.add(AuthInterceptor());
     return _dio;
   }
@@ -39,21 +41,21 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    String message = '${err.response?.statusCode} - Error en la petición Http';
-    debugPrint("${err.response?.data['msg']}");
+    // String message = '${err.response?.statusCode} - Error en la petición Http';
+    // debugPrint("${err.response?.data['msg']}");
 
-    if("${err.response?.data['msg']}" != 'null'){
-      message = "${err.response?.data?['msg']}";
-    } else if("${err.response?.data?['errors']?[0]?['msg']}" != 'null') {
-      message = "${err.response?.data?['errors']?[0]?['msg']}";
-    }
-    err.response!.data['message'] = message;
+    // if("${err.response?.data['msg']}" != 'null'){
+    //   message = "${err.response?.data?['msg']}";
+    // } else if("${err.response?.data?['errors']?[0]?['msg']}" != 'null') {
+    //   message = "${err.response?.data?['errors']?[0]?['msg']}";
+    // }
+    // err.response!.data['message'] = message;
 
-    if (err.response?.statusCode == 403) {     
-      // Lanzar una excepción personalizada para 403
-      // debugPrint("403 ${message}");
-      // throw Exception(message);
-    }
+    // if (err.response?.statusCode == 403) {     
+    //   // Lanzar una excepción personalizada para 403
+    //   // debugPrint("403 ${message}");
+    //   // throw Exception(message);
+    // }
 
     if (err.response?.statusCode == 401) {
       debugPrint("Code ${err.response?.statusCode}");

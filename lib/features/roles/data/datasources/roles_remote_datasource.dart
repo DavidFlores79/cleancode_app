@@ -26,7 +26,6 @@ class RoleRemoteDataSourceImpl extends RoleRemoteDataSource {
       }
     } on DioException catch (e) {
       String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
-
       if(e.response?.statusCode == 403){
         message = '$message (${e.response?.statusCode})';
       }

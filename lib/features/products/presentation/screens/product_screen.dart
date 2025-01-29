@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cleancode_app/features/products/presentation/bloc/product_bloc.dart';
@@ -21,32 +22,37 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Posters')),
-      body: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is ProductSuccess) {
-            return ListView.builder(
-              itemCount: state.products.length,
-              itemBuilder: (context, index) {
-                final product = state.products[index];
-                return ListTile(
-                  title: Text(product.name ?? ''),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${product.code}'),
-                      Text('${product.authors}'),
-                    ],
-                  ),
-                );
-              },
-            );
-          } else if (state is ProductFailure) {
-            return Center(child: Text('Error: ${state.message}'));
+      body: BlocListener<ProductBloc, ProductState>(
+        listener: (context, state) {
+          if (state is ProductFailure) {
+            AppUtils.showSnackBar(context, state.message);
           }
-          return const Center(child: Text('No se cargaron productos'));
         },
+        child: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            if (state is ProductLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProductSuccess) {
+              return ListView.builder(
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  final product = state.products[index];
+                  return ListTile(
+                    title: Text(product.name ?? ''),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${product.code}'),
+                        Text('${product.authors}'),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+            return const Center(child: Text('No se cargaron productos'));
+          },
+        ),
       ),
     );
   }
