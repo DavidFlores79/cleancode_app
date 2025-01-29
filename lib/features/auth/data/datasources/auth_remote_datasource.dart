@@ -6,7 +6,7 @@ import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/auth/data/models/user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<AuthResponse> login(String email, String password);
-  Future<AuthUserModel> register(String name, String email, String password);
+  Future<AuthResponse> register(String name, String email, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -31,11 +31,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
     @override
-  Future<AuthUserModel> register(String name, String email, String password) async {
+  Future<AuthResponse> register(String name, String email, String password) async {
     try {
       final response = await dioClient.dio.post(ApiConfig.registerEndpoint, data: {'name': name, 'email': email, 'password': password});
-      if (response.statusCode == 200) {
-        return AuthUserModel.fromJson(response.data);
+      if (response.statusCode == 201) {
+        return AuthResponse.fromMap(response.data);
       } else {
         throw Exception('Failed to register');
       }

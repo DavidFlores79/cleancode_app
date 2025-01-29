@@ -31,7 +31,8 @@ class AuthRepositoryImpl implements AuthRepository {
       String name, String email, String password) async {
     try {
       final result = await remoteDataSource.register(name, email, password);
-      return Right(result);
+      _setLoggedInUser(result.user ?? User(), result.jwt ?? '');
+      return Right(result.user!);
     } on Exception catch (e) {
       return Left(AuthFailure(e.toString()));
     }
