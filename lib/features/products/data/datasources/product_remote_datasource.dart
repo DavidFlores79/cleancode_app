@@ -15,7 +15,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   Future<List<ProductModel>> getProducts() async {
     try {
       final response = await dioClient.dio.get(ApiConfig.productsEndpoint);
-      
+
       if (response.statusCode == 200) {
         return (response.data['data'] as List<dynamic>)
             .map((json) => ProductModel.fromMap(json))
@@ -23,15 +23,9 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       } else {
         throw Exception('Failed to get products');
       }
-    } on DioException catch(e) {
-      String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
-      if(e.response?.statusCode == 403){
-        message = '$message (${e.response?.statusCode})';
-      }
+    } on DioException catch (e) {
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
       throw Exception(message);
     }
-     catch(e) {
-         throw Exception(e.toString());
-     }
   }
 }

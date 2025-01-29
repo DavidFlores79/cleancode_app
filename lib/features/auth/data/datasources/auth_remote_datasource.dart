@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'package:cleancode_app/core/domain/entities/auth_response.dart';
-import 'package:cleancode_app/core/errors/api_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/auth/data/models/user_model.dart';
-import 'package:flutter/material.dart';
-
 abstract class AuthRemoteDataSource {
   Future<AuthResponse> login(String email, String password);
   Future<AuthUserModel> register(String name, String email, String password);
@@ -28,13 +24,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       } else {
         throw Exception('Failed to login');
       }
-    } on ApiException catch (e) {
-      String message = 'ApiException en auth datasource';
+    } on DioException catch (e) {
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
       throw Exception(message);
-    }
-    catch (e) {
-        debugPrint("Ex auth datasource $e");
-        throw Exception(e.toString());
     }
   }
 
@@ -47,11 +39,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       } else {
         throw Exception('Failed to register');
       }
-    } on DioException catch(e) {
-       throw Exception(e);
-    }
-    catch (e) {
-        throw Exception(e.toString());
+    } on DioException catch (e) {
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
+      throw Exception(message);
     }
   }
 }

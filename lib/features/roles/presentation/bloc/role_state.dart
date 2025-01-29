@@ -18,8 +18,8 @@ class RoleFailureState extends RoleState {
   RoleFailureState(this.message);
 }
 
-class ForbiddenState extends RoleState {
+class ForbiddenActionState extends RoleState {
   final String message;
 
-  ForbiddenState(this.message);
+  ForbiddenActionState(this.message);
 }

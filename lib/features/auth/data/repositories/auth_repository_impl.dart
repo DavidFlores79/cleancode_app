@@ -21,8 +21,8 @@ class AuthRepositoryImpl implements AuthRepository {
       _setLoggedInUser(result.user ?? User(), result.jwt ?? '');
       return Right(result.user!);
     } on Exception catch (e) {
-      debugPrint("$e");
-      return Left(AuthFailure(e.toString()));
+      debugPrint("paso 3 $e");
+      return Left(AuthFailure("$e"));
     }
   }
 

@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
-import 'package:flutter/material.dart';
-
 abstract class UserRemoteDataSource {
   Future<List<UserModel>> getUsers();
 }
@@ -26,17 +24,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       } else {
         throw Exception('Failed to get users');
       }
-    } on DioException catch(e) {
-      debugPrint("DioEx====== ${e.type}");
-      String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
-      if(e.response?.statusCode == 403){
-        message = '$message (${e.response?.statusCode})';
-      }
+    } on DioException catch (e) {
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
       throw Exception(message);
-    }
-    catch (e) {
-        debugPrint("Ex====== ${e}");
-        throw Exception(e.toString());
     }
   }
 }

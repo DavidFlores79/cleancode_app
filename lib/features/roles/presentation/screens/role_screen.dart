@@ -32,9 +32,9 @@ class _RolesScreenState extends State<RolesScreen> {
         },
         child: BlocBuilder<RoleBloc, RoleState>(
           builder: (context, state) {
-            if(state is ForbiddenState) {
-              debugPrint("*** ${state.message}");
-              return ForbiddenAccess();
+            if(state is ForbiddenActionState) {
+              debugPrint("|*** ${state.message} ***|");
+              return ForbiddenAccess(message: state.message);
             }
             if (state is RoleLoadingState) {
               return const Center(child: CircularProgressIndicator());

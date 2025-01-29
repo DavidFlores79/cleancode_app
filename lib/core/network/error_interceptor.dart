@@ -8,19 +8,19 @@ class ErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Si la respuesta del backend existe y tiene datos...
     if (err.type != DioExceptionType.unknown || err.type == DioExceptionType.connectionError) {
-      // debugPrint("==== ${err.type}");
-      // debugPrint("==== ${err.response?.statusCode}");
       try {
+        debugPrint("paso 1");
         // Intentamos parsear la respuesta en nuestro formato de error estandarizado.
-        // debugPrint("==== ${err.response?.data}");
         final apiError = ApiError.fromJson(err.response!.data);
         // Lanza una excepción personalizada con el error estandarizado.
         throw ApiException(apiError, err.response?.statusCode ?? 500);
       } on ApiException catch (e) {
-        throw ApiException(ApiError(message: e.apiError.message),err.response?.statusCode ?? 500,);
+        debugPrint("paso 1a");
+        throw DioException(response: err.response, requestOptions: err.requestOptions, message: e.apiError.message);
       } catch (e) {
+        debugPrint("paso 1b");
         // Si hay algún error en el parseo, lanzamos una excepción genérica.
-        throw ApiException(ApiError(message: 'Error al procesar la respuesta del servidor.'),err.response?.statusCode ?? 500,);
+        throw DioException(requestOptions: err.requestOptions, message: "Error desconocido (111)");
       }
     } else {
       // En caso de que no tengamos respuesta, mandamos un error generico.

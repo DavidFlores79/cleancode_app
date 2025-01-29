@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class ForbiddenAccess extends StatelessWidget {
-  const ForbiddenAccess({super.key});
+  final String? message;
+  const ForbiddenAccess({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ForbiddenAccess extends StatelessWidget {
         height: 200,
         child: Lottie.asset('assets/lottie/error.json'),
       ),
-      Text(
+      Text(message ??
         'No tiene permisos para acceder a este módulo.',
         style: TextStyle(fontSize: 26, fontFamily: 'Roboto'),
         textAlign: TextAlign.center,

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class ApiError {
   final String message;
   final List<FieldError> fieldErrors;

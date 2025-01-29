@@ -3,7 +3,6 @@ import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/roles/data/models/role_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 abstract class RoleRemoteDataSource {
   Future<List<RoleModel>> getRoles();
 }
@@ -25,13 +24,9 @@ class RoleRemoteDataSourceImpl extends RoleRemoteDataSource {
         throw Exception('Failed to get Roles');
       }
     } on DioException catch (e) {
-      String message = e.response?.data['message'] ?? e.message ?? e.response?.statusMessage ?? 'Error Desconocido';
-      if(e.response?.statusCode == 403){
-        message = '$message (${e.response?.statusCode})';
-      }
+      debugPrint("paso 2 ${e.response?.statusCode}");
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
       throw Exception(message);
-    } catch (e) {
-      throw Exception(e.toString());
     }
   }
 }
