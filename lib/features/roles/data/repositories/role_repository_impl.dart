@@ -1,5 +1,4 @@
 import 'package:cleancode_app/core/errors/failures.dart';
-import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
 import 'package:cleancode_app/features/roles/data/models/role_model.dart';
 import 'package:cleancode_app/features/roles/domain/repositories/role_repository.dart';

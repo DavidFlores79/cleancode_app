@@ -5,6 +5,7 @@ import 'package:cleancode_app/features/roles/domain/repositories/role_repository
 import 'package:cleancode_app/features/roles/domain/usecases/get_roles_usecase.dart';
 import 'package:cleancode_app/features/roles/presentation/bloc/role_bloc.dart';
 import 'package:cleancode_app/features/settings/presentation/bloc/settings_bloc.dart';
+import 'package:cleancode_app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -106,7 +107,7 @@ void main() async {
   }
 
   themeManager.initTheme(isDarkMode, primaryColor);
-
+  setupServiceLocator();
   runApp(
     MultiBlocProvider(
       providers: [
