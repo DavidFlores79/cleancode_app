@@ -17,7 +17,7 @@ class RoleBloc extends Bloc<RoleEvent, RoleState> {
     final result = await getRolesUserCase();
     result.fold(
       (failure) {
-        debugPrint('Bloc ${failure.message}');
+        debugPrint('Paso 4 Bloc ${failure.message}');
         if(failure.message.contains('403')) {
           return emit(ForbiddenActionState(failure.message));
         }

@@ -33,7 +33,7 @@ class _RolesScreenState extends State<RolesScreen> {
         child: BlocBuilder<RoleBloc, RoleState>(
           builder: (context, state) {
             if(state is ForbiddenActionState) {
-              debugPrint("|*** ${state.message} ***|");
+              debugPrint("Screen |*** ${state.message} ***|");
               return ForbiddenAccess(message: state.message);
             }
             if (state is RoleLoadingState) {

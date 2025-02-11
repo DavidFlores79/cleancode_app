@@ -2,13 +2,16 @@ import 'package:cleancode_app/core/domain/entities/user.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:cleancode_app/features/home/domain/entities/module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class MainDrawer extends StatefulWidget {
-  const MainDrawer({super.key});
+  final List<Module> modules;
+  
+  const MainDrawer({super.key, required this.modules});
 
   @override
   State<MainDrawer> createState() => _MainDrawerState();
@@ -48,21 +51,17 @@ class _MainDrawerState extends State<MainDrawer> {
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Usuarios'),
-            onTap: () {
-              context.pop();
-              context.push('/users');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.image),
-            title: const Text('Posters'),
-            onTap: () {
-              context.pop();
-              context.push('/products');
-            },
+          Column(
+            children: widget.modules.map((module) {
+              return ListTile(
+                leading: const Icon(Icons.image),
+                title: Text('${module.name}'),
+                onTap: () {
+                  context.pop();
+                  context.push('/${module.route}');
+                },
+              );
+            },).toList(),
           ),
           ListTile(
             leading: const Icon(Icons.settings),

@@ -15,7 +15,7 @@ class RoleRepositoryImpl implements RoleRepository {
       final result = await remoteDataSource.getRoles();
       return Right(result);
     } on Exception catch (e) {
-      debugPrint("paso 3 ${e.toString()}");
+      debugPrint("paso 3 $e del tipo ${e.runtimeType}");
       return Left(ServerFailure("$e"));
     }
   }

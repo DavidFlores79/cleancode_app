@@ -1,45 +1,4 @@
 import 'dart:convert';
-
-class ModuleData {
-    String? id;
-    Module? module;
-    List<String>? permissions;
-    String? role;
-    String? createdAt;
-    String? updatedAt;
-
-    ModuleData({
-        this.id,
-        this.module,
-        this.permissions,
-        this.role,
-        this.createdAt,
-        this.updatedAt,
-    });
-
-    factory ModuleData.fromJson(String str) => ModuleData.fromMap(json.decode(str));
-
-    String toJson() => json.encode(toMap());
-
-    factory ModuleData.fromMap(Map<String, dynamic> json) => ModuleData(
-        id: json["_id"],
-        module: json["module"] == null ? null : Module.fromMap(json["module"]),
-        permissions: json["permissions"] == null ? [] : List<String>.from(json["permissions"]!.map((x) => x)),
-        role: json["role"],
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "_id": id,
-        "module": module?.toMap(),
-        "permissions": permissions == null ? [] : List<dynamic>.from(permissions!.map((x) => x)),
-        "role": role,
-        "createdAt": createdAt,
-        "updatedAt": updatedAt,
-    };
-}
-
 class Module {
     String? id;
     String? name;

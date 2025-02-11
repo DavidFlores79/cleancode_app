@@ -1,20 +1,32 @@
+
+import 'dart:convert';
+
 class ApiResponse<T> {
-  final T? data;
-  final String? message;
-  final int? statusCode;
-    final bool? success;
-    final List<String>? errors;
-    
-  ApiResponse({this.data, this.message, this.statusCode, this.success, this.errors});
+    int? page;
+    int? pageSize;
+    int? totalItems;
+    T? data;
 
+    ApiResponse({
+        this.page,
+        this.pageSize,
+        this.totalItems,
+        this.data,
+    });
 
-    factory ApiResponse.fromJson(Map<String, dynamic> json, Function(Map<String, dynamic>) fromJsonT) {
-      return ApiResponse<T>(
-        success: json['success'],
-            statusCode: json['statusCode'],
-              data: json['data'] != null ? fromJsonT(json['data']) : null,
-        message: json['message'],
-            errors: json['errors'] != null ?  List<String>.from(json['errors'].map((x) => x['msg'])): null,
-      );
-    }
+    factory ApiResponse.fromJson(String str) => ApiResponse.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory ApiResponse.fromMap(Map<String, dynamic> json) => ApiResponse(
+        page: json["page"],
+        pageSize: json["pageSize"],
+        totalItems: json["totalItems"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "page": page,
+        "pageSize": pageSize,
+        "totalItems": totalItems,
+    };
 }
