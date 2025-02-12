@@ -4,18 +4,18 @@ import 'package:cleancode_app/features/products/domain/entities/product.dart';
 
 class ProductModel extends Product {
   ProductModel({
-    required super.id, 
-    required super.name, 
-    required super.code,
-    required super.image,
-    required super.audio,
-    required super.authors,
-    required super.contactEmail,
-    required super.category,
-    required super.status,
-    required super.userId,
-    required super.createdAt,
-    required super.updatedAt,
+    super.id, 
+    super.name, 
+    super.code,
+    super.image,
+    super.audio,
+    super.authors,
+    super.contactEmail,
+    super.category,
+    super.status,
+    super.userId,
+    super.createdAt,
+    super.updatedAt,
   });
 
   factory ProductModel.fromJson(String str) => ProductModel.fromMap(json.decode(str));

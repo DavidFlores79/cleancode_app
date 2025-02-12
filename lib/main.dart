@@ -1,3 +1,4 @@
+import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
 import 'package:cleancode_app/features/roles/data/repositories/role_repository_impl.dart';
@@ -48,6 +49,9 @@ void main() async {
 
   final loginUseCase = LoginUseCase(repository: authRepository);
   getIt.registerSingleton<LoginUseCase>(loginUseCase);
+
+  final isLoggetInUseCase = IsLoggedInUsecase(repository: authRepository);
+  getIt.registerSingleton<IsLoggedInUsecase>(isLoggetInUseCase);
 
   final logoutUseCase = LogoutUseCase(repository: authRepository);
   getIt.registerSingleton<LogoutUseCase>(logoutUseCase);
@@ -116,7 +120,8 @@ void main() async {
           create: (context) => AuthBloc(
             loginUseCase: getIt<LoginUseCase>(),
             registerUseCase: getIt<RegisterUseCase>(),
-            logoutUseCase: getIt<LogoutUseCase>(),
+            logoutUseCase: getIt<LogoutUseCase>(), 
+            isLoggedInUseCase: getIt<IsLoggedInUsecase>(),
           ),
         ),
         BlocProvider(

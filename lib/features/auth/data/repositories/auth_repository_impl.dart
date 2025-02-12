@@ -70,7 +70,6 @@ class AuthRepositoryImpl implements AuthRepository {
       final FlutterSecureStorage storage = GetIt.I<FlutterSecureStorage>();
       await storage.delete(key: 'token');
       await storage.delete(key: 'user');
-      debugPrint("Logout!!!!***");
       return Right("Logout Exitoso");
     } on Exception catch (e) {
       return Left(AuthFailure(e.toString()));

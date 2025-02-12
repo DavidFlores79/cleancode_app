@@ -1,5 +1,4 @@
 import 'package:cleancode_app/core/widgets/main_drawer.dart';
-import 'package:cleancode_app/features/home/domain/entities/module.dart';
 import 'package:cleancode_app/features/home/domain/usecases/get_modules_usecase.dart';
 import 'package:cleancode_app/features/home/presentation/bloc/module_bloc.dart';
 import 'package:cleancode_app/features/home/presentation/bloc/module_state.dart';
@@ -13,13 +12,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (BuildContext context) => ModuleCubit()..getModules(),
       child: BlocBuilder<ModuleCubit, ModuleState>(
         builder: (BuildContext context, state) {
           if (state is ModuleLoadingState) {
-            return const CircularProgressIndicator();
+            return Scaffold(
+              body: Center(
+                child: const CircularProgressIndicator(),
+              ),
+            );
           }
           if (state is ModuleSuccessState) {
             return Scaffold(
@@ -62,12 +64,17 @@ class HomeScreen extends StatelessWidget {
             );
           }
           if (state is ModuleFailureState) {
-            return Center(
-              child: Text(state.errorMessage),
+            return Scaffold(
+              body: Center(
+                child: Text(state.errorMessage),
+              ),
             );
           }
-
-          return Container();
+          return Scaffold(
+            body: Center(
+              child: Text('Sin Nada'),
+            ),
+          );
         },
       ),
     );

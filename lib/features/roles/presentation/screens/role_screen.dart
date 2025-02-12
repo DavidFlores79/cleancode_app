@@ -26,14 +26,13 @@ class _RolesScreenState extends State<RolesScreen> {
       body: BlocListener<RoleBloc, RoleState>(
         listener: (context, state) {
           if (state is RoleFailureState) {
-            // debugPrint(state.message);
             AppUtils.showSnackBar(context, state.message);
           }
         },
         child: BlocBuilder<RoleBloc, RoleState>(
           builder: (context, state) {
             if(state is ForbiddenActionState) {
-              debugPrint("Screen |*** ${state.message} ***|");
+              debugPrint("ForbiddenAction |*** ${state.message} ***|");
               return ForbiddenAccess(message: state.message);
             }
             if (state is RoleLoadingState) {

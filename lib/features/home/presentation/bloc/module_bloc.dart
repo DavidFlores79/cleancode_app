@@ -10,6 +10,8 @@ class ModuleCubit extends Cubit<ModuleState> {
   ModuleCubit(): super(ModuleLoadingState());
 
   void getModules() async {
+    await Future.delayed(Duration(seconds: 1));
+
     var result = await sl<GetModulesUsecase>().call(
       param: ''
     );
