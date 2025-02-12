@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:cleancode_app/core/domain/entities/user.dart';
-
-class Product {
+class ProductEntity {
     String? id;
     String? name;
     String? image;
@@ -16,7 +14,7 @@ class Product {
     String? createdAt;
     String? updatedAt;
 
-    Product({
+    ProductEntity({
         this.id,
         this.name,
         this.image,
@@ -30,43 +28,8 @@ class Product {
         this.createdAt,
         this.updatedAt,
     });
-
-    factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
-
-    String toJson() => json.encode(toMap());
-
-    factory Product.fromMap(Map<String, dynamic> json) => Product(
-        id: json["_id"],
-        name: json["name"],
-        image: json["image"],
-        audio: json["audio"],
-        authors: json["authors"],
-        code: json["code"],
-        contactEmail: json["contactEmail"],
-        category: json["category"] == null ? null : json["category"] is String ? json["category"] : Category.fromMap(json["category"]),
-        status: json["status"],
-        userId: json["user_id"] == null ? null : json['user_id'] is String ? json['user_id'] : User.fromMap(json["user_id"]),
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "_id": id,
-        "name": name,
-        "image": image,
-        "audio": audio,
-        "authors": authors,
-        "code": code,
-        "contactEmail": contactEmail,
-        "category": category is Category ? category?.toMap() : category,
-        "status": status,
-        "user_id": userId is User ? userId?.toMap() : userId,
-        "createdAt": createdAt,
-        "updatedAt": updatedAt,
-    };
 }
-
-class Category {
+class CategoryEntity {
     String? image;
     String? color;
     String? id;
@@ -77,7 +40,7 @@ class Category {
     String? createdAt;
     String? updatedAt;
 
-    Category({
+    CategoryEntity({
         this.image,
         this.color,
         this.id,
@@ -89,11 +52,11 @@ class Category {
         this.updatedAt,
     });
 
-    factory Category.fromJson(String str) => Category.fromMap(json.decode(str));
+    factory CategoryEntity.fromJson(String str) => CategoryEntity.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
 
-    factory Category.fromMap(Map<String, dynamic> json) => Category(
+    factory CategoryEntity.fromMap(Map<String, dynamic> json) => CategoryEntity(
         image: json["image"],
         color: json["color"],
         id: json["_id"],
