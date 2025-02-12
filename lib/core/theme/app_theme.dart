@@ -12,11 +12,22 @@ class AppTheme {
     primaryColor: Colors.teal,
     // Otras personalizaciones del tema dark
   );
-    static ThemeData getTheme(bool isDarkMode, Color color) {
-    final baseTheme = isDarkMode ? ThemeData.dark(useMaterial3: true) : ThemeData.light(useMaterial3: true);
+  static ThemeData getTheme(bool isDarkMode, Color color, { Color primaryTxtColor = Colors.white }) {
+    final baseTheme = isDarkMode
+        ? ThemeData.dark(useMaterial3: true)
+        : ThemeData.light(useMaterial3: true);
     return baseTheme.copyWith(
       colorScheme: baseTheme.colorScheme.copyWith(primary: color),
-      appBarTheme: baseTheme.appBarTheme.copyWith(backgroundColor: color),
+      appBarTheme: baseTheme.appBarTheme.copyWith(
+        backgroundColor: color,
+        titleTextStyle: TextStyle(
+          color: primaryTxtColor,
+          fontSize: 22,
+        ),
+        iconTheme: IconThemeData(
+          color: primaryTxtColor,
+        )
+      ),
     );
   }
 }

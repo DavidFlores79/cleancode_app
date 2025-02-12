@@ -11,5 +11,6 @@ class ToggleTheme extends SettingsEvent {
 class ChangeColor extends SettingsEvent {
      final bool isDarkMode;
    final Color primaryColor;
-   ChangeColor({required this.isDarkMode, required this.primaryColor});
+   final Color primaryTextColor;
+   ChangeColor({required this.isDarkMode, required this.primaryColor, required this.primaryTextColor});
 }

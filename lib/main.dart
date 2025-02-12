@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
@@ -103,14 +104,19 @@ void main() async {
   getIt.registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
 
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  String? primaryColorString = prefs.getString('primaryColor');
+  String? primaryBgColorString = prefs.getString(AppConstants.primaryColorName);
+  String? primaryTxtColorString = prefs.getString(AppConstants.primaryTxtColorName);
 
-  Color primaryColor = Colors.teal;
-  if (primaryColorString != null) {
-    primaryColor = Color(int.parse(primaryColorString));
+  Color primaryBgColor = AppConstants.primaryBgColor;
+  if (primaryBgColorString != null) {
+    primaryBgColor = Color(int.parse(primaryBgColorString));
+  }
+  Color primaryTxtColor = AppConstants.primaryTxtColor;
+  if (primaryTxtColorString != null) {
+    primaryTxtColor = Color(int.parse(primaryTxtColorString));
   }
 
-  themeManager.initTheme(isDarkMode, primaryColor);
+  themeManager.initTheme(isDarkMode, primaryBgColor, primaryTxtColor);
   setupServiceLocator();
   runApp(
     MultiBlocProvider(

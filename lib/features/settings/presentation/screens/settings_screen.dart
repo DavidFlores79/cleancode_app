@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -23,17 +24,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   bool isDarkMode = false;
-  Color selectedColor = Colors.blueAccent;
+  Color selectedPrimaryBgColor = AppConstants.primaryBgColor;
+  Color selectedPrimaryTxtColor = AppConstants.primaryTxtColor;
   final themeManager = GetIt.I<ThemeManager>();
 
   Future<void> _loadThemeConfig() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       isDarkMode = prefs.getBool('isDarkMode') ?? false;
-      String? primaryColorString = prefs.getString('primaryColor');
-      selectedColor = primaryColorString != null
-          ? Color(int.parse(primaryColorString))
-          : Colors.blueAccent;
+      String? primaryBgColorString =
+          prefs.getString(AppConstants.primaryColorName);
+      String? primaryTxtColorString =
+          prefs.getString(AppConstants.primaryTxtColorName);
+      selectedPrimaryBgColor = primaryBgColorString != null
+          ? Color(int.parse(primaryBgColorString))
+          : AppConstants.primaryBgColor;
+      selectedPrimaryTxtColor = primaryTxtColorString != null
+          ? Color(int.parse(primaryTxtColorString))
+          : AppConstants.primaryTxtColor;
     });
   }
 
@@ -56,24 +64,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 prefs.setBool('isDarkMode', value);
                 themeManager.toggleTheme();
                 context.read<SettingsBloc>().add(ToggleTheme(
-                    isDarkMode: value, primaryColor: selectedColor));
+                    isDarkMode: value, primaryColor: selectedPrimaryBgColor));
               },
             ),
             ListTile(
-                title: const Text('Selecciona el color principal'),
-                trailing: CircleAvatar(
-                  backgroundColor: selectedColor,
+              title: const Text('Selecciona el color principal'),
+              trailing: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppConstants.lightGrey,
+                    width: 2,
+                  ), // Borde rojo
                 ),
-                onTap: () {
-                  _showColorPicker(context);
-                })
+                child: CircleAvatar(
+                  backgroundColor: selectedPrimaryBgColor,
+                ),
+              ),
+              onTap: () {
+                _showColorPicker(context, AppConstants.primaryColorName);
+              },
+            ),
+            ListTile(
+              title: const Text('Selecciona el color del texto principal'),
+              trailing: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppConstants.lightGrey,
+                    width: 2,
+                  ), // Borde rojo
+                ),
+                child: CircleAvatar(
+                  backgroundColor: selectedPrimaryTxtColor,
+                ),
+              ),
+              onTap: () {
+                _showColorPicker(context, AppConstants.primaryTxtColorName);
+              },
+            ),
           ],
         );
       }),
     );
   }
 
-  void _showColorPicker(BuildContext context) {
+  Future<void> _showColorPicker(BuildContext context, String colorName) async {
+    debugPrint("Color Name $colorName");
+    final prefs = await SharedPreferences.getInstance();
+    String? colorString = prefs.getString(colorName);
+    debugPrint("Color String $colorString");
+    Color selectedColor = colorString != null
+        ? Color(int.parse(colorString))
+        : (colorName == AppConstants.primaryColorName)
+            ? AppConstants.primaryBgColor
+            : AppConstants.primaryTxtColor;
+    debugPrint("Selected Color ${selectedColor.value}");
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -83,16 +130,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ColorPicker(
               pickerColor: selectedColor,
               onColorChanged: (color) async {
-                final prefs = await SharedPreferences.getInstance();
                 setState(() {
                   selectedColor = color;
                 });
-                prefs.setString('primaryColor', color.value.toString());
-                themeManager.changeColor(color);
+                if (colorName == AppConstants.primaryColorName) {
+                  setState(() {
+                    selectedPrimaryBgColor = selectedColor;
+                  });
+                }
+                if (colorName == AppConstants.primaryTxtColorName) {
+                  setState(() {
+                    selectedPrimaryTxtColor = selectedColor;
+                  });
+                }
+                prefs.setString(colorName, selectedColor.value.toString());
+                themeManager.changeColor(color, colorName);
                 context.read<SettingsBloc>().add(
                       ChangeColor(
                         isDarkMode: isDarkMode,
-                        primaryColor: selectedColor,
+                        primaryColor: selectedPrimaryBgColor,
+                        primaryTextColor: selectedPrimaryTxtColor,
                       ),
                     );
               },
