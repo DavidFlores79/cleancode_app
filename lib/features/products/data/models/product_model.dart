@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cleancode_app/core/domain/entities/user.dart';
+import 'package:cleancode_app/features/products/domain/entities/product.dart';
 
 class ProductModel {
     String? id;
@@ -116,4 +117,24 @@ class CategoryModel {
         "createdAt": createdAt,
         "updatedAt": updatedAt,
     };
+}
+
+
+extension ProductXModel on ProductModel {
+  ProductEntity toEntity() {
+    return ProductEntity(
+        id : id,
+        name : name,
+        image : image,
+        audio : audio,
+        authors : authors,
+        code : code,
+        contactEmail : contactEmail,
+        category : category,
+        status : status,
+        userId : userId,
+        createdAt : createdAt,
+        updatedAt : updatedAt,
+    );
+  }
 }

@@ -1,4 +1,7 @@
 import 'package:cleancode_app/core/utils/app_utils.dart';
+import 'package:cleancode_app/features/products/data/models/product_req_params.dart';
+import 'package:cleancode_app/features/products/domain/usecases/get_product_usecase.dart';
+import 'package:cleancode_app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cleancode_app/features/products/presentation/bloc/product_bloc.dart';
@@ -38,6 +41,11 @@ class _ProductScreenState extends State<ProductScreen> {
                 itemBuilder: (context, index) {
                   final product = state.products[index];
                   return ListTile(
+                    onTap: () {
+                      sl<GetProductUsecase>().call(
+                        param: ProductReqParams(id: product.id!)
+                      );
+                    },
                     title: Text(product.name ?? ''),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

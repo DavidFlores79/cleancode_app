@@ -1,9 +1,15 @@
+import 'package:cleancode_app/features/products/data/models/product_req_params.dart';
+import 'package:cleancode_app/service_locator.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
+import 'package:cleancode_app/core/network/dio_client_sl.dart' as dioSL;
 import 'package:cleancode_app/features/products/data/models/product_model.dart';
+import 'package:flutter/material.dart';
 abstract class ProductRemoteDataSource {
   Future<List<ProductModel>> getProducts();
+  Future<Either> getProduct(ProductReqParams id);
 }
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
@@ -26,6 +32,20 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     } on DioException catch (e) {
       String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
       throw Exception(message);
+    }
+  }
+  
+  @override
+  Future<Either> getProduct(ProductReqParams params) async {
+    debugPrint("====> ID: $id");
+    try {
+
+      final response = await sl<dioSL.DioClient>().get('${ApiConfig.productsEndpoint}/${params.id}');
+      return Right(response);
+      
+    } on DioException catch (e) {
+      String message = '${e.message ?? 'Error Desconocido'} ${(e.response?.statusCode == 403) ? e.response?.statusCode: ''}';
+      return Left(message);
     }
   }
 }

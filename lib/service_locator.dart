@@ -3,6 +3,7 @@ import 'package:cleancode_app/features/home/data/datasources/modules_remote_data
 import 'package:cleancode_app/features/home/data/repositories/module_repository_impl.dart';
 import 'package:cleancode_app/features/home/domain/repositories/module_repository.dart';
 import 'package:cleancode_app/features/home/domain/usecases/get_modules_usecase.dart';
+import 'package:cleancode_app/features/products/domain/usecases/get_product_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -24,5 +25,8 @@ void setupServiceLocator() {
   //UseCases
   sl.registerSingleton<GetModulesUsecase>(
     GetModulesUsecase()
+  );
+  sl.registerSingleton<GetProductUsecase>(
+    GetProductUsecase()
   );
 }

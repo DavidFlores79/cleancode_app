@@ -1,4 +1,5 @@
 import 'package:cleancode_app/features/products/data/models/product_model.dart';
+import 'package:cleancode_app/features/products/data/models/product_req_params.dart';
 import 'package:dartz/dartz.dart';
 import 'package:cleancode_app/core/errors/failures.dart';
 import 'package:cleancode_app/features/products/data/datasources/product_remote_datasource.dart';
@@ -17,5 +18,10 @@ class ProductRepositoryImpl implements ProductRepository {
     } on Exception catch (e) {
       return Left(ServerFailure(e.toString()));
     }
+  }
+  
+  @override
+  Future<Either> getProduct(ProductReqParams params) {
+    return remoteDataSource.getProduct(params);
   }
 }
