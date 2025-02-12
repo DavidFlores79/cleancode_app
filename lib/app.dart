@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
@@ -98,6 +99,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp.router(
         title: 'My App',
+        debugShowCheckedModeBanner: AppConstants.isDebug,
         theme: themeManager.currentTheme,
         routerConfig: _router,
       ),

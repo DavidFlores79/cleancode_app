@@ -2,7 +2,7 @@ import 'package:cleancode_app/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeManager{
-  ThemeManager() : _isDarkMode = false, _primaryColor = Colors.blue;
+  ThemeManager() : _isDarkMode = false, _primaryColor = Colors.blueAccent;
 
   bool _isDarkMode;
   Color _primaryColor;

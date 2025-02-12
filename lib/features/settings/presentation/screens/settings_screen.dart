@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   bool isDarkMode = false;
-  Color selectedColor = Colors.blue;
+  Color selectedColor = Colors.blueAccent;
   final themeManager = GetIt.I<ThemeManager>();
 
   Future<void> _loadThemeConfig() async {
@@ -33,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       String? primaryColorString = prefs.getString('primaryColor');
       selectedColor = primaryColorString != null
           ? Color(int.parse(primaryColorString))
-          : Colors.blue;
+          : Colors.blueAccent;
     });
   }
 
@@ -89,8 +89,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 });
                 prefs.setString('primaryColor', color.value.toString());
                 themeManager.changeColor(color);
-                context.read<SettingsBloc>().add(ChangeColor(
-                    isDarkMode: isDarkMode, primaryColor: selectedColor));
+                context.read<SettingsBloc>().add(
+                      ChangeColor(
+                        isDarkMode: isDarkMode,
+                        primaryColor: selectedColor,
+                      ),
+                    );
               },
             ),
           ),

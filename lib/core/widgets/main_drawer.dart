@@ -54,7 +54,7 @@ class _MainDrawerState extends State<MainDrawer> {
           Column(
             children: widget.modules.map((module) {
               return ListTile(
-                leading: const Icon(Icons.image),
+                leading: (module.image != null) ? Image.network(module.image!, width: 20) : Image.asset('assets/images/cubes.png', width: 20),
                 title: Text('${module.name}'),
                 onTap: () {
                   context.pop();
@@ -64,7 +64,7 @@ class _MainDrawerState extends State<MainDrawer> {
             },).toList(),
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: const Icon(Icons.app_settings_alt_outlined),
             title: const Text('Configuración'),
             onTap: () {
               context.pop();
@@ -72,7 +72,7 @@ class _MainDrawerState extends State<MainDrawer> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: const Icon(Icons.logout),
             title: const Text('Salir'),
             onTap: () {
               context.read<AuthBloc>().add(
