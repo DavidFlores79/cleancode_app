@@ -73,7 +73,7 @@ class Category {
     String? name;
     bool? status;
     bool? deleted;
-    String? userId;
+    dynamic userId;
     String? createdAt;
     String? updatedAt;
 
@@ -100,7 +100,7 @@ class Category {
         name: json["name"],
         status: json["status"],
         deleted: json["deleted"],
-        userId: json["user_id"],
+        userId: json["user_id"] == null ? null : json['user_id'] is String ? json['user_id'] : User.fromMap(json["user_id"]),
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
     );
@@ -112,7 +112,7 @@ class Category {
         "name": name,
         "status": status,
         "deleted": deleted,
-        "user_id": userId,
+        "user_id": userId is User ? userId?.toMap() : userId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
     };
