@@ -10,9 +10,9 @@ class Product {
     String? authors;
     String? code;
     String? contactEmail;
-    Category? category;
+    dynamic category;
     bool? status;
-    User? userId;
+    dynamic userId;
     String? createdAt;
     String? updatedAt;
 
@@ -43,9 +43,9 @@ class Product {
         authors: json["authors"],
         code: json["code"],
         contactEmail: json["contactEmail"],
-        category: json["category"] == null ? null : Category.fromMap(json["category"]),
+        category: json["category"] == null ? null : json["category"] is String ? json["category"] : Category.fromMap(json["category"]),
         status: json["status"],
-        userId: json["user_id"] == null ? null : User.fromMap(json["user_id"]),
+        userId: json["user_id"] == null ? null : json['user_id'] is String ? json['user_id'] : User.fromMap(json["user_id"]),
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
     );
@@ -58,9 +58,9 @@ class Product {
         "authors": authors,
         "code": code,
         "contactEmail": contactEmail,
-        "category": category?.toMap(),
+        "category": category is Category ? category?.toMap() : category,
         "status": status,
-        "user_id": userId?.toMap(),
+        "user_id": userId is User ? userId?.toMap() : userId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
     };

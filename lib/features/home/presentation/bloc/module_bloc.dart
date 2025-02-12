@@ -18,7 +18,9 @@ class ModuleCubit extends Cubit<ModuleState> {
 
     result.fold((
       error) {
-        emit(ModuleFailureState(errorMessage: error));
+        if (!isClosed) {
+          emit(ModuleFailureState(errorMessage: error));
+        }
       }, 
       (data) {
         final res = MenuResponse.fromMap(data);

@@ -5,7 +5,7 @@ class User {
     String? name;
     String? email;
     String? image;
-    Role? role;
+    dynamic role;
     bool? status;
     bool? google;
     String? createdAt;
@@ -32,7 +32,11 @@ class User {
         name: json["name"],
         email: json["email"],
         image: json["image"],
-        role: json["role"] == null ? null : Role.fromMap(json["role"]),
+        role: json["role"] == null
+            ? null
+            : (json["role"] is String
+                ? json["role"] // Si es un String (ID), lo guardamos como tal
+                : Role.fromMap(json["role"])), // Si es un Map, lo convertimos a Role
         status: json["status"],
         google: json["google"],
         createdAt: json["createdAt"],
@@ -44,7 +48,9 @@ class User {
         "name": name,
         "email": email,
         "image": image,
-        "role": role?.toMap(),
+        "role": role is Role
+            ? (role as Role).toMap() // Si es un Role, lo convertimos a Map
+            : role, // Si es un String (ID), lo devolvemos como tal
         "status": status,
         "google": google,
         "createdAt": createdAt,
