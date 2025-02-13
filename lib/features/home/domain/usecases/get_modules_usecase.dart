@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 class GetModulesUsecase implements Usecase<Either, String>{
   
   @override
-  Future<Either> call({String? param}) {
+  Future<Either> call({String? params}) {
     return sl<ModuleRepository>().getModules();
   }
 

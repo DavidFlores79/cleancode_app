@@ -43,7 +43,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   return ListTile(
                     onTap: () {
                       sl<GetProductUsecase>().call(
-                        param: ProductReqParams(id: product.id!)
+                        params: ProductReqParams(id: product.id!)
                       );
                     },
                     title: Text(product.name ?? ''),

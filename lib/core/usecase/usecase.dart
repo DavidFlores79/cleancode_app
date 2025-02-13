@@ -1,3 +1,3 @@
 abstract class Usecase<Type, Param> {
-  Future<Type> call({Param param});
+  Future<Type> call({Param params});
 }

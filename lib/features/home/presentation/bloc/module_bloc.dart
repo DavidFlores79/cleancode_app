@@ -13,7 +13,7 @@ class ModuleCubit extends Cubit<ModuleState> {
     await Future.delayed(Duration(seconds: 1));
 
     var result = await sl<GetModulesUsecase>().call(
-      param: ''
+      params: ''
     );
 
     result.fold((

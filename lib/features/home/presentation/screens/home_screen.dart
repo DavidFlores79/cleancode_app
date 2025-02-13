@@ -42,9 +42,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        context.push('/products');
+                        context.push('/posters');
                       },
-                      child: const Text('Ir a Productos'),
+                      child: const Text('Ir a Posters'),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        sl<GetModulesUsecase>().call(param: 'xxx');
+                        sl<GetModulesUsecase>().call(params: 'xxx');
                       },
                       child: const Text('Traer modulos'),
                     ),

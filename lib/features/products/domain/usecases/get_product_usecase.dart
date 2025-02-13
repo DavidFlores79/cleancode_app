@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 class GetProductUsecase implements Usecase<Either, ProductReqParams> {
 
   @override
-  Future<Either> call({ProductReqParams? param}) async {
-    return sl<ProductRepository>().getProduct(param!);
+  Future<Either> call({ProductReqParams? params}) async {
+    return sl<ProductRepository>().getProduct(params!);
   }
 }

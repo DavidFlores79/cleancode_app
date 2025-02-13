@@ -2,6 +2,7 @@ import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/products',
       builder: (context, state) => const ProductScreen(),
+    ),
+    GoRoute(
+      path: '/posters',
+      builder: (context, state) => const PosterScreen(),
     ),
     GoRoute(
       path: '/roles',
