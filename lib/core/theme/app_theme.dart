@@ -12,7 +12,8 @@ class AppTheme {
     primaryColor: Colors.teal,
     // Otras personalizaciones del tema dark
   );
-  static ThemeData getTheme(bool isDarkMode, Color color, { Color primaryTxtColor = Colors.white }) {
+  static ThemeData getTheme(bool isDarkMode, Color color,
+      {Color primaryTxtColor = Colors.white}) {
     final baseTheme = isDarkMode
         ? ThemeData.dark(useMaterial3: true)
         : ThemeData.light(useMaterial3: true);
@@ -26,7 +27,20 @@ class AppTheme {
         ),
         iconTheme: IconThemeData(
           color: primaryTxtColor,
-        )
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color, // Color de fondo
+          foregroundColor: primaryTxtColor, // Color del texto
+          minimumSize: Size(double.infinity, 60), // Tamaño mínimo
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Bordes redondeados
+          ),
+          textStyle: TextStyle(
+            fontWeight: FontWeight.w400, // Grosor de la fuente
+          ),
+        ),
       ),
     );
   }

@@ -1,14 +1,17 @@
+import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/constants/app_messages.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
+import 'package:cleancode_app/core/widgets/custom_button.dart';
+import 'package:cleancode_app/core/widgets/custom_input_field.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
-import 'package:cleancode_app/features/categories/data/models/item_req_params.dart';
-import 'package:cleancode_app/features/categories/domain/usecases/get_all_categories_usecase.dart';
+import 'package:cleancode_app/features/categories/data/models/category_model.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_event.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_state.dart';
-import 'package:cleancode_app/service_locator.dart';
+import 'package:cleancode_app/features/categories/presentation/widgets/update_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -18,52 +21,114 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-   @override
+  CategoryModel item = CategoryModel();
+  List<CategoryModel> items = [];
+
+  @override
   void initState() {
     super.initState();
     context.read<CategoryBloc>().add(GetAllCategories());
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Categories')),
-      body: BlocListener<CategoryBloc, CategoryState>(
-        listener: (context, state) {
-          if (state is CategoryFailureState) {
-            AppUtils.showSnackBar(context, state.message);
-          }
-        },
-        child: BlocBuilder<CategoryBloc, CategoryState>(
-          builder: (context, state) {
-            if (state is CategoryLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is CategorySuccessState) {
-              return ListView.builder(
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  final item = state.items[index];
-                  return ListTile(
-                    onTap: () {
-                      sl<GetAllCategoriesUsecase>().call(
-                        params: CategoryReqParams(id: item.id!)
-                      );
-                    },
-                    title: Text(item.name ?? ''),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${item.name}'),
-                        Text((item.status == true) ? 'Activo':'Inactivo'),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }
-            return Center(child: NotFound(message: AppMessages.unloadedRecords,));
-          },
+    return LoaderOverlay(
+      overlayColor: Theme.of(context).cardColor,
+      overlayWidgetBuilder: (_) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<CategoryBloc, CategoryState>(
+            listener: (context, state) {
+              if (state is CategoryLoadingState) {
+                context.loaderOverlay.show();
+              }
+
+              if (state is CategoryFailureState) {
+                context.loaderOverlay.hide();
+                AppUtils.showSnackBar(context, state.message);
+              }
+
+              if (state is GetAllCategoriesSuccessState) {
+                setState(() {
+                  items = state.items;
+                  context.loaderOverlay.hide();
+                });
+              }
+            },
+          ),
+          BlocListener<CategoryBloc, CategoryState>(
+            listener: (context, state) {
+              if (state is CategoryLoadingState) {
+                context.loaderOverlay.show();
+              }
+
+              if (state is CategoryFailureState) {
+                context.loaderOverlay.hide();
+                AppUtils.showSnackBar(context, state.message);
+              }
+
+              if (state is GetOneCategorySuccessState) {
+                setState(() {
+                  context.loaderOverlay.hide();
+                  int index =
+                      items.indexWhere((item) => item.id == state.item.id);
+                  if (index != -1) items[index] = state.item;
+                });
+              }
+            },
+          ),
+        ],
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Categorías'), centerTitle: true),
+          body: items.isNotEmpty
+              ? ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return ListTile(
+                      onTap: () => showFullScreenModal(context, item),
+                      title: Text(item.name ?? ''),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${item.status}',
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+              : NotFound(),
         ),
       ),
     );
   }
+}
+
+Future<void> showFullScreenModal(
+    BuildContext context, CategoryModel item) async {
+  // context.read<CategoryBloc>().add(GetOneCategory(item.id!));
+
+  showModalBottomSheet(
+    context: context,
+    sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),
+    isScrollControlled: true,
+    useRootNavigator: true, // Asegura que el Navigator raíz maneje el modal
+    backgroundColor: AppConstants.lightGrey,
+    builder: (BuildContext context) {
+      return GestureDetector(
+        onTap: () {}, // Esto evita que los gestos se cierren accidentalmente
+        behavior: HitTestBehavior.opaque,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: SimpleForm(item: item,),
+        ),
+      );
+    },
+  );
 }

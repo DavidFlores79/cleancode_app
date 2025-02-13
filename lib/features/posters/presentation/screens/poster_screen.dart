@@ -93,7 +93,6 @@ class _PosterScreenState extends State<PosterScreen> {
 }
 
 Future<void> showFullScreenModal(BuildContext context, PosterModel item) async {
-  // await sl<GetAllPostersUsecase>().call(params: PosterReqParams(id: item.id!));
   showModalBottomSheet(
     context: context,
     sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),

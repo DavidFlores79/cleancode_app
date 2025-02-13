@@ -6,7 +6,7 @@ class CategoryModel {
     String? id;
     String? name;
     bool? status;
-    User? userId;
+    dynamic userId;
     String? createdAt;
     String? updatedAt;
 
@@ -27,7 +27,7 @@ class CategoryModel {
         id: json["_id"],
         name: json["name"],
         status: json["status"],
-        userId: json["user_id"] == null ? null : User.fromMap(json["user_id"]),
+        userId: json["user_id"] == null ? null : json["user_id"] is String ? json["user_id"] : User.fromMap(json["user_id"]),
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
     );
@@ -36,7 +36,7 @@ class CategoryModel {
         "_id": id,
         "name": name,
         "status": status,
-        "user_id": userId?.toMap(),
+        "user_id": userId is User ? userId?.toMap() : userId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
     };

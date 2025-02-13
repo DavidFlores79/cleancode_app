@@ -27,27 +27,15 @@ class CustomBigButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(
-            width ?? MediaQuery.of(context).size.width,
-            height ?? 60
-          ),
-        ),
-        child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w400
-           ),
-         )
-      ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w400
+         ),
+       )
     );
   }
 }

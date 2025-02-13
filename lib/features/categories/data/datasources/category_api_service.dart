@@ -32,7 +32,7 @@ class CategoryApiServiceImpl implements CategoryApiService {
       final response = await sl<DioClient>().get('${ApiConfig.categoriesEndpoint}/${params.id}');
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data['msg'] ?? e.message; //nodejs & standar API
+      final message = e.response?.data?['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }

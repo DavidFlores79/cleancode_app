@@ -31,40 +31,47 @@ class HomeScreen extends StatelessWidget {
               ),
               drawer: MainDrawer(modules: state.modules),
               body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        context.push('/users');
-                      },
-                      child: const Text('Ir a Usuarios'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.push('/categories');
-                      },
-                      child: const Text('Ir a Categorias'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.push('/posters');
-                      },
-                      child: const Text('Ir a Posters'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.push('/roles');
-                      },
-                      child: const Text('Ir a Roles (Super)'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        sl<GetModulesUsecase>().call(params: 'xxx');
-                      },
-                      child: const Text('Traer modulos'),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/users');
+                        },
+                        child: const Text('Ir a Usuarios'),
+                      ),
+                      const SizedBox(height: 15),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/categories');
+                        },
+                        child: const Text('Ir a Categorias'),
+                      ),
+                      const SizedBox(height: 15),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/posters');
+                        },
+                        child: const Text('Ir a Posters'),
+                      ),
+                      const SizedBox(height: 15),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/roles');
+                        },
+                        child: const Text('Ir a Roles (Super)'),
+                      ),
+                      const SizedBox(height: 15),
+                      ElevatedButton(
+                        onPressed: () {
+                          sl<GetModulesUsecase>().call(params: 'xxx');
+                        },
+                        child: const Text('Traer modulos'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

@@ -4,9 +4,13 @@ abstract class CategoryState {}
 
 class CategoryInitialState implements CategoryState {}
 class CategoryLoadingState implements CategoryState {}
-class CategorySuccessState implements CategoryState {
+class GetAllCategoriesSuccessState implements CategoryState {
   final List<CategoryModel> items;
-  CategorySuccessState(this.items);
+  GetAllCategoriesSuccessState(this.items);
+}
+class GetOneCategorySuccessState implements CategoryState {
+  final CategoryModel item;
+  GetOneCategorySuccessState(this.item);
 }
 class CategoryFailureState implements CategoryState {
   final String message;

@@ -1,7 +1,11 @@
 import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/create_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/delete_category_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/get_all_categories_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/get_one_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/update_category_usecase.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_usecase.dart';
 import 'package:cleancode_app/features/posters/presentation/bloc/poster_bloc.dart';
@@ -143,7 +147,13 @@ void main() async {
           create: (context) => PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
         ),
         BlocProvider(
-          create: (context) => CategoryBloc(getAllCategoriesUseCase: getIt<GetAllCategoriesUsecase>()),
+          create: (context) => CategoryBloc(
+            getAllCategoriesUseCase: getIt<GetAllCategoriesUsecase>(),
+            getOneCategoryUseCase: getIt<GetOneCategoryUsecase>(),
+            createCategoryUseCase: getIt<CreateCategoryUsecase>(),
+            updateCategoryUseCase: getIt<UpdateCategoryUsecase>(),
+            deleteCategoryUseCase: getIt<DeleteCategoryUsecase>(),
+          ),
         ),
         BlocProvider(
           create: (context) => UserBloc(

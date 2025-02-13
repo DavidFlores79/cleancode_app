@@ -5,7 +5,7 @@ import 'package:cleancode_app/features/categories/domain/repositories/category_r
 import 'package:cleancode_app/features/categories/domain/usecases/delete_category_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/get_all_categories_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/get_one_category_usecase.dart';
-import 'package:cleancode_app/features/categories/domain/usecases/post_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/create_category_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/update_category_usecase.dart';
 import 'package:cleancode_app/features/home/data/datasources/modules_remote_datasource.dart';
 import 'package:cleancode_app/features/home/data/repositories/module_repository_impl.dart';
@@ -81,8 +81,8 @@ void setupServiceLocator() {
   sl.registerSingleton<GetOneCategoryUsecase>(
     GetOneCategoryUsecase()
   );
-  sl.registerSingleton<PostCategoryUsecase>(
-    PostCategoryUsecase()
+  sl.registerSingleton<CreateCategoryUsecase>(
+    CreateCategoryUsecase()
   );
   sl.registerSingleton<UpdateCategoryUsecase>(
     UpdateCategoryUsecase()

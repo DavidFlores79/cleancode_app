@@ -12,7 +12,7 @@ class PosterModel {
     String? contactEmail;
     CategoryModel? category;
     bool? status;
-    User? userId;
+    dynamic userId;
     String? createdAt;
     String? updatedAt;
 
@@ -45,7 +45,7 @@ class PosterModel {
         contactEmail: json["contactEmail"],
         category: json["category"] == null ? null : CategoryModel.fromMap(json["category"]),
         status: json["status"],
-        userId: json["user_id"] == null ? null : User.fromMap(json["user_id"]),
+        userId: json["user_id"] == null ? null : json["user_id"] is String ? json["user_id"] : User.fromMap(json["user_id"]),
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
     );
@@ -60,7 +60,7 @@ class PosterModel {
         "contactEmail": contactEmail,
         "category": category?.toMap(),
         "status": status,
-        "user_id": userId?.toMap(),
+        "user_id": userId is User ? userId?.toMap() : userId,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
     };
