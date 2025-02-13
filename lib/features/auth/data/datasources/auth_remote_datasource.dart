@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:cleancode_app/core/config/api_config.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
 import 'package:cleancode_app/features/auth/data/models/user_model.dart';
+import 'package:flutter/material.dart';
 abstract class AuthRemoteDataSource {
   Future<AuthResponse> login(String email, String password);
   Future<AuthResponse> register(String name, String email, String password);
@@ -17,6 +18,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthResponse> login(String email, String password) async {
     try {
+      debugPrint(ApiConfig.loginEndpoint);
+      debugPrint('email: $email password: $password');
       final response = await dioClient.dio.post(ApiConfig.loginEndpoint, data: {'email': email, 'password': password});
       if (response.statusCode == 200) {
         final data = response.data;

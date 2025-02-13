@@ -1,7 +1,7 @@
 import 'package:cleancode_app/core/constants/app_constants.dart';
 
 class ApiConfig {
-  static const String debugBaseUrl = 'http://localhost:3001'; // Reemplaza con la URL de tu API
+  static const String debugBaseUrl = 'http://192.168.152.72:3001'; // Reemplaza con la URL de tu API
   static const String productionBaseUrl = 'https://congreso-backend-production.up.railway.app'; // Reemplaza con la URL de tu API
   static const String baseUrl = AppConstants.isDebug ? debugBaseUrl : productionBaseUrl; // Reemplaza con la URL de tu API
   static const String loginEndpoint = "${ApiConfig.baseUrl}/auth/login";

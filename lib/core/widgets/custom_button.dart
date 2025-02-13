@@ -16,3 +16,38 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class CustomBigButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String title;
+  final double? width;
+  final double? height;
+
+  const CustomBigButton({super.key, this.onPressed, this.height, this.width, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(
+            width ?? MediaQuery.of(context).size.width,
+            height ?? 60
+          ),
+        ),
+        child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w400
+           ),
+         )
+      ),
+    );
+  }
+}

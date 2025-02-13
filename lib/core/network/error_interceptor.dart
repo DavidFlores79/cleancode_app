@@ -19,6 +19,7 @@ class ErrorInterceptor extends Interceptor {
         throw DioException(response: err.response, requestOptions: err.requestOptions, message: e.apiError.message);
       } catch (e) {
         debugPrint("paso 1b");
+        debugPrint("${err.response?.statusCode}");
         // Si hay algún error en el parseo, lanzamos una excepción genérica.
         throw DioException(requestOptions: err.requestOptions, message: "Error desconocido (111)");
       }
