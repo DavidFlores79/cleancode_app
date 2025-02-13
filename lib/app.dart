@@ -2,6 +2,7 @@ import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:cleancode_app/features/categories/presentation/screens/category_screen.dart';
 import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/posters',
       builder: (context, state) => const PosterScreen(),
+    ),
+    GoRoute(
+      path: '/categories',
+      builder: (context, state) => const CategoryScreen(),
     ),
     GoRoute(
       path: '/roles',
@@ -103,7 +108,7 @@ class _MyAppState extends State<MyApp> {
         )
       ],
       child: MaterialApp.router(
-        title: 'My App',
+        title: AppConstants.appName,
         debugShowCheckedModeBanner: AppConstants.isDebug,
         theme: themeManager.currentTheme,
         routerConfig: _router,

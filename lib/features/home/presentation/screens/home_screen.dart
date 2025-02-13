@@ -42,6 +42,12 @@ class HomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        context.push('/categories');
+                      },
+                      child: const Text('Ir a Categorias'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
                         context.push('/posters');
                       },
                       child: const Text('Ir a Posters'),

@@ -16,10 +16,10 @@ class PosterBloc extends Bloc<PosterEvent, PosterState> {
     emit(PosterLoadingState());
     final result = await getAllPostersUseCase();
     result.fold(
-      (failure) => emit(PosterFailureState(failure.message)),
+      (failure) => emit(PosterFailureState(failure)),
       (data) {
         debugPrint(data.data['data'].toString());
-        final List<PosterModel> posters = (data.data['data'] as List<dynamic>)
+        final List<PosterModel> posters = (data.data?['data'] as List<dynamic> ?? [])
             .map((json) => PosterModel.fromMap(json))
             .toList();
         emit(PosterSuccessState(posters));

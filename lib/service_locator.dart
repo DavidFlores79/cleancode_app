@@ -1,4 +1,12 @@
 import 'package:cleancode_app/core/network/dio_client_sl.dart';
+import 'package:cleancode_app/features/categories/data/datasources/category_api_service.dart';
+import 'package:cleancode_app/features/categories/data/repositories/category_repository_impl.dart';
+import 'package:cleancode_app/features/categories/domain/repositories/category_repository.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/delete_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/get_all_categories_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/get_one_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/post_category_usecase.dart';
+import 'package:cleancode_app/features/categories/domain/usecases/update_category_usecase.dart';
 import 'package:cleancode_app/features/home/data/datasources/modules_remote_datasource.dart';
 import 'package:cleancode_app/features/home/data/repositories/module_repository_impl.dart';
 import 'package:cleancode_app/features/home/domain/repositories/module_repository.dart';
@@ -28,6 +36,9 @@ void setupServiceLocator() {
   sl.registerSingleton<PosterApiService>(
     PosterApiServiceImpl()
   );
+  sl.registerSingleton<CategoryApiService>(
+    CategoryApiServiceImpl()
+  );
 
   // Repositories
   sl.registerSingleton<ModuleRepository>(
@@ -36,6 +47,10 @@ void setupServiceLocator() {
 
   sl.registerSingleton<PosterRepository>(
     PosterRepositoryImpl()
+  );
+
+  sl.registerSingleton<CategoryRepository>(
+    CategoryRepositoryImpl()
   );
 
   //UseCases
@@ -59,5 +74,20 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<DeletePosterUsecase>(
     DeletePosterUsecase()
+  );
+  sl.registerSingleton<GetAllCategoriesUsecase>(
+    GetAllCategoriesUsecase()
+  );
+  sl.registerSingleton<GetOneCategoryUsecase>(
+    GetOneCategoryUsecase()
+  );
+  sl.registerSingleton<PostCategoryUsecase>(
+    PostCategoryUsecase()
+  );
+  sl.registerSingleton<UpdateCategoryUsecase>(
+    UpdateCategoryUsecase()
+  );
+  sl.registerSingleton<DeleteCategoryUsecase>(
+    DeleteCategoryUsecase()
   );
 }

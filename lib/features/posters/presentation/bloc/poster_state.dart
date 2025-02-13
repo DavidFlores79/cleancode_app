@@ -12,3 +12,9 @@ class PosterFailureState implements PosterState {
   final String message;
   PosterFailureState(this.message);
 }
+
+class ForbiddenActionState extends PosterState {
+  final String message;
+
+  ForbiddenActionState(this.message);
+}
