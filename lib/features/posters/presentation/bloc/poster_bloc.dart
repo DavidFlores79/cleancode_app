@@ -1,6 +1,8 @@
+import 'package:cleancode_app/features/posters/data/models/poster_model.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_usecase.dart';
 import 'package:cleancode_app/features/posters/presentation/bloc/poster_event.dart';
 import 'package:cleancode_app/features/posters/presentation/bloc/poster_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PosterBloc extends Bloc<PosterEvent, PosterState> {
@@ -15,7 +17,13 @@ class PosterBloc extends Bloc<PosterEvent, PosterState> {
     final result = await getAllPostersUseCase();
     result.fold(
       (failure) => emit(PosterFailureState(failure.message)),
-      (data) => emit(PosterSuccessState(data.data)),
+      (data) {
+        debugPrint(data.data['data'].toString());
+        final List<PosterModel> posters = (data.data['data'] as List<dynamic>)
+            .map((json) => PosterModel.fromMap(json))
+            .toList();
+        emit(PosterSuccessState(posters));
+      },
     );
   }
 }

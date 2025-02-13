@@ -1,11 +1,11 @@
-import 'package:cleancode_app/features/posters/domain/entities/poster.dart';
+import 'package:cleancode_app/features/posters/data/models/poster_model.dart';
 
 abstract class PosterState {}
 
 class PosterInitialState implements PosterState {}
 class PosterLoadingState implements PosterState {}
 class PosterSuccessState implements PosterState {
-  final List<Poster> items;
+  final List<PosterModel> items;
   PosterSuccessState(this.items);
 }
 class PosterFailureState implements PosterState {

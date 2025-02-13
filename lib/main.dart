@@ -1,6 +1,8 @@
 import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_usecase.dart';
+import 'package:cleancode_app/features/posters/presentation/bloc/poster_bloc.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
 import 'package:cleancode_app/features/roles/data/repositories/role_repository_impl.dart';
 import 'package:cleancode_app/features/roles/domain/repositories/role_repository.dart';
@@ -134,6 +136,9 @@ void main() async {
           create: (context) => ProductBloc(
             getProductsUseCase: getIt<GetProductsUseCase>(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
         ),
         BlocProvider(
           create: (context) => UserBloc(

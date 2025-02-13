@@ -1,4 +1,3 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/constants/app_messages.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/features/posters/data/models/item_req_params.dart';
