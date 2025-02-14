@@ -3,6 +3,7 @@ import 'package:cleancode_app/core/constants/app_messages.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_button.dart';
 import 'package:cleancode_app/core/widgets/custom_input_field.dart';
+import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
 import 'package:cleancode_app/features/categories/data/models/category_model.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_bloc.dart';
@@ -85,17 +86,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    return ListTile(
+                    return CustomListTile(
+                      status: item.status ?? false,
                       onTap: () => showFullScreenModal(context, item),
                       title: Text(item.name ?? ''),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${item.status}',
-                          ),
-                        ],
-                      ),
+                      itemId: item.id!,
+                      onPressed:(context) {
+                        debugPrint("Item: ${item.id}");
+                      },
                     );
                   },
                 )

@@ -8,6 +8,7 @@ class AppConstants {
   static const String primaryTxtColorName = 'primaryTextColor';
   static const Color lightGrey = Color.fromARGB(255, 228, 227, 227);
   static const Color white = Colors.white;
+  static const Color red = Colors.red;
   static const Color transparent = Colors.transparent;
   static const Color primaryBgColor = Colors.blueAccent;
   static const Color primaryTxtColor = Colors.black;

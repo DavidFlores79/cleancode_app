@@ -112,7 +112,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     final result = await deleteCategoryUseCase();
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
-      (_) => add(GetAllCategories()), // Recargar la lista después de eliminar
+      (_) {
+        add(GetAllCategories());
+        emit(DeleteCategorySuccessState());
+      }, // Recargar la lista después de eliminar
     );
   }
 }

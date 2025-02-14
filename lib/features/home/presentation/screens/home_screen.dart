@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/widgets/error.dart';
 import 'package:cleancode_app/core/widgets/main_drawer.dart';
 import 'package:cleancode_app/features/home/domain/usecases/get_modules_usecase.dart';
 import 'package:cleancode_app/features/home/presentation/bloc/module_bloc.dart';
@@ -78,9 +79,7 @@ class HomeScreen extends StatelessWidget {
           }
           if (state is ModuleFailureState) {
             return Scaffold(
-              body: Center(
-                child: Text(state.errorMessage),
-              ),
+              body: PageError(message: state.errorMessage),
             );
           }
           return Scaffold(
