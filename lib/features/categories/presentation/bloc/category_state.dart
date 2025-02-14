@@ -12,6 +12,15 @@ class GetOneCategorySuccessState implements CategoryState {
   final CategoryModel item;
   GetOneCategorySuccessState(this.item);
 }
+class UpdateCategorySuccessState implements CategoryState {
+  final CategoryModel item;
+  UpdateCategorySuccessState(this.item);
+}
+class CreateCategorySuccessState implements CategoryState {
+  final CategoryModel item;
+  CreateCategorySuccessState(this.item);
+}
+class DeleteCategorySuccessState implements CategoryState {}
 class CategoryFailureState implements CategoryState {
   final String message;
   CategoryFailureState(this.message);

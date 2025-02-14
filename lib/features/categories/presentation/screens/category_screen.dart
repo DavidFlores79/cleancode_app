@@ -62,16 +62,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
           BlocListener<CategoryBloc, CategoryState>(
             listener: (context, state) {
-              if (state is CategoryLoadingState) {
-                context.loaderOverlay.show();
-              }
-
-              if (state is CategoryFailureState) {
-                context.loaderOverlay.hide();
-                AppUtils.showSnackBar(context, state.message);
-              }
-
               if (state is GetOneCategorySuccessState) {
+                setState(() {
+                  context.loaderOverlay.hide();
+                });
+              }
+              if (state is UpdateCategorySuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   int index =

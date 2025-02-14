@@ -79,13 +79,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     );
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
-      (data) => add(
-        CreateCategory(
-          CategoryModel.fromMap(
+      (data) {
+        emit(CreateCategorySuccessState(CategoryModel.fromMap(
             data.data['data'],
-          ),
-        ),
-      ), // Recargar la lista después de crear
+        )));
+      }, // Recargar la lista después de crear
     );
   }
 
@@ -100,13 +98,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     ));
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
-      (data) => add(
-        UpdateCategory(
-          CategoryModel.fromMap(
+      (data) {
+        emit(UpdateCategorySuccessState(CategoryModel.fromMap(
             data.data['data'],
-          ),
-        ),
-      ), // Recargar la lista después de actualizar
+        )));
+      }, // Recargar la lista después de actualizar
     );
   }
 
