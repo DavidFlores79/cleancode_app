@@ -113,7 +113,7 @@ Future<void> showFullScreenModal(
     sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),
     isScrollControlled: true,
     useRootNavigator: true, // Asegura que el Navigator raíz maneje el modal
-    backgroundColor: AppConstants.lightGrey,
+    // backgroundColor: AppConstants.lightGrey,
     builder: (BuildContext context) {
       return GestureDetector(
         onTap: () {}, // Esto evita que los gestos se cierren accidentalmente

@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class CustomListTile extends StatelessWidget {
   final GestureTapCallback? onTap;
   final SlidableActionCallback? onPressed;
+  final VoidCallback? onDismissed;
   final Widget title;
   final Widget? subtitle;
   final bool status;
@@ -18,6 +19,7 @@ class CustomListTile extends StatelessWidget {
       this.onTap,
       this.onPressed,
       this.itemId = '0',
+      this.onDismissed,
       }
     );
 
@@ -33,7 +35,7 @@ class CustomListTile extends StatelessWidget {
         motion: const ScrollMotion(),
 
         // A pane can dismiss the Slidable.
-        dismissible: DismissiblePane(onDismissed: () {}),
+        dismissible: DismissiblePane(onDismissed: onDismissed ?? (){}),
 
         // All actions are defined in the children parameter.
         children: [
