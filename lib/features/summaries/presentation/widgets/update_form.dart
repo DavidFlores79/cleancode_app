@@ -90,7 +90,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                       comments: _commentsController.text,
                       status: _isActive,
                     );
-                    debugPrint('Update - Datos del Registro: $data');
+                    debugPrint('Update - Datos del Registro: ${data.toJson()}');
                     context.read<SummaryBloc>().add(UpdateSummary(data));
                   }
                   Navigator.pop(context);

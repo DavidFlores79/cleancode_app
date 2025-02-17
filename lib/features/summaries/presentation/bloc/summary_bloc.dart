@@ -48,8 +48,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
     );
   }
 
-  void _onGetOneSummary(
-      GetOneSummary event, Emitter<SummaryState> emit) async {
+  void _onGetOneSummary(GetOneSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await getOneSummaryUseCase.call(
         params: SummaryReqParams(id: event.itemId));
@@ -67,8 +66,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
     );
   }
 
-  void _onCreateSummary(
-      CreateSummary event, Emitter<SummaryState> emit) async {
+  void _onCreateSummary(CreateSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await createSummaryUseCase.call(
       params: SummaryReqParams(
@@ -82,14 +80,13 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
       (failure) => emit(SummaryFailureState(failure)),
       (data) {
         emit(CreateSummarySuccessState(SummaryModel.fromMap(
-            data.data['data'],
+          data.data['data'],
         )));
       }, // Recargar la lista después de crear
     );
   }
 
-  void _onUpdateSummary(
-      UpdateSummary event, Emitter<SummaryState> emit) async {
+  void _onUpdateSummary(UpdateSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await updateSummaryUseCase.call(
         params: SummaryReqParams(
@@ -102,16 +99,16 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
       (failure) => emit(SummaryFailureState(failure)),
       (data) {
         emit(UpdateSummarySuccessState(SummaryModel.fromMap(
-            data.data['data'],
+          data.data['data'],
         )));
       }, // Recargar la lista después de actualizar
     );
   }
 
-  void _onDeleteSummary(
-      DeleteSummary event, Emitter<SummaryState> emit) async {
+  void _onDeleteSummary(DeleteSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
-    final result = await deleteSummaryUseCase(params: SummaryReqParams(id: event.itemId));
+    final result =
+        await deleteSummaryUseCase(params: SummaryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(SummaryFailureState(failure)),
       (_) {

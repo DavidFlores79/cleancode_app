@@ -10,7 +10,9 @@ class PaymentReqParams {
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
       '_id': id,
-      'name': description,
+      'description': description,
+      'comments': comments,
+      'amount': amount,
       'status': status,
     };
   }
