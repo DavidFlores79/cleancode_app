@@ -19,6 +19,14 @@ import 'package:cleancode_app/features/payment_methods/domain/usecases/delete_pa
 import 'package:cleancode_app/features/payment_methods/domain/usecases/get_all_payment_methods_usecase.dart';
 import 'package:cleancode_app/features/payment_methods/domain/usecases/get_one_payment_method_usecase.dart';
 import 'package:cleancode_app/features/payment_methods/domain/usecases/update_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payments/data/datasources/payments_api_service.dart';
+import 'package:cleancode_app/features/payments/data/repositories/payment_repository_impl.dart';
+import 'package:cleancode_app/features/payments/domain/repositories/payment_repository.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/create_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/delete_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/get_all_payments_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/get_one_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/update_payment_usecase.dart';
 import 'package:cleancode_app/features/posters/data/datasources/poster_api_service.dart';
 import 'package:cleancode_app/features/posters/data/repositories/poster_repository_impl.dart';
 import 'package:cleancode_app/features/posters/domain/repositories/poster_repository.dart';
@@ -27,7 +35,6 @@ import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_u
 import 'package:cleancode_app/features/posters/domain/usecases/get_one_poster_usecase.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/post_poster_usecase.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/update_poster_usecase.dart';
-import 'package:cleancode_app/features/products/domain/usecases/get_product_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -36,7 +43,7 @@ void setupServiceLocator() {
   sl.registerSingleton<DioClient>(DioClient());
 
 
-  //Services
+  // ========= Services =========
   sl.registerSingleton<ModulesRemoteDataSource>(
     ModulesRemoteDataSourceImpl()
   );
@@ -50,8 +57,11 @@ void setupServiceLocator() {
   sl.registerSingleton<PaymentMethodApiService>(
     PaymentMethodApiServiceImpl()
   );
+  sl.registerSingleton<PaymentApiService>(
+    PaymentApiServiceImpl()
+  );
 
-  // Repositories
+  // ========= Repositories ========
   sl.registerSingleton<ModuleRepository>(
     ModuleRepositoryImpl()
   );
@@ -66,13 +76,13 @@ void setupServiceLocator() {
   sl.registerSingleton<PaymentMethodRepository>(
     PaymentMethodRepositoryImpl()
   );
+  sl.registerSingleton<PaymentRepository>(
+    PaymentRepositoryImpl()
+  );
 
-  //UseCases
+  // =======  UseCases ========
   sl.registerSingleton<GetModulesUsecase>(
     GetModulesUsecase()
-  );
-  sl.registerSingleton<GetProductUsecase>(
-    GetProductUsecase()
   );
   sl.registerSingleton<GetAllPostersUsecase>(
     GetAllPostersUsecase()
@@ -89,6 +99,7 @@ void setupServiceLocator() {
   sl.registerSingleton<DeletePosterUsecase>(
     DeletePosterUsecase()
   );
+  //Categories
   sl.registerSingleton<GetAllCategoriesUsecase>(
     GetAllCategoriesUsecase()
   );
@@ -104,6 +115,23 @@ void setupServiceLocator() {
   sl.registerSingleton<DeleteCategoryUsecase>(
     DeleteCategoryUsecase()
   );
+  //Payments
+  sl.registerSingleton<GetAllPaymentsUsecase>(
+    GetAllPaymentsUsecase()
+  );
+  sl.registerSingleton<GetOnePaymentUsecase>(
+    GetOnePaymentUsecase()
+  );
+  sl.registerSingleton<CreatePaymentUsecase>(
+    CreatePaymentUsecase()
+  );
+  sl.registerSingleton<UpdatePaymentUsecase>(
+    UpdatePaymentUsecase()
+  );
+  sl.registerSingleton<DeletePaymentUsecase>(
+    DeletePaymentUsecase()
+  );
+  //Payment Methods
   sl.registerSingleton<GetAllPaymentMethodsUsecase>(
     GetAllPaymentMethodsUsecase()
   );

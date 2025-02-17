@@ -9,6 +9,7 @@ class ApiConfig {
   static const String productsEndpoint = '${ApiConfig.baseUrl}/api/posters';
   static const String categoriesEndpoint = '${ApiConfig.baseUrl}/api/categories';
   static const String paymentMethodsEndpoint = '${ApiConfig.baseUrl}/api/payment-methods';
+  static const String paymentsEndpoint = '${ApiConfig.baseUrl}/api/payments';
   static const String postersEndpoint = '${ApiConfig.baseUrl}/api/posters';
   static const String rolesEndpoint = '${ApiConfig.baseUrl}/api/roles';
   static const String usersEndpoint = '${ApiConfig.baseUrl}/api/users';

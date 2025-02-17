@@ -4,6 +4,7 @@ import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:cleancode_app/features/categories/presentation/screens/category_screen.dart';
 import 'package:cleancode_app/features/payment_methods/presentation/screens/payment_method_screen.dart';
+import 'package:cleancode_app/features/payments/presentation/screens/payment_screen.dart';
 import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:cleancode_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:cleancode_app/features/home/presentation/screens/home_screen.dart';
-import 'package:cleancode_app/features/products/presentation/screens/product_screen.dart';
 import 'package:cleancode_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:cleancode_app/features/users/presentation/screens/user_screen.dart';
 import 'package:logger/logger.dart';
@@ -42,16 +42,16 @@ final _router = GoRouter(
       builder: (context, state) => const UserScreen(),
     ),
     GoRoute(
-      path: '/products',
-      builder: (context, state) => const ProductScreen(),
-    ),
-    GoRoute(
       path: '/posters',
       builder: (context, state) => const PosterScreen(),
     ),
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoryScreen(),
+    ),
+    GoRoute(
+      path: '/payments',
+      builder: (context, state) => const PaymentScreen(),
     ),
     GoRoute(
       path: '/payment-methods',

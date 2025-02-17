@@ -13,6 +13,12 @@ import 'package:cleancode_app/features/payment_methods/domain/usecases/get_all_p
 import 'package:cleancode_app/features/payment_methods/domain/usecases/get_one_payment_method_usecase.dart';
 import 'package:cleancode_app/features/payment_methods/domain/usecases/update_payment_method_usecase.dart';
 import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment_method_bloc.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/create_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/delete_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/get_all_payments_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/get_one_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/domain/usecases/update_payment_usecase.dart';
+import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_usecase.dart';
 import 'package:cleancode_app/features/posters/presentation/bloc/poster_bloc.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
@@ -34,11 +40,6 @@ import 'package:cleancode_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/app.dart';
-import 'package:cleancode_app/features/products/data/datasources/product_remote_datasource.dart';
-import 'package:cleancode_app/features/products/data/repositories/product_repository_impl.dart';
-import 'package:cleancode_app/features/products/domain/repositories/product_repository.dart';
-import 'package:cleancode_app/features/products/domain/usecases/get_products_usecase.dart';
-import 'package:cleancode_app/features/products/presentation/bloc/product_bloc.dart';
 import 'package:cleancode_app/features/users/data/datasources/user_remote_datasource.dart';
 import 'package:cleancode_app/features/users/data/repositories/user_repository_impl.dart';
 import 'package:cleancode_app/features/users/domain/repositories/user_repository.dart';
@@ -73,17 +74,6 @@ void main() async {
 
   final registerUseCase = RegisterUseCase(repository: authRepository);
   getIt.registerSingleton<RegisterUseCase>(registerUseCase);
-
-  final productRemoteDataSource =
-      ProductRemoteDataSourceImpl(dioClient: dioClient);
-  getIt.registerSingleton<ProductRemoteDataSource>(productRemoteDataSource);
-
-  final productRepository =
-      ProductRepositoryImpl(remoteDataSource: productRemoteDataSource);
-  getIt.registerSingleton<ProductRepository>(productRepository);
-
-  final getProductsUseCase = GetProductsUseCase(repository: productRepository);
-  getIt.registerSingleton<GetProductsUseCase>(getProductsUseCase);
 
   final roleRemoteDataSource =
       RoleRemoteDataSourceImpl(dioClient: dioClient);
@@ -145,11 +135,6 @@ void main() async {
           ),
         ),
         BlocProvider(
-          create: (context) => ProductBloc(
-            getProductsUseCase: getIt<GetProductsUseCase>(),
-          ),
-        ),
-        BlocProvider(
           create: (context) => PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
         ),
         BlocProvider(
@@ -168,6 +153,15 @@ void main() async {
             createPaymentMethodUseCase: getIt<CreatePaymentMethodUsecase>(),
             updatePaymentMethodUseCase: getIt<UpdatePaymentMethodUsecase>(),
             deletePaymentMethodUseCase: getIt<DeletePaymentMethodUsecase>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PaymentBloc(
+            getAllPaymentsUseCase: getIt<GetAllPaymentsUsecase>(),
+            getOnePaymentUseCase: getIt<GetOnePaymentUsecase>(),
+            createPaymentUseCase: getIt<CreatePaymentUsecase>(),
+            updatePaymentUseCase: getIt<UpdatePaymentUsecase>(),
+            deletePaymentUseCase: getIt<DeletePaymentUsecase>(),
           ),
         ),
         BlocProvider(
