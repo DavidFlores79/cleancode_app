@@ -3,6 +3,7 @@ import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:cleancode_app/features/categories/presentation/screens/category_screen.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/screens/payment_method_screen.dart';
 import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoryScreen(),
+    ),
+    GoRoute(
+      path: '/payment-methods',
+      builder: (context, state) => const PaymentMethodScreen(),
     ),
     GoRoute(
       path: '/roles',

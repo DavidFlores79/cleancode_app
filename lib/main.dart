@@ -7,6 +7,12 @@ import 'package:cleancode_app/features/categories/domain/usecases/get_all_catego
 import 'package:cleancode_app/features/categories/domain/usecases/get_one_category_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/update_category_usecase.dart';
 import 'package:cleancode_app/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/create_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/delete_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/get_all_payment_methods_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/get_one_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/update_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment_method_bloc.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_usecase.dart';
 import 'package:cleancode_app/features/posters/presentation/bloc/poster_bloc.dart';
 import 'package:cleancode_app/features/roles/data/datasources/roles_remote_datasource.dart';
@@ -153,6 +159,15 @@ void main() async {
             createCategoryUseCase: getIt<CreateCategoryUsecase>(),
             updateCategoryUseCase: getIt<UpdateCategoryUsecase>(),
             deleteCategoryUseCase: getIt<DeleteCategoryUsecase>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PaymentMethodBloc(
+            getAllPaymentMethodsUseCase: getIt<GetAllPaymentMethodsUsecase>(),
+            getOnePaymentMethodUseCase: getIt<GetOnePaymentMethodUsecase>(),
+            createPaymentMethodUseCase: getIt<CreatePaymentMethodUsecase>(),
+            updatePaymentMethodUseCase: getIt<UpdatePaymentMethodUsecase>(),
+            deletePaymentMethodUseCase: getIt<DeletePaymentMethodUsecase>(),
           ),
         ),
         BlocProvider(

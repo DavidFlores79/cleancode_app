@@ -11,6 +11,14 @@ import 'package:cleancode_app/features/home/data/datasources/modules_remote_data
 import 'package:cleancode_app/features/home/data/repositories/module_repository_impl.dart';
 import 'package:cleancode_app/features/home/domain/repositories/module_repository.dart';
 import 'package:cleancode_app/features/home/domain/usecases/get_modules_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/data/datasources/payment_methods_api_service.dart';
+import 'package:cleancode_app/features/payment_methods/data/repositories/payment_method_repository_impl.dart';
+import 'package:cleancode_app/features/payment_methods/domain/repositories/payment_method_repository.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/create_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/delete_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/get_all_payment_methods_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/get_one_payment_method_usecase.dart';
+import 'package:cleancode_app/features/payment_methods/domain/usecases/update_payment_method_usecase.dart';
 import 'package:cleancode_app/features/posters/data/datasources/poster_api_service.dart';
 import 'package:cleancode_app/features/posters/data/repositories/poster_repository_impl.dart';
 import 'package:cleancode_app/features/posters/domain/repositories/poster_repository.dart';
@@ -39,6 +47,9 @@ void setupServiceLocator() {
   sl.registerSingleton<CategoryApiService>(
     CategoryApiServiceImpl()
   );
+  sl.registerSingleton<PaymentMethodApiService>(
+    PaymentMethodApiServiceImpl()
+  );
 
   // Repositories
   sl.registerSingleton<ModuleRepository>(
@@ -51,6 +62,9 @@ void setupServiceLocator() {
 
   sl.registerSingleton<CategoryRepository>(
     CategoryRepositoryImpl()
+  );
+  sl.registerSingleton<PaymentMethodRepository>(
+    PaymentMethodRepositoryImpl()
   );
 
   //UseCases
@@ -89,5 +103,20 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<DeleteCategoryUsecase>(
     DeleteCategoryUsecase()
+  );
+  sl.registerSingleton<GetAllPaymentMethodsUsecase>(
+    GetAllPaymentMethodsUsecase()
+  );
+  sl.registerSingleton<GetOnePaymentMethodUsecase>(
+    GetOnePaymentMethodUsecase()
+  );
+  sl.registerSingleton<CreatePaymentMethodUsecase>(
+    CreatePaymentMethodUsecase()
+  );
+  sl.registerSingleton<UpdatePaymentMethodUsecase>(
+    UpdatePaymentMethodUsecase()
+  );
+  sl.registerSingleton<DeletePaymentMethodUsecase>(
+    DeletePaymentMethodUsecase()
   );
 }

@@ -53,23 +53,9 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 15),
                       ElevatedButton(
                         onPressed: () {
-                          context.push('/posters');
-                        },
-                        child: const Text('Ir a Posters'),
-                      ),
-                      const SizedBox(height: 15),
-                      ElevatedButton(
-                        onPressed: () {
                           context.push('/roles');
                         },
                         child: const Text('Ir a Roles (Super)'),
-                      ),
-                      const SizedBox(height: 15),
-                      ElevatedButton(
-                        onPressed: () {
-                          sl<GetModulesUsecase>().call(params: 'xxx');
-                        },
-                        child: const Text('Traer modulos'),
                       ),
                     ],
                   ),

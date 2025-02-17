@@ -2,32 +2,32 @@ import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
-import 'package:cleancode_app/features/categories/data/models/category_model.dart';
-import 'package:cleancode_app/features/categories/presentation/bloc/category_bloc.dart';
-import 'package:cleancode_app/features/categories/presentation/bloc/category_event.dart';
-import 'package:cleancode_app/features/categories/presentation/bloc/category_state.dart';
-import 'package:cleancode_app/features/categories/presentation/widgets/create_form.dart';
-import 'package:cleancode_app/features/categories/presentation/widgets/update_form.dart';
+import 'package:cleancode_app/features/payment_methods/data/models/payment_method_model.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment_method_bloc.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment_method_event.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment_method_state.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/widgets/create_form.dart';
+import 'package:cleancode_app/features/payment_methods/presentation/widgets/update_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+class PaymentMethodScreen extends StatefulWidget {
+  const PaymentMethodScreen({super.key});
 
   @override
-  State<CategoryScreen> createState() => _CategoryScreenState();
+  State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> {
-  CategoryModel item = CategoryModel();
-  List<CategoryModel> items = [];
+class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+  PaymentMethodModel item = PaymentMethodModel();
+  List<PaymentMethodModel> items = [];
   bool isDeleted = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<CategoryBloc>().add(GetAllCategories());
+    context.read<PaymentMethodBloc>().add(GetAllPaymentMethods());
   }
 
   @override
@@ -41,30 +41,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
       },
       child: MultiBlocListener(
         listeners: [
-          BlocListener<CategoryBloc, CategoryState>(
+          BlocListener<PaymentMethodBloc, PaymentMethodState>(
             listener: (context, state) {
-              if (state is CategoryLoadingState) {
+              if (state is PaymentMethodLoadingState) {
                 context.loaderOverlay.show();
               }
 
-              if (state is CategoryFailureState) {
+              if (state is PaymentMethodFailureState) {
                 context.loaderOverlay.hide();
-                isDeleted = false;
                 AppUtils.showSnackBar(context, state.message);
               }
 
-              if (state is GetAllCategoriesSuccessState) {
+              if (state is GetAllPaymentMethodsSuccessState) {
                 setState(() {
                   items = state.items;
                   context.loaderOverlay.hide();
                 });
               }
-              if (state is GetOneCategorySuccessState) {
+              if (state is GetOnePaymentMethodSuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                 });
               }
-              if (state is UpdateCategorySuccessState) {
+              if (state is UpdatePaymentMethodSuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   int index =
@@ -72,13 +71,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   if (index != -1) items[index] = state.item;
                 });
               }
-              if (state is CreateCategorySuccessState) {
+              if (state is CreatePaymentMethodSuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   items.add(state.item);
                 });
               }
-              if (state is DeleteCategorySuccessState) {
+              if (state is DeletePaymentMethodSuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   isDeleted = true;
@@ -89,7 +88,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Categorías'), 
+            title: const Text('Métodos de Pago'), 
             centerTitle: true, 
             actions: [
               IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))
@@ -107,16 +106,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       itemId: item.id!,
                       onDelete:(context) {
                         debugPrint("Item: ${item.id}");
-                        context.read<CategoryBloc>().add(DeleteCategory(item.id!));
-                      },
-                      onDismissed: () {
-                        debugPrint("ON DISMISSED ===========");
+                        context.read<PaymentMethodBloc>().add(DeletePaymentMethod(item.id!));
                       },
                       confirmDismiss: () async {
-                        debugPrint("===========> IS DELETED: $isDeleted");
-                        context.read<CategoryBloc>().add(DeleteCategory(item.id!));
+                        context.read<PaymentMethodBloc>().add(DeletePaymentMethod(item.id!));
                         await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
-                        debugPrint("===========> IS DELETED: $isDeleted");
                         return isDeleted;
                       },
                     );
@@ -129,8 +123,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 }
 
-Future<void> showUpdateModal(BuildContext context, CategoryModel item) async {
-  // context.read<CategoryBloc>().add(GetOneCategory(item.id!));
+Future<void> showUpdateModal(BuildContext context, PaymentMethodModel item) async {
+  // context.read<PaymentMethodBloc>().add(GetOnePaymentMethod(item.id!));
 
   showModalBottomSheet(
     context: context,
