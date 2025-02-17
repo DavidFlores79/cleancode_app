@@ -81,6 +81,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 setState(() {
                   context.loaderOverlay.hide();
                   isDeleted = true;
+                  context.read<PaymentMethodBloc>().add(GetAllPaymentMethods());
                 });
               }
             },
@@ -108,6 +109,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                         debugPrint("Item: ${item.id}");
                         context.read<PaymentMethodBloc>().add(DeletePaymentMethod(item.id!));
                       },
+                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
                         context.read<PaymentMethodBloc>().add(DeletePaymentMethod(item.id!));
                         await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));

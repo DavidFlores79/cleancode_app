@@ -115,7 +115,6 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     result.fold(
       (failure) => emit(PaymentFailureState(failure)),
       (_) {
-        // add(GetAllPayments());
         emit(DeletePaymentSuccessState());
       }, // Recargar la lista después de eliminar
     );

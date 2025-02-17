@@ -2,32 +2,32 @@ import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
-import 'package:cleancode_app/features/payments/data/models/payment_model.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_state.dart';
-import 'package:cleancode_app/features/payments/presentation/widgets/create_form.dart';
-import 'package:cleancode_app/features/payments/presentation/widgets/update_form.dart';
+import 'package:cleancode_app/features/summaries/data/models/summary_model.dart';
+import 'package:cleancode_app/features/summaries/presentation/bloc/summary_bloc.dart';
+import 'package:cleancode_app/features/summaries/presentation/bloc/summary_event.dart';
+import 'package:cleancode_app/features/summaries/presentation/bloc/summary_state.dart';
+import 'package:cleancode_app/features/summaries/presentation/widgets/create_form.dart';
+import 'package:cleancode_app/features/summaries/presentation/widgets/update_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+class SummaryScreen extends StatefulWidget {
+  const SummaryScreen({super.key});
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<SummaryScreen> createState() => _SummaryScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
-  PaymentModel item = PaymentModel();
-  List<PaymentModel> items = [];
+class _SummaryScreenState extends State<SummaryScreen> {
+  SummaryModel item = SummaryModel();
+  List<SummaryModel> items = [];
   bool isDeleted = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<PaymentBloc>().add(GetAllPayments());
+    context.read<SummaryBloc>().add(GetAllSummaries());
   }
 
   @override
@@ -41,29 +41,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
       },
       child: MultiBlocListener(
         listeners: [
-          BlocListener<PaymentBloc, PaymentState>(
+          BlocListener<SummaryBloc, SummaryState>(
             listener: (context, state) {
-              if (state is PaymentLoadingState) {
+              if (state is SummaryLoadingState) {
                 context.loaderOverlay.show();
               }
 
-              if (state is PaymentFailureState) {
+              if (state is SummaryFailureState) {
                 context.loaderOverlay.hide();
                 AppUtils.showSnackBar(context, state.message);
               }
 
-              if (state is GetAllPaymentsSuccessState) {
+              if (state is GetAllSummariesSuccessState) {
                 setState(() {
                   items = state.items;
                   context.loaderOverlay.hide();
                 });
               }
-              if (state is GetOnePaymentSuccessState) {
+              if (state is GetOneSummarySuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                 });
               }
-              if (state is UpdatePaymentSuccessState) {
+              if (state is UpdateSummarySuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   int index =
@@ -71,17 +71,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   if (index != -1) items[index] = state.item;
                 });
               }
-              if (state is CreatePaymentSuccessState) {
+              if (state is CreateSummarySuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   items.add(state.item);
                 });
               }
-              if (state is DeletePaymentSuccessState) {
+              if (state is DeleteSummarySuccessState) {
                 setState(() {
                   context.loaderOverlay.hide();
                   isDeleted = true;
-                  context.read<PaymentBloc>().add(GetAllPayments());
+                  context.read<SummaryBloc>().add(GetAllSummaries());
                 });
               }
             },
@@ -103,22 +103,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     return CustomListTile(
                       status: item.status ?? false,
                       onTap: () => showUpdateModal(context, item),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(item.description ?? ''),
-                          Text(item.amount.toString()),
-                        ],
-                      ),
+                      title: Text(item.title ?? ''),
                       subtitle: Text(item.owner.name ?? ''),
                       itemId: item.id!,
                       onDelete:(context) {
                         debugPrint("Item: ${item.id}");
-                        context.read<PaymentBloc>().add(DeletePayment(item.id!));
+                        context.read<SummaryBloc>().add(DeleteSummary(item.id!));
                       },
                       onDismissed: () => items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
-                        context.read<PaymentBloc>().add(DeletePayment(item.id!));
+                        context.read<SummaryBloc>().add(DeleteSummary(item.id!));
                         await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
@@ -132,8 +126,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 }
 
-Future<void> showUpdateModal(BuildContext context, PaymentModel item) async {
-  // context.read<PaymentBloc>().add(GetOnePayment(item.id!));
+Future<void> showUpdateModal(BuildContext context, SummaryModel item) async {
+  // context.read<SummaryBloc>().add(GetOneSummary(item.id!));
 
   showModalBottomSheet(
     context: context,

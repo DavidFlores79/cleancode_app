@@ -7,6 +7,7 @@ import 'package:cleancode_app/features/payment_methods/presentation/screens/paym
 import 'package:cleancode_app/features/payments/presentation/screens/payment_screen.dart';
 import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
+import 'package:cleancode_app/features/summaries/presentation/screens/summary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -48,6 +49,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoryScreen(),
+    ),
+    GoRoute(
+      path: '/summaries',
+      builder: (context, state) => const SummaryScreen(),
     ),
     GoRoute(
       path: '/payments',

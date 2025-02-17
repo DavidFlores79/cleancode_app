@@ -35,6 +35,14 @@ import 'package:cleancode_app/features/posters/domain/usecases/get_all_posters_u
 import 'package:cleancode_app/features/posters/domain/usecases/get_one_poster_usecase.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/post_poster_usecase.dart';
 import 'package:cleancode_app/features/posters/domain/usecases/update_poster_usecase.dart';
+import 'package:cleancode_app/features/summaries/data/datasources/summaries_api_service.dart';
+import 'package:cleancode_app/features/summaries/data/repositories/summary_repository_impl.dart';
+import 'package:cleancode_app/features/summaries/domain/repositories/summary_repository.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/create_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/delete_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/get_all_summaries_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/get_one_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/update_summary_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -60,6 +68,9 @@ void setupServiceLocator() {
   sl.registerSingleton<PaymentApiService>(
     PaymentApiServiceImpl()
   );
+  sl.registerSingleton<SummaryApiService>(
+    SummaryApiServiceImpl()
+  );
 
   // ========= Repositories ========
   sl.registerSingleton<ModuleRepository>(
@@ -78,6 +89,9 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<PaymentRepository>(
     PaymentRepositoryImpl()
+  );
+  sl.registerSingleton<SummaryRepository>(
+    SummaryRepositoryImpl()
   );
 
   // =======  UseCases ========
@@ -146,5 +160,21 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<DeletePaymentMethodUsecase>(
     DeletePaymentMethodUsecase()
+  );
+  //Summaries
+  sl.registerSingleton<GetAllSummariesUsecase>(
+    GetAllSummariesUsecase()
+  );
+  sl.registerSingleton<GetOneSummaryUsecase>(
+    GetOneSummaryUsecase()
+  );
+  sl.registerSingleton<CreateSummaryUsecase>(
+    CreateSummaryUsecase()
+  );
+  sl.registerSingleton<UpdateSummaryUsecase>(
+    UpdateSummaryUsecase()
+  );
+  sl.registerSingleton<DeleteSummaryUsecase>(
+    DeleteSummaryUsecase()
   );
 }

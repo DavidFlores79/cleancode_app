@@ -82,6 +82,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 setState(() {
                   context.loaderOverlay.hide();
                   isDeleted = true;
+                  context.read<CategoryBloc>().add(GetAllCategories());
                 });
               }
             },
@@ -109,9 +110,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         debugPrint("Item: ${item.id}");
                         context.read<CategoryBloc>().add(DeleteCategory(item.id!));
                       },
-                      onDismissed: () {
-                        debugPrint("ON DISMISSED ===========");
-                      },
+                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
                         debugPrint("===========> IS DELETED: $isDeleted");
                         context.read<CategoryBloc>().add(DeleteCategory(item.id!));

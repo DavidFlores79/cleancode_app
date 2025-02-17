@@ -27,6 +27,12 @@ import 'package:cleancode_app/features/roles/domain/repositories/role_repository
 import 'package:cleancode_app/features/roles/domain/usecases/get_roles_usecase.dart';
 import 'package:cleancode_app/features/roles/presentation/bloc/role_bloc.dart';
 import 'package:cleancode_app/features/settings/presentation/bloc/settings_bloc.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/create_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/delete_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/get_all_summaries_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/get_one_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/domain/usecases/update_summary_usecase.dart';
+import 'package:cleancode_app/features/summaries/presentation/bloc/summary_bloc.dart';
 import 'package:cleancode_app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -162,6 +168,15 @@ void main() async {
             createPaymentUseCase: getIt<CreatePaymentUsecase>(),
             updatePaymentUseCase: getIt<UpdatePaymentUsecase>(),
             deletePaymentUseCase: getIt<DeletePaymentUsecase>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SummaryBloc(
+            getAllSummariesUseCase: getIt<GetAllSummariesUsecase>(),
+            getOneSummaryUseCase: getIt<GetOneSummaryUsecase>(),
+            createSummaryUseCase: getIt<CreateSummaryUsecase>(),
+            updateSummaryUseCase: getIt<UpdateSummaryUsecase>(),
+            deleteSummaryUseCase: getIt<DeleteSummaryUsecase>(),
           ),
         ),
         BlocProvider(
