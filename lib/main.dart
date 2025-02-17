@@ -1,4 +1,4 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/create_category_usecase.dart';
@@ -112,14 +112,14 @@ void main() async {
   getIt.registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
 
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  String? primaryBgColorString = prefs.getString(AppConstants.primaryColorName);
-  String? primaryTxtColorString = prefs.getString(AppConstants.primaryTxtColorName);
+  String? primaryBgColorString = prefs.getString(ColorConstants.primaryColorName);
+  String? primaryTxtColorString = prefs.getString(ColorConstants.primaryTxtColorName);
 
-  Color primaryBgColor = AppConstants.primaryBgColor;
+  Color primaryBgColor = ColorConstants.primaryBgColor;
   if (primaryBgColorString != null) {
     primaryBgColor = Color(int.parse(primaryBgColorString));
   }
-  Color primaryTxtColor = AppConstants.primaryTxtColor;
+  Color primaryTxtColor = ColorConstants.primaryTxtColor;
   if (primaryTxtColorString != null) {
     primaryTxtColor = Color(int.parse(primaryTxtColorString));
   }

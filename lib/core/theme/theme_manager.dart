@@ -1,12 +1,12 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:cleancode_app/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeManager {
   ThemeManager()
       : _isDarkMode = false,
-        _primaryBgColor = AppConstants.primaryBgColor,
-        _primaryTxtColor = AppConstants.primaryTxtColor;
+        _primaryBgColor = ColorConstants.primaryBgColor,
+        _primaryTxtColor = ColorConstants.primaryTxtColor;
 
   bool _isDarkMode;
   Color _primaryBgColor;
@@ -24,10 +24,10 @@ class ThemeManager {
   }
 
   void changeColor(Color color, String colorName) {
-    if (colorName == AppConstants.primaryColorName) {
+    if (colorName == ColorConstants.primaryColorName) {
       _primaryBgColor = color;
     }
-    if (colorName == AppConstants.primaryTxtColorName) {
+    if (colorName == ColorConstants.primaryTxtColorName) {
       _primaryTxtColor = color;
     }
     notify();

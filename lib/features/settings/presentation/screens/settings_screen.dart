@@ -1,4 +1,4 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -24,8 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   bool isDarkMode = false;
-  Color selectedPrimaryBgColor = AppConstants.primaryBgColor;
-  Color selectedPrimaryTxtColor = AppConstants.primaryTxtColor;
+  Color selectedPrimaryBgColor = ColorConstants.primaryBgColor;
+  Color selectedPrimaryTxtColor = ColorConstants.primaryTxtColor;
   final themeManager = GetIt.I<ThemeManager>();
 
   Future<void> _loadThemeConfig() async {
@@ -33,15 +33,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       isDarkMode = prefs.getBool('isDarkMode') ?? false;
       String? primaryBgColorString =
-          prefs.getString(AppConstants.primaryColorName);
+          prefs.getString(ColorConstants.primaryColorName);
       String? primaryTxtColorString =
-          prefs.getString(AppConstants.primaryTxtColorName);
+          prefs.getString(ColorConstants.primaryTxtColorName);
       selectedPrimaryBgColor = primaryBgColorString != null
           ? Color(int.parse(primaryBgColorString))
-          : AppConstants.primaryBgColor;
+          : ColorConstants.primaryBgColor;
       selectedPrimaryTxtColor = primaryTxtColorString != null
           ? Color(int.parse(primaryTxtColorString))
-          : AppConstants.primaryTxtColor;
+          : ColorConstants.primaryTxtColor;
     });
   }
 
@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppConstants.lightGrey,
+                    color: ColorConstants.lightGrey,
                     width: 2,
                   ), // Borde rojo
                 ),
@@ -82,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               onTap: () {
-                _showColorPicker(context, AppConstants.primaryColorName);
+                _showColorPicker(context, ColorConstants.primaryColorName);
               },
             ),
             ListTile(
@@ -91,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppConstants.lightGrey,
+                    color: ColorConstants.lightGrey,
                     width: 2,
                   ), // Borde rojo
                 ),
@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               onTap: () {
-                _showColorPicker(context, AppConstants.primaryTxtColorName);
+                _showColorPicker(context, ColorConstants.primaryTxtColorName);
               },
             ),
           ],
@@ -116,9 +116,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     debugPrint("Color String $colorString");
     Color selectedColor = colorString != null
         ? Color(int.parse(colorString))
-        : (colorName == AppConstants.primaryColorName)
-            ? AppConstants.primaryBgColor
-            : AppConstants.primaryTxtColor;
+        : (colorName == ColorConstants.primaryColorName)
+            ? ColorConstants.primaryBgColor
+            : ColorConstants.primaryTxtColor;
     debugPrint("Selected Color ${selectedColor.value}");
 
     showDialog(
@@ -133,12 +133,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   selectedColor = color;
                 });
-                if (colorName == AppConstants.primaryColorName) {
+                if (colorName == ColorConstants.primaryColorName) {
                   setState(() {
                     selectedPrimaryBgColor = selectedColor;
                   });
                 }
-                if (colorName == AppConstants.primaryTxtColorName) {
+                if (colorName == ColorConstants.primaryTxtColorName) {
                   setState(() {
                     selectedPrimaryTxtColor = selectedColor;
                   });

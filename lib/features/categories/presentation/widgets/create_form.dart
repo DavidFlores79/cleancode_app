@@ -6,23 +6,20 @@ import 'package:cleancode_app/features/categories/presentation/bloc/category_eve
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SimpleUpdateForm extends StatefulWidget {
-  final CategoryModel item;
-  const SimpleUpdateForm({super.key, required this.item});
+class SimpleCreateForm extends StatefulWidget {
+  const SimpleCreateForm({super.key});
 
   @override
-  State<SimpleUpdateForm> createState() => SimpleUpdateFormState();
+  State<SimpleCreateForm> createState() => SimpleCreateFormState();
 }
 
-class SimpleUpdateFormState extends State<SimpleUpdateForm> {
+class SimpleCreateFormState extends State<SimpleCreateForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  bool _isActive = false; // Estado del switch
+  bool _isActive = true; // Estado del switch
 
   @override
   void initState() {
-    _nameController.text = widget.item.name!;
-    _isActive = widget.item.status!;
     super.initState();
   }
 
@@ -65,17 +62,17 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             ),
             SizedBox(height: 20),
             CustomButton(
-                text: 'Actualizar',
+                text: 'Guardar',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Lógica para manejar el formulario válido
                     final data = CategoryModel(
-                      id: widget.item.id,
+                      id: '0',
                       name: _nameController.text,
                       status: _isActive,
                     );
-                    debugPrint('Update - Datos del Registro: $data');
-                    context.read<CategoryBloc>().add(UpdateCategory(data));
+                    debugPrint('Crear - Datos del Registro: $data');
+                    context.read<CategoryBloc>().add(CreateCategory(data));
                   }
                   Navigator.pop(context);
                 }),

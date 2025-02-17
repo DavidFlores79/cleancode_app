@@ -1,7 +1,6 @@
-import 'package:cleancode_app/core/constants/app_messages.dart';
+import 'package:cleancode_app/core/constants/message_constants.dart';
 import 'package:cleancode_app/features/home/presentation/bloc/module_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class PageError extends StatelessWidget {
   final String? message;

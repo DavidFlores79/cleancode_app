@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatelessWidget {
@@ -31,6 +32,10 @@ class CustomInputField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: TextStyle(
+          color: ColorConstants.grey
+        ),
+        alignLabelWithHint: true,
         hintText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

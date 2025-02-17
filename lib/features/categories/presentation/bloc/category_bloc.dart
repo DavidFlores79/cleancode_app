@@ -69,7 +69,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _onCreateCategory(
       CreateCategory event, Emitter<CategoryState> emit) async {
-    // emit(CategoryLoadingState());
+    emit(CategoryLoadingState());
     final result = await createCategoryUseCase.call(
       params: CategoryReqParams(
         id: '',
@@ -89,7 +89,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _onUpdateCategory(
       UpdateCategory event, Emitter<CategoryState> emit) async {
-    // emit(CategoryLoadingState());
+    emit(CategoryLoadingState());
     final result = await updateCategoryUseCase.call(
         params: CategoryReqParams(
       id: event.item.id!,
@@ -109,7 +109,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _onDeleteCategory(
       DeleteCategory event, Emitter<CategoryState> emit) async {
     emit(CategoryLoadingState());
-    final result = await deleteCategoryUseCase();
+    final result = await deleteCategoryUseCase(params: CategoryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
       (_) {

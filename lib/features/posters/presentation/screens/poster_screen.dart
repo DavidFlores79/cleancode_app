@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:cleancode_app/core/network/dio_client_sl.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/features/posters/data/models/poster_model.dart';
@@ -98,7 +98,7 @@ Future<void> showFullScreenModal(BuildContext context, PosterModel item) async {
     sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),
     isScrollControlled: true,
     useRootNavigator: true, // Asegura que el Navigator raíz maneje el modal
-    backgroundColor: AppConstants.lightGrey,
+    backgroundColor: ColorConstants.lightGrey,
     builder: (BuildContext context) {
       return GestureDetector(
         onTap: () {}, // Esto evita que los gestos se cierren accidentalmente
@@ -158,7 +158,7 @@ class _FullScreenModalContentState extends State<FullScreenModalContent> {
                         swipeHorizontal: true,
                         autoSpacing: false,
                         pageFling: false,
-                        backgroundColor: AppConstants.transparent,
+                        backgroundColor: ColorConstants.transparent,
                         onRender: (pages) {
                           setState(() {
                             totalPages = pages;

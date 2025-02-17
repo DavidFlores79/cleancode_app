@@ -1,6 +1,5 @@
-import 'package:cleancode_app/core/constants/app_messages.dart';
+import 'package:cleancode_app/core/constants/message_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class NotFound extends StatelessWidget {
   final String? message;

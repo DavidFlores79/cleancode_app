@@ -1,11 +1,12 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CustomListTile extends StatelessWidget {
   final GestureTapCallback? onTap;
-  final SlidableActionCallback? onPressed;
+  final SlidableActionCallback? onDelete;
   final VoidCallback? onDismissed;
+  final Future<bool>Function()? confirmDismiss;
   final Widget title;
   final Widget? subtitle;
   final bool status;
@@ -17,33 +18,29 @@ class CustomListTile extends StatelessWidget {
       required this.status,
       this.subtitle,
       this.onTap,
-      this.onPressed,
+      this.onDelete,
       this.itemId = '0',
       this.onDismissed,
+      required this.confirmDismiss
       }
     );
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      // Specify a key if the Slidable is dismissible.
       key: ValueKey(itemId),
-
-      // The start action pane is the one at the left or the top side.
       endActionPane: ActionPane(
-        // A motion is a widget used to control how the pane animates.
         motion: const ScrollMotion(),
-
-        // A pane can dismiss the Slidable.
-        dismissible: DismissiblePane(onDismissed: onDismissed ?? (){}),
-
-        // All actions are defined in the children parameter.
+        dismissible: DismissiblePane(
+          closeOnCancel: true,
+          confirmDismiss:confirmDismiss,
+          onDismissed: onDismissed ?? (){},
+        ),
         children: [
-          // A SlidableAction can have an icon and/or a label.
           SlidableAction(
-            onPressed: onPressed,
-            backgroundColor: AppConstants.red,
-            foregroundColor: AppConstants.white,
+            onPressed: onDelete,
+            backgroundColor: ColorConstants.red,
+            foregroundColor: ColorConstants.white,
             icon: Icons.delete,
             label: 'Delete',
           ),
@@ -66,7 +63,7 @@ class CustomListTile extends StatelessWidget {
             ),
             border: Border(
               left: BorderSide(
-                color: status == true ? Colors.lightGreen : Colors.red,
+                color: status == true ? ColorConstants.activeColor : ColorConstants.inactiveColor,
                 width: 7, // Grosor del borde
               ),
             ),
