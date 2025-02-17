@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
@@ -107,14 +108,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         debugPrint("Item: ${item.id}");
                         context.read<CategoryBloc>().add(DeleteCategory(item.id!));
                       },
-                      onDismissed: () async {
-                        debugPrint("===========> onDismissed <===========");
-                      }, 
                       confirmDismiss: () async {
-                        debugPrint("===========> IS DELETED: $isDeleted");
                         context.read<CategoryBloc>().add(DeleteCategory(item.id!));
-                        await Future.delayed(Duration(seconds: 1));
-                        debugPrint("===========> IS DELETED: $isDeleted");
+                        await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
                     );
