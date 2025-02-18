@@ -53,7 +53,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             CustomInputField(
               labelText: 'Comentarios',
               hintText: 'Ingresa algún comentario',
-              maxLines: 5,
+              maxLines: 2,
               controller: _commentsController,
               validator: (value) {
                 if (value == null || value.isEmpty) {

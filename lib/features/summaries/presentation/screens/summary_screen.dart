@@ -89,7 +89,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Pagos'), 
+            title: const Text('Resúmenes'), 
             centerTitle: true, 
             actions: [
               IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))

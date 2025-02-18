@@ -3,6 +3,7 @@ import 'package:cleancode_app/core/widgets/custom_input_field.dart';
 import 'package:cleancode_app/features/payments/data/models/payment_model.dart';
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +23,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
   @override
   void initState() {
     super.initState();
+    // context.read<UserBloc>().add(GetAllUsers());
   }
 
   @override
@@ -49,7 +51,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
             CustomInputField(
               labelText: 'Comentarios',
               hintText: 'Ingresa algún comentario',
-              maxLines: 5,
+              maxLines: 2,
               controller: _commentsController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
