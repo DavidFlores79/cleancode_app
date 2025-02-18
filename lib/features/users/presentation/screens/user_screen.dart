@@ -89,7 +89,7 @@ class _UserScreenState extends State<UserScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Resúmenes'), 
+            title: const Text('Usuarios'), 
             centerTitle: true, 
             actions: [
               IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))

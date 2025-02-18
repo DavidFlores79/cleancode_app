@@ -36,14 +36,11 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
         key: _formKey,
         child: Column(
           children: [
-            ClipOval(
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Image.network('${widget.item.image}', fit: BoxFit.cover,),
+            SizedBox(
+              height: 100,
+              width: 100,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage('${widget.item.image}'),
               ),
             ),
             const SizedBox(height: 30),
