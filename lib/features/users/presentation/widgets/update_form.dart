@@ -1,28 +1,31 @@
 import 'package:cleancode_app/core/widgets/custom_button.dart';
 import 'package:cleancode_app/core/widgets/custom_input_field.dart';
-import 'package:cleancode_app/features/payments/data/models/payment_model.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.dart';
+import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SimpleCreateForm extends StatefulWidget {
-  const SimpleCreateForm({super.key});
+class SimpleUpdateForm extends StatefulWidget {
+  final UserModel item;
+  const SimpleUpdateForm({super.key, required this.item});
 
   @override
-  State<SimpleCreateForm> createState() => SimpleCreateFormState();
+  State<SimpleUpdateForm> createState() => SimpleUpdateFormState();
 }
 
-class SimpleCreateFormState extends State<SimpleCreateForm> {
+class SimpleUpdateFormState extends State<SimpleUpdateForm> {
   final _formKey = GlobalKey<FormState>();
-  final _descriptionController = TextEditingController();
-  final _commentsController = TextEditingController();
-  bool _isActive = true; // Estado del switch
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  bool _isActive = false; // Estado del switch
 
   @override
   void initState() {
+    _nameController.text = widget.item.name!;
+    _emailController.text = widget.item.email!;
+    _isActive = widget.item.status!;
     super.initState();
-    // context.read<UserBloc>().add(GetAllUsers());
   }
 
   @override
@@ -33,28 +36,39 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
         key: _formKey,
         child: Column(
           children: [
+            ClipOval(
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Image.network('${widget.item.image}', fit: BoxFit.cover,),
+              ),
+            ),
+            const SizedBox(height: 30),
             // Campo para el nombre usando CustomInputField
             CustomInputField(
-              labelText: 'Concepto',
-              hintText: 'Ingresa el concepto',
+              labelText: 'Nombre',
+              hintText: 'Ingresa el nombre',
               maxLines: 1,
-              controller: _descriptionController,
+              controller: _nameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El concepto es obligatorio';
+                  return 'Nombre es obligatorio';
                 }
                 return null;
               },
             ),
             SizedBox(height: 20),
             CustomInputField(
-              labelText: 'Comentarios',
-              hintText: 'Ingresa algún comentario',
-              maxLines: 2,
-              controller: _commentsController,
+              labelText: 'Email',
+              hintText: 'Ingresa el correo',
+              maxLines: 1,
+              controller: _emailController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Comentarios es obligatorio';
+                  return 'Email es obligatorio';
                 }
                 return null;
               },
@@ -77,18 +91,18 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
             ),
             SizedBox(height: 20),
             CustomButton(
-                text: 'Guardar',
+                text: 'Actualizar',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Lógica para manejar el formulario válido
-                    final data = PaymentModel(
-                      id: '0',
-                      description: _descriptionController.text,
-                      comments: _commentsController.text,
+                    final data = UserModel(
+                      id: widget.item.id,
+                      name: _nameController.text,
+                      email: _emailController.text,
                       status: _isActive,
                     );
-                    debugPrint('Crear - Datos del Registro: $data');
-                    context.read<PaymentBloc>().add(CreatePayment(data));
+                    debugPrint('Update - Datos del Registro: ${data.toJson()}');
+                    context.read<UserBloc>().add(UpdateUser(data));
                   }
                   Navigator.pop(context);
                 }),

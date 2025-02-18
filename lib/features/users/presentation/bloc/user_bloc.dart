@@ -1,21 +1,123 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cleancode_app/features/users/domain/usecases/get_users_usecase.dart';
+import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:cleancode_app/features/users/data/models/item_req_params.dart';
+import 'package:cleancode_app/features/users/domain/usecases/create_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/delete_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/update_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_all_users_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_one_user_usecase.dart';
 import 'package:cleancode_app/features/users/presentation/bloc/user_event.dart';
 import 'package:cleancode_app/features/users/presentation/bloc/user_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final GetUsersUseCase getUsersUseCase;
+  final GetAllUsersUsecase getAllUsersUseCase;
+  final GetOneUserUsecase getOneUserUseCase;
+  final CreateUserUsecase createUserUseCase;
+  final UpdateUserUsecase updateUserUseCase;
+  final DeleteUserUsecase deleteUserUseCase;
 
-  UserBloc({required this.getUsersUseCase}) : super(UserInitial()) {
-    on<FetchUsers>(_onFetchUsers);
+  UserBloc({
+    required this.getAllUsersUseCase,
+    required this.getOneUserUseCase,
+    required this.createUserUseCase,
+    required this.updateUserUseCase,
+    required this.deleteUserUseCase,
+  }) : super(UserInitialState()) {
+    on<GetAllUsers>(_onGetAllUsers);
+    on<GetOneUser>(_onGetOneUser);
+    on<CreateUser>(_onCreateUser);
+    on<UpdateUser>(_onUpdateUser);
+    on<DeleteUser>(_onDeleteUser);
   }
 
-  void _onFetchUsers(FetchUsers event, Emitter<UserState> emit) async {
-    emit(UserLoading());
-    final result = await getUsersUseCase();
+  void _onGetAllUsers(
+      GetAllUsers event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result = await getAllUsersUseCase();
     result.fold(
-      (failure) => emit(UserFailure(failure.message)),
-      (users) => emit(UserSuccess(users)),
+      (failure) => emit(UserFailureState(failure)),
+      (data) {
+        debugPrint(data.data['data'].toString());
+        final List<UserModel> users =
+            (data.data?['data'] as List<dynamic>)
+                .map((json) => UserModel.fromMap(json))
+                .toList();
+        emit(GetAllUsersSuccessState(users));
+      },
+    );
+  }
+
+  void _onGetOneUser(GetOneUser event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result = await getOneUserUseCase.call(
+        params: UserReqParams(id: event.itemId));
+    result.fold(
+      (failure) => emit(UserFailureState(failure)),
+      (data) {
+        emit(
+          GetOneUserSuccessState(
+            UserModel.fromMap(
+              data.data['data'],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _onCreateUser(CreateUser event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result = await createUserUseCase.call(
+      params: UserReqParams(
+        id: '',
+        name: event.item.name,
+        email: event.item.email,
+        image: event.item.image,
+        role: event.item.role,
+        status: event.item.status,
+      ),
+    );
+    result.fold(
+      (failure) => emit(UserFailureState(failure)),
+      (data) {
+        emit(CreateUserSuccessState(UserModel.fromMap(
+          data.data['data'],
+        )));
+      }, // Recargar la lista después de crear
+    );
+  }
+
+  void _onUpdateUser(UpdateUser event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result = await updateUserUseCase.call(
+        params: UserReqParams(
+      id: event.item.id!,
+      name: event.item.name,
+        email: event.item.email,
+        image: event.item.image,
+        role: event.item.role,
+        status: event.item.status,
+    ));
+    result.fold(
+      (failure) => emit(UserFailureState(failure)),
+      (data) {
+        emit(UpdateUserSuccessState(UserModel.fromMap(
+          data.data['data'],
+        )));
+      }, // Recargar la lista después de actualizar
+    );
+  }
+
+  void _onDeleteUser(DeleteUser event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result =
+        await deleteUserUseCase(params: UserReqParams(id: event.itemId));
+    result.fold(
+      (failure) => emit(UserFailureState(failure)),
+      (_) {
+        emit(DeleteUserSuccessState());
+      }, // Recargar la lista después de eliminar
     );
   }
 }

@@ -33,6 +33,12 @@ import 'package:cleancode_app/features/summaries/domain/usecases/get_all_summari
 import 'package:cleancode_app/features/summaries/domain/usecases/get_one_summary_usecase.dart';
 import 'package:cleancode_app/features/summaries/domain/usecases/update_summary_usecase.dart';
 import 'package:cleancode_app/features/summaries/presentation/bloc/summary_bloc.dart';
+import 'package:cleancode_app/features/users/domain/usecases/create_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/delete_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_all_users_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_one_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/update_user_usecase.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
 import 'package:cleancode_app/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,11 +52,6 @@ import 'package:cleancode_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:cleancode_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cleancode_app/app.dart';
-import 'package:cleancode_app/features/users/data/datasources/user_remote_datasource.dart';
-import 'package:cleancode_app/features/users/data/repositories/user_repository_impl.dart';
-import 'package:cleancode_app/features/users/domain/repositories/user_repository.dart';
-import 'package:cleancode_app/features/users/domain/usecases/get_users_usecase.dart';
-import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -91,16 +92,6 @@ void main() async {
 
   final getRolesUseCase = GetRolesUsecase(repository: roleRepository);
   getIt.registerSingleton<GetRolesUsecase>(getRolesUseCase);
-
-  final userRemoteDataSource = UserRemoteDataSourceImpl(dioClient: dioClient);
-  getIt.registerSingleton<UserRemoteDataSource>(userRemoteDataSource);
-
-  final userRepository =
-      UserRepositoryImpl(remoteDataSource: userRemoteDataSource);
-  getIt.registerSingleton<UserRepository>(userRepository);
-
-  final getUsersUseCase = GetUsersUseCase(repository: userRepository);
-  getIt.registerSingleton<GetUsersUseCase>(getUsersUseCase);
 
   final prefs = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(prefs);
@@ -144,6 +135,15 @@ void main() async {
           create: (context) => PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
         ),
         BlocProvider(
+          create: (context) => UserBloc(
+            getAllUsersUseCase: getIt<GetAllUsersUsecase>(),
+            getOneUserUseCase: getIt<GetOneUserUsecase>(),
+            createUserUseCase: getIt<CreateUserUsecase>(),
+            updateUserUseCase: getIt<UpdateUserUsecase>(),
+            deleteUserUseCase: getIt<DeleteUserUsecase>(),
+          ),
+        ),
+        BlocProvider(
           create: (context) => CategoryBloc(
             getAllCategoriesUseCase: getIt<GetAllCategoriesUsecase>(),
             getOneCategoryUseCase: getIt<GetOneCategoryUsecase>(),
@@ -177,11 +177,6 @@ void main() async {
             createSummaryUseCase: getIt<CreateSummaryUsecase>(),
             updateSummaryUseCase: getIt<UpdateSummaryUsecase>(),
             deleteSummaryUseCase: getIt<DeleteSummaryUsecase>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => UserBloc(
-            getUsersUseCase: getIt<GetUsersUseCase>(),
           ),
         ),
         BlocProvider(

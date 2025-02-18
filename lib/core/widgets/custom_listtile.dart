@@ -11,6 +11,8 @@ class CustomListTile extends StatelessWidget {
   final Widget? subtitle;
   final bool status;
   final String itemId;
+  final Widget? leading;
+  final Widget? trailing;
 
   const CustomListTile(
       {super.key,
@@ -21,7 +23,9 @@ class CustomListTile extends StatelessWidget {
       this.onDelete,
       this.itemId = '0',
       this.onDismissed,
-      required this.confirmDismiss
+      required this.confirmDismiss,
+      this.trailing,
+      this.leading,
       }
     );
 
@@ -69,6 +73,8 @@ class CustomListTile extends StatelessWidget {
             ),
           ),
           child: ListTile(
+            trailing: trailing,
+            leading: leading,
             onTap: onTap,
             title: title,
             subtitle: subtitle,

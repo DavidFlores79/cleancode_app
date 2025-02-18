@@ -8,6 +8,7 @@ import 'package:cleancode_app/features/payments/presentation/screens/payment_scr
 import 'package:cleancode_app/features/posters/presentation/screens/poster_screen.dart';
 import 'package:cleancode_app/features/roles/presentation/screens/role_screen.dart';
 import 'package:cleancode_app/features/summaries/presentation/screens/summary_screen.dart';
+import 'package:cleancode_app/features/users/presentation/screens/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -17,7 +18,6 @@ import 'package:cleancode_app/features/auth/presentation/screens/login_screen.da
 import 'package:cleancode_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:cleancode_app/features/home/presentation/screens/home_screen.dart';
 import 'package:cleancode_app/features/settings/presentation/screens/settings_screen.dart';
-import 'package:cleancode_app/features/users/presentation/screens/user_screen.dart';
 import 'package:logger/logger.dart';
 
 final navigatorKey = GetIt.I<GlobalKey<NavigatorState>>();

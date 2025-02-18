@@ -1,8 +1,8 @@
 import 'package:cleancode_app/core/widgets/custom_button.dart';
 import 'package:cleancode_app/core/widgets/custom_input_field.dart';
-import 'package:cleancode_app/features/payments/data/models/payment_model.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
-import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.dart';
+import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,14 +15,13 @@ class SimpleCreateForm extends StatefulWidget {
 
 class SimpleCreateFormState extends State<SimpleCreateForm> {
   final _formKey = GlobalKey<FormState>();
-  final _descriptionController = TextEditingController();
-  final _commentsController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   bool _isActive = true; // Estado del switch
 
   @override
   void initState() {
     super.initState();
-    // context.read<UserBloc>().add(GetAllUsers());
   }
 
   @override
@@ -35,26 +34,26 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
-              labelText: 'Concepto',
-              hintText: 'Ingresa el concepto',
+              labelText: 'Nombre',
+              hintText: 'Ingresa el nombre',
               maxLines: 1,
-              controller: _descriptionController,
+              controller: _nameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'El concepto es obligatorio';
+                  return 'Nombre es obligatorio';
                 }
                 return null;
               },
             ),
             SizedBox(height: 20),
             CustomInputField(
-              labelText: 'Comentarios',
-              hintText: 'Ingresa algún comentario',
-              maxLines: 2,
-              controller: _commentsController,
+              labelText: 'Email',
+              hintText: 'Ingresa el correo',
+              maxLines: 1,
+              controller: _emailController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Comentarios es obligatorio';
+                  return 'Email es obligatorio';
                 }
                 return null;
               },
@@ -81,14 +80,14 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Lógica para manejar el formulario válido
-                    final data = PaymentModel(
+                    final data = UserModel(
                       id: '0',
-                      description: _descriptionController.text,
-                      comments: _commentsController.text,
+                      name: _nameController.text,
+                      email: _emailController.text,
                       status: _isActive,
                     );
                     debugPrint('Crear - Datos del Registro: $data');
-                    context.read<PaymentBloc>().add(CreatePayment(data));
+                    context.read<UserBloc>().add(CreateUser(data));
                   }
                   Navigator.pop(context);
                 }),

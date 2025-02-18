@@ -1,21 +1,34 @@
-import 'package:cleancode_app/features/users/data/models/user_model.dart';
-import 'package:dartz/dartz.dart';
-import 'package:cleancode_app/core/errors/failures.dart';
-import 'package:cleancode_app/features/users/data/datasources/user_remote_datasource.dart';
+import 'package:cleancode_app/features/users/data/datasources/user_api_service.dart';
+import 'package:cleancode_app/features/users/data/models/item_req_params.dart';
 import 'package:cleancode_app/features/users/domain/repositories/user_repository.dart';
+import 'package:cleancode_app/service_locator.dart';
+import 'package:dartz/dartz.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final UserRemoteDataSource remoteDataSource;
-
-  UserRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<UserModel>>> getUsers() async {
-      try {
-      final result = await remoteDataSource.getUsers();
-      return Right(result);
-    } on Exception catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
+  Future<Either> getAllItems() {
+    return sl<UserApiService>().getAllItems();
   }
+
+  @override
+  Future<Either> getItem(UserReqParams params) {
+    return sl<UserApiService>().getItem(params);
+  }
+
+    @override
+  Future<Either> postItem(UserReqParams params) {
+    return sl<UserApiService>().postItem(params);
+  }
+
+  @override
+  Future<Either> updateItem(UserReqParams params) {
+    return sl<UserApiService>().updateItem(params);
+  }
+
+    @override
+  Future<Either> deleteItem(UserReqParams params) {
+    return sl<UserApiService>().deleteItem(params);
+  }
+
 }

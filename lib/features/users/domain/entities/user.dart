@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class UserModel {
+class User {
     String? id;
     String? name;
     String? email;
@@ -11,7 +11,7 @@ class UserModel {
     String? createdAt;
     String? updatedAt;
 
-    UserModel({
+    User({
         this.id,
         this.name,
         this.email,
@@ -22,40 +22,6 @@ class UserModel {
         this.createdAt,
         this.updatedAt,
     });
-
-    factory UserModel.fromJson(String str) => UserModel.fromMap(json.decode(str));
-
-    String toJson() => json.encode(toMap());
-
-    factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        id: json["_id"],
-        name: json["name"],
-        email: json["email"],
-        image: json["image"],
-        role: json["role"] == null
-            ? null
-            : (json["role"] is String
-                ? json["role"] // Si es un String (ID), lo guardamos como tal
-                : Role.fromMap(json["role"])), // Si es un Map, lo convertimos a Role
-        status: json["status"],
-        google: json["google"],
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "_id": id,
-        "name": name,
-        "email": email,
-        "image": image,
-        "role": role is Role
-            ? (role as Role).toMap() // Si es un Role, lo convertimos a Map
-            : role, // Si es un String (ID), lo devolvemos como tal
-        "status": status,
-        "google": google,
-        "createdAt": createdAt,
-        "updatedAt": updatedAt,
-    };
 }
 
 class Role {

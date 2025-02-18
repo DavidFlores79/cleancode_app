@@ -43,6 +43,14 @@ import 'package:cleancode_app/features/summaries/domain/usecases/delete_summary_
 import 'package:cleancode_app/features/summaries/domain/usecases/get_all_summaries_usecase.dart';
 import 'package:cleancode_app/features/summaries/domain/usecases/get_one_summary_usecase.dart';
 import 'package:cleancode_app/features/summaries/domain/usecases/update_summary_usecase.dart';
+import 'package:cleancode_app/features/users/data/datasources/user_api_service.dart';
+import 'package:cleancode_app/features/users/data/repositories/user_repository_impl.dart';
+import 'package:cleancode_app/features/users/domain/repositories/user_repository.dart';
+import 'package:cleancode_app/features/users/domain/usecases/create_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/delete_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_all_users_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/get_one_user_usecase.dart';
+import 'package:cleancode_app/features/users/domain/usecases/update_user_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -71,6 +79,9 @@ void setupServiceLocator() {
   sl.registerSingleton<SummaryApiService>(
     SummaryApiServiceImpl()
   );
+  sl.registerSingleton<UserApiService>(
+    UserApiServiceImpl()
+  );
 
   // ========= Repositories ========
   sl.registerSingleton<ModuleRepository>(
@@ -92,6 +103,9 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<SummaryRepository>(
     SummaryRepositoryImpl()
+  );
+  sl.registerSingleton<UserRepository>(
+    UserRepositoryImpl()
   );
 
   // =======  UseCases ========
@@ -176,5 +190,22 @@ void setupServiceLocator() {
   );
   sl.registerSingleton<DeleteSummaryUsecase>(
     DeleteSummaryUsecase()
+  );
+
+  //Users
+  sl.registerSingleton<GetAllUsersUsecase>(
+    GetAllUsersUsecase()
+  );
+  sl.registerSingleton<GetOneUserUsecase>(
+    GetOneUserUsecase()
+  );
+  sl.registerSingleton<CreateUserUsecase>(
+    CreateUserUsecase()
+  );
+  sl.registerSingleton<UpdateUserUsecase>(
+    UpdateUserUsecase()
+  );
+  sl.registerSingleton<DeleteUserUsecase>(
+    DeleteUserUsecase()
   );
 }
