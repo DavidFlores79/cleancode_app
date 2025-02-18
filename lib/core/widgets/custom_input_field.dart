@@ -10,6 +10,7 @@ class CustomInputField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? suffixIcon;
   final int maxLines;
+  final bool readOnly;
 
   const CustomInputField({
     Key? key,
@@ -21,11 +22,13 @@ class CustomInputField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.suffixIcon,
     this.maxLines = 1,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       maxLines: maxLines,
       controller: controller,
       obscureText: obscureText,

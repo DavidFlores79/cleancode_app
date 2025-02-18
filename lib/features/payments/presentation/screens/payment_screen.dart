@@ -8,6 +8,8 @@ import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_state.dart';
 import 'package:cleancode_app/features/payments/presentation/widgets/create_form.dart';
 import 'package:cleancode_app/features/payments/presentation/widgets/update_form.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -155,6 +157,8 @@ Future<void> showUpdateModal(BuildContext context, PaymentModel item) async {
 }
 
 Future<void> showCreateModal(BuildContext context) async {
+  context.read<UserBloc>().add(GetAllUsers());
+
   showModalBottomSheet(
     context: context,
     sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),
