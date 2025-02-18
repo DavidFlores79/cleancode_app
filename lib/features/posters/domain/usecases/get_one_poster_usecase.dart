@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class GetOnePosterUsecase implements Usecase<Either, PosterReqParams>{
   @override
-  Future<Either> call({PosterReqParams? params}) async {
-    return sl<PosterRepository>().getItem(params!);
+  Future<Either> call({PosterReqParams? query}) async {
+    return sl<PosterRepository>().getItem(query!);
   }
 }

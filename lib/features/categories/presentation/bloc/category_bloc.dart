@@ -52,7 +52,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       GetOneCategory event, Emitter<CategoryState> emit) async {
     emit(CategoryLoadingState());
     final result = await getOneCategoryUseCase.call(
-        params: CategoryReqParams(id: event.itemId));
+        query: CategoryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
       (data) {
@@ -71,7 +71,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       CreateCategory event, Emitter<CategoryState> emit) async {
     emit(CategoryLoadingState());
     final result = await createCategoryUseCase.call(
-      params: CategoryReqParams(
+      query: CategoryReqParams(
         id: '',
         name: event.item.name,
         status: event.item.status,
@@ -91,7 +91,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       UpdateCategory event, Emitter<CategoryState> emit) async {
     emit(CategoryLoadingState());
     final result = await updateCategoryUseCase.call(
-        params: CategoryReqParams(
+        query: CategoryReqParams(
       id: event.item.id!,
       name: event.item.name!,
       status: event.item.status!,
@@ -109,7 +109,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _onDeleteCategory(
       DeleteCategory event, Emitter<CategoryState> emit) async {
     emit(CategoryLoadingState());
-    final result = await deleteCategoryUseCase(params: CategoryReqParams(id: event.itemId));
+    final result = await deleteCategoryUseCase(query: CategoryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(CategoryFailureState(failure)),
       (_) {

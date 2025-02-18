@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class DeleteUserUsecase implements Usecase<Either, UserReqParams>{
   @override
-  Future<Either> call({UserReqParams? params}) async {
-    return sl<UserRepository>().deleteItem(params!);
+  Future<Either> call({UserReqParams? query}) async {
+    return sl<UserRepository>().deleteItem(query!);
   }
 }

@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class CreateCategoryUsecase implements Usecase<Either, CategoryReqParams>{
   @override
-  Future<Either> call({CategoryReqParams? params}) async {
-    return sl<CategoryRepository>().postItem(params!);
+  Future<Either> call({CategoryReqParams? query}) async {
+    return sl<CategoryRepository>().postItem(query!);
   }
 }

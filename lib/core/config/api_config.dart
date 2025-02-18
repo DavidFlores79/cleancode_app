@@ -14,6 +14,7 @@ class ApiConfig {
   static const String postersEndpoint = '${ApiConfig.baseUrl}/api/posters';
   static const String rolesEndpoint = '${ApiConfig.baseUrl}/api/roles';
   static const String usersEndpoint = '${ApiConfig.baseUrl}/api/users';
+  static const String searchEndpoint = '${ApiConfig.baseUrl}/api/search';
   static String modulesEndpoint(String profileId) {
     return '${ApiConfig.baseUrl}/api/profiles/$profileId/menu';
   }

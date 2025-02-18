@@ -10,6 +10,7 @@ class CustomListTile extends StatelessWidget {
   final Widget title;
   final Widget? subtitle;
   final bool status;
+  final bool enabled;
   final String itemId;
   final Widget? leading;
   final Widget? trailing;
@@ -26,12 +27,14 @@ class CustomListTile extends StatelessWidget {
       required this.confirmDismiss,
       this.trailing,
       this.leading,
+      this.enabled = true,
       }
     );
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      enabled: enabled,
       key: ValueKey(itemId),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),

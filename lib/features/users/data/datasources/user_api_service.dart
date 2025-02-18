@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 abstract class UserApiService {
     Future<Either> getAllItems();
+    Future<Either> searchItems(String query);
     Future<Either> getItem(UserReqParams params);
     Future<Either> postItem(UserReqParams params);
     Future<Either> updateItem(UserReqParams params);
@@ -69,5 +70,15 @@ class UserApiServiceImpl implements UserApiService {
       return Left(message);
     }
   }
-
+  
+  @override
+  Future<Either> searchItems(String query) async {
+   try {
+      final response = await sl<DioClient>().post('${ApiConfig.searchEndpoint}/users', data: { query: query });
+      return Right(response);
+    } on DioException catch (e) {
+      final message = e.response?.data?['msg'] ?? e.message; //nodejs & standar API
+      return Left(message);
+    }
+  }
 }

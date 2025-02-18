@@ -3,6 +3,10 @@ import 'package:cleancode_app/features/users/data/models/user_model.dart';
 abstract class UserEvent {}
 
 class GetAllUsers implements UserEvent {}
+class SearchUsers implements UserEvent {
+  final String query;
+  SearchUsers(this.query);
+}
 class GetOneUser implements UserEvent {
   final String itemId;
   GetOneUser(this.itemId);

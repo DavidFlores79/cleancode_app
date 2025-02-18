@@ -26,6 +26,11 @@ class UserFailureState implements UserState {
   UserFailureState(this.message);
 }
 
+class SearchUsersSuccessState implements UserState {
+  final List<UserModel> items;
+  SearchUsersSuccessState(this.items);
+}
+
 class ForbiddenActionState extends UserState {
   final String message;
 

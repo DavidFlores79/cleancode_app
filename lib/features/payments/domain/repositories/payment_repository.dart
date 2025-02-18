@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class PaymentRepository {
   Future<Either> getAllItems();
+  Future<Either> searchItems(String query);
   Future<Either> getItem(PaymentReqParams params);
   Future<Either> postItem(PaymentReqParams params);
   Future<Either> updateItem(PaymentReqParams params);

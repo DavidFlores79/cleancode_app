@@ -52,7 +52,7 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       GetOnePaymentMethod event, Emitter<PaymentMethodState> emit) async {
     emit(PaymentMethodLoadingState());
     final result = await getOnePaymentMethodUseCase.call(
-        params: PaymentMethodReqParams(id: event.itemId));
+        query: PaymentMethodReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(PaymentMethodFailureState(failure)),
       (data) {
@@ -71,7 +71,7 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       CreatePaymentMethod event, Emitter<PaymentMethodState> emit) async {
     emit(PaymentMethodLoadingState());
     final result = await createPaymentMethodUseCase.call(
-      params: PaymentMethodReqParams(
+      query: PaymentMethodReqParams(
         id: '',
         name: event.item.name,
         status: event.item.status,
@@ -91,7 +91,7 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
       UpdatePaymentMethod event, Emitter<PaymentMethodState> emit) async {
     emit(PaymentMethodLoadingState());
     final result = await updatePaymentMethodUseCase.call(
-        params: PaymentMethodReqParams(
+        query: PaymentMethodReqParams(
       id: event.item.id!,
       name: event.item.name!,
       status: event.item.status!,
@@ -109,7 +109,7 @@ class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
   void _onDeletePaymentMethod(
       DeletePaymentMethod event, Emitter<PaymentMethodState> emit) async {
     emit(PaymentMethodLoadingState());
-    final result = await deletePaymentMethodUseCase(params: PaymentMethodReqParams(id: event.itemId));
+    final result = await deletePaymentMethodUseCase(query: PaymentMethodReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(PaymentMethodFailureState(failure)),
       (_) {

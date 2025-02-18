@@ -157,7 +157,7 @@ Future<void> showUpdateModal(BuildContext context, PaymentModel item) async {
 }
 
 Future<void> showCreateModal(BuildContext context) async {
-  context.read<UserBloc>().add(GetAllUsers());
+  // context.read<UserBloc>().add(GetAllUsers());
 
   showModalBottomSheet(
     context: context,

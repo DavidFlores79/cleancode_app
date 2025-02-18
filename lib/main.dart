@@ -1,4 +1,5 @@
 import 'package:cleancode_app/core/constants/color_constants.dart';
+import 'package:cleancode_app/core/domain/usecases/search_users_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/create_category_usecase.dart';
@@ -141,6 +142,7 @@ void main() async {
             createUserUseCase: getIt<CreateUserUsecase>(),
             updateUserUseCase: getIt<UpdateUserUsecase>(),
             deleteUserUseCase: getIt<DeleteUserUsecase>(),
+            searchUsersUsecase: getIt<SearchUsersUsecase>(),
           ),
         ),
         BlocProvider(

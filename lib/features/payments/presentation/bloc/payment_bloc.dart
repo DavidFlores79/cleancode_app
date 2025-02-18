@@ -52,7 +52,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       GetOnePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await getOnePaymentUseCase.call(
-        params: PaymentReqParams(id: event.itemId));
+        query: PaymentReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(PaymentFailureState(failure)),
       (data) {
@@ -71,7 +71,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       CreatePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await createPaymentUseCase.call(
-      params: PaymentReqParams(
+      query: PaymentReqParams(
         id: '',
         description: event.item.description,
         comments: event.item.description,
@@ -92,7 +92,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       UpdatePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await updatePaymentUseCase.call(
-        params: PaymentReqParams(
+        query: PaymentReqParams(
       id: event.item.id!,
       description: event.item.description!,
       comments: event.item.comments!,
@@ -111,7 +111,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   void _onDeletePayment(
       DeletePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
-    final result = await deletePaymentUseCase(params: PaymentReqParams(id: event.itemId));
+    final result = await deletePaymentUseCase(query: PaymentReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(PaymentFailureState(failure)),
       (_) {

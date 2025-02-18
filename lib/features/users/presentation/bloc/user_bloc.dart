@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/domain/usecases/search_users_usecase.dart';
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
 import 'package:cleancode_app/features/users/data/models/item_req_params.dart';
 import 'package:cleancode_app/features/users/domain/usecases/create_user_usecase.dart';
@@ -16,6 +17,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final CreateUserUsecase createUserUseCase;
   final UpdateUserUsecase updateUserUseCase;
   final DeleteUserUsecase deleteUserUseCase;
+  final SearchUsersUsecase searchUsersUsecase;
 
   UserBloc({
     required this.getAllUsersUseCase,
@@ -23,12 +25,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required this.createUserUseCase,
     required this.updateUserUseCase,
     required this.deleteUserUseCase,
+    required this.searchUsersUsecase,
   }) : super(UserInitialState()) {
     on<GetAllUsers>(_onGetAllUsers);
     on<GetOneUser>(_onGetOneUser);
     on<CreateUser>(_onCreateUser);
     on<UpdateUser>(_onUpdateUser);
     on<DeleteUser>(_onDeleteUser);
+    on<SearchUsers>(_onSearchUsers);
   }
 
   void _onGetAllUsers(
@@ -51,7 +55,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onGetOneUser(GetOneUser event, Emitter<UserState> emit) async {
     emit(UserLoadingState());
     final result = await getOneUserUseCase.call(
-        params: UserReqParams(id: event.itemId));
+        query: UserReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(UserFailureState(failure)),
       (data) {
@@ -69,7 +73,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onCreateUser(CreateUser event, Emitter<UserState> emit) async {
     emit(UserLoadingState());
     final result = await createUserUseCase.call(
-      params: UserReqParams(
+      query: UserReqParams(
         id: '',
         name: event.item.name,
         email: event.item.email,
@@ -91,7 +95,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onUpdateUser(UpdateUser event, Emitter<UserState> emit) async {
     emit(UserLoadingState());
     final result = await updateUserUseCase.call(
-        params: UserReqParams(
+        query: UserReqParams(
       id: event.item.id!,
       name: event.item.name,
         email: event.item.email,
@@ -112,12 +116,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onDeleteUser(DeleteUser event, Emitter<UserState> emit) async {
     emit(UserLoadingState());
     final result =
-        await deleteUserUseCase(params: UserReqParams(id: event.itemId));
+        await deleteUserUseCase(query: UserReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(UserFailureState(failure)),
       (_) {
         emit(DeleteUserSuccessState());
       }, // Recargar la lista después de eliminar
+    );
+  }
+
+  void _onSearchUsers(
+      SearchUsers event, Emitter<UserState> emit) async {
+    emit(UserLoadingState());
+    final result = await searchUsersUsecase(query: event.query);
+    result.fold(
+      (failure) => emit(UserFailureState(failure)),
+      (data) {
+        final List<UserModel> users =
+            (data.data?['data'] as List<dynamic>)
+                .map((json) => UserModel.fromMap(json))
+                .toList();
+        emit(SearchUsersSuccessState(users));
+      },
     );
   }
 }

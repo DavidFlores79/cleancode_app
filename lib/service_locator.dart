@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/domain/usecases/search_users_usecase.dart';
 import 'package:cleancode_app/core/network/dio_client_sl.dart';
 import 'package:cleancode_app/features/categories/data/datasources/category_api_service.dart';
 import 'package:cleancode_app/features/categories/data/repositories/category_repository_impl.dart';
@@ -195,6 +196,9 @@ void setupServiceLocator() {
   //Users
   sl.registerSingleton<GetAllUsersUsecase>(
     GetAllUsersUsecase()
+  );
+  sl.registerSingleton<SearchUsersUsecase>(
+    SearchUsersUsecase()
   );
   sl.registerSingleton<GetOneUserUsecase>(
     GetOneUserUsecase()

@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class DeleteCategoryUsecase implements Usecase<Either, CategoryReqParams>{
   @override
-  Future<Either> call({CategoryReqParams? params}) async {
-    return sl<CategoryRepository>().deleteItem(params!);
+  Future<Either> call({CategoryReqParams? query}) async {
+    return sl<CategoryRepository>().deleteItem(query!);
   }
 }

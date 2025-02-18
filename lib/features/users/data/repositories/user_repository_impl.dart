@@ -30,5 +30,10 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either> deleteItem(UserReqParams params) {
     return sl<UserApiService>().deleteItem(params);
   }
+  
+  @override
+  Future<Either> searchItems(String query) {
+    return sl<UserApiService>().searchItems(query);
+  }
 
 }

@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 
 abstract class UserRepository {
   Future<Either> getAllItems();
+  Future<Either> searchItems(String query);
   Future<Either> getItem(UserReqParams params);
   Future<Either> postItem(UserReqParams params);
   Future<Either> updateItem(UserReqParams params);

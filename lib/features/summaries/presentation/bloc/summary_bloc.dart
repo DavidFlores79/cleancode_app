@@ -51,7 +51,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
   void _onGetOneSummary(GetOneSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await getOneSummaryUseCase.call(
-        params: SummaryReqParams(id: event.itemId));
+        query: SummaryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(SummaryFailureState(failure)),
       (data) {
@@ -69,7 +69,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
   void _onCreateSummary(CreateSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await createSummaryUseCase.call(
-      params: SummaryReqParams(
+      query: SummaryReqParams(
         id: '',
         title: event.item.title,
         comments: event.item.comments,
@@ -89,7 +89,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
   void _onUpdateSummary(UpdateSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result = await updateSummaryUseCase.call(
-        params: SummaryReqParams(
+        query: SummaryReqParams(
       id: event.item.id!,
       title: event.item.title!,
       comments: event.item.comments!,
@@ -108,7 +108,7 @@ class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
   void _onDeleteSummary(DeleteSummary event, Emitter<SummaryState> emit) async {
     emit(SummaryLoadingState());
     final result =
-        await deleteSummaryUseCase(params: SummaryReqParams(id: event.itemId));
+        await deleteSummaryUseCase(query: SummaryReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(SummaryFailureState(failure)),
       (_) {

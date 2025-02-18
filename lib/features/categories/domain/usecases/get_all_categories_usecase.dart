@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class GetAllCategoriesUsecase implements Usecase<Either, CategoryReqParams>{
   @override
-  Future<Either> call({CategoryReqParams? params}) async {
+  Future<Either> call({CategoryReqParams? query}) async {
     return sl<CategoryRepository>().getAllItems();
   }
 }

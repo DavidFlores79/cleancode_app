@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class GetOneUserUsecase implements Usecase<Either, UserReqParams>{
   @override
-  Future<Either> call({UserReqParams? params}) async {
-    return sl<UserRepository>().getItem(params!);
+  Future<Either> call({UserReqParams? query}) async {
+    return sl<UserRepository>().getItem(query!);
   }
 }

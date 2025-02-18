@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class CreateSummaryUsecase implements Usecase<Either, SummaryReqParams>{
   @override
-  Future<Either> call({SummaryReqParams? params}) async {
-    return sl<SummaryRepository>().postItem(params!);
+  Future<Either> call({SummaryReqParams? query}) async {
+    return sl<SummaryRepository>().postItem(query!);
   }
 }

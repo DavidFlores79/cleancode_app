@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class CreatePaymentMethodUsecase implements Usecase<Either, PaymentMethodReqParams>{
   @override
-  Future<Either> call({PaymentMethodReqParams? params}) async {
-    return sl<PaymentMethodRepository>().postItem(params!);
+  Future<Either> call({PaymentMethodReqParams? query}) async {
+    return sl<PaymentMethodRepository>().postItem(query!);
   }
 }
