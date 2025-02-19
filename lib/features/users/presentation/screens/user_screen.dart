@@ -33,7 +33,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
-      overlayColor: Theme.of(context).cardColor.withOpacity(0.6),
+      overlayColor: Theme.of(context).cardColor.withOpacity(0.8),
       overlayWidgetBuilder: (_) {
         return Center(
           child: CircularProgressIndicator(),
@@ -89,13 +89,15 @@ class _UserScreenState extends State<UserScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Usuarios'), 
-            centerTitle: true, 
+            title: const Text('Usuarios'),
+            centerTitle: true,
             actions: [
-              IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))
+              IconButton(
+                  onPressed: () => showCreateModal(context),
+                  icon: Icon(Icons.add_rounded))
             ],
           ),
-          body: items.isNotEmpty || !context.loaderOverlay.visible
+          body: items.isNotEmpty
               ? ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
@@ -113,14 +115,16 @@ class _UserScreenState extends State<UserScreen> {
                       title: Text(item.name ?? ''),
                       subtitle: Text(item.email ?? ''),
                       itemId: item.id!,
-                      onDelete:(context) {
+                      onDelete: (context) {
                         debugPrint("Item: ${item.id}");
                         context.read<UserBloc>().add(DeleteUser(item.id!));
                       },
-                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
+                      onDismissed: () =>
+                          items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
                         context.read<UserBloc>().add(DeleteUser(item.id!));
-                        await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
+                        await Future.delayed(
+                            Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
                     );
@@ -148,7 +152,9 @@ Future<void> showUpdateModal(BuildContext context, UserModel item) async {
         behavior: HitTestBehavior.opaque,
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
-          child: SimpleUpdateForm(item: item,),
+          child: SimpleUpdateForm(
+            item: item,
+          ),
         ),
       );
     },

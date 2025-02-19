@@ -11,9 +11,10 @@ class CustomInputField extends StatelessWidget {
   final Widget? suffixIcon;
   final int maxLines;
   final bool readOnly;
+  final GestureTapCallback? onTap;
 
   const CustomInputField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.hintText,
     required this.controller,
@@ -23,11 +24,13 @@ class CustomInputField extends StatelessWidget {
     this.suffixIcon,
     this.maxLines = 1,
     this.readOnly = false,
-  }) : super(key: key);
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
       readOnly: readOnly,
       maxLines: maxLines,
       controller: controller,

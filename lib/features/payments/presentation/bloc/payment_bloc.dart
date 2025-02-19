@@ -48,8 +48,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     );
   }
 
-  void _onGetOnePayment(
-      GetOnePayment event, Emitter<PaymentState> emit) async {
+  void _onGetOnePayment(GetOnePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await getOnePaymentUseCase.call(
         query: PaymentReqParams(id: event.itemId));
@@ -67,13 +66,15 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     );
   }
 
-  void _onCreatePayment(
-      CreatePayment event, Emitter<PaymentState> emit) async {
+  void _onCreatePayment(CreatePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await createPaymentUseCase.call(
       query: PaymentReqParams(
         id: '',
         description: event.item.description,
+        paymentMethod: event.item.paymentMethod,
+        amount: event.item.amount,
+        owner: event.item.owner,
         comments: event.item.description,
         status: event.item.status,
       ),
@@ -82,19 +83,21 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       (failure) => emit(PaymentFailureState(failure)),
       (data) {
         emit(CreatePaymentSuccessState(PaymentModel.fromMap(
-            data.data['data'],
+          data.data['data'],
         )));
       }, // Recargar la lista después de crear
     );
   }
 
-  void _onUpdatePayment(
-      UpdatePayment event, Emitter<PaymentState> emit) async {
+  void _onUpdatePayment(UpdatePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
     final result = await updatePaymentUseCase.call(
         query: PaymentReqParams(
       id: event.item.id!,
       description: event.item.description!,
+      paymentMethod: event.item.paymentMethod,
+      amount: event.item.amount,
+      owner: event.item.owner,
       comments: event.item.comments!,
       status: event.item.status!,
     ));
@@ -102,16 +105,16 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       (failure) => emit(PaymentFailureState(failure)),
       (data) {
         emit(UpdatePaymentSuccessState(PaymentModel.fromMap(
-            data.data['data'],
+          data.data['data'],
         )));
       }, // Recargar la lista después de actualizar
     );
   }
 
-  void _onDeletePayment(
-      DeletePayment event, Emitter<PaymentState> emit) async {
+  void _onDeletePayment(DeletePayment event, Emitter<PaymentState> emit) async {
     emit(PaymentLoadingState());
-    final result = await deletePaymentUseCase(query: PaymentReqParams(id: event.itemId));
+    final result =
+        await deletePaymentUseCase(query: PaymentReqParams(id: event.itemId));
     result.fold(
       (failure) => emit(PaymentFailureState(failure)),
       (_) {

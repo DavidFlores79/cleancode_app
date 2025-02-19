@@ -21,6 +21,7 @@ class AppTheme {
       colorScheme: baseTheme.colorScheme.copyWith(primary: color),
       appBarTheme: baseTheme.appBarTheme.copyWith(
         backgroundColor: color,
+        centerTitle: true,
         titleTextStyle: TextStyle(
           color: primaryTxtColor,
           fontSize: 22,

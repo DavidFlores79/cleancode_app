@@ -21,7 +21,7 @@ class PageError extends StatelessWidget {
               child: Image.asset('assets/images/web.png'),
             ),
             Text(
-              message ?? AppMessages.unloadedRecords,
+              message ?? MessagesConstants.unloadedRecords,
               style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
               textAlign: TextAlign.center,
             ),

@@ -33,7 +33,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
-      overlayColor: Theme.of(context).cardColor.withOpacity(0.6),
+      overlayColor: Theme.of(context).cardColor.withOpacity(0.8),
       overlayWidgetBuilder: (_) {
         return Center(
           child: CircularProgressIndicator(),

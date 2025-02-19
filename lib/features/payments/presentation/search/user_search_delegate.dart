@@ -76,8 +76,6 @@ class SearchUsersDelegate extends SearchDelegate<UserModel?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    userBloc.add(SearchUsers(query));
-
     // Muestra sugerencias mientras el usuario escribe
     if (query.isEmpty) {
       return Center(
@@ -86,6 +84,7 @@ class SearchUsersDelegate extends SearchDelegate<UserModel?> {
         ),
       );
     }
+    userBloc.add(SearchUsers(query));
     return _buildSearchResults();
   }
 

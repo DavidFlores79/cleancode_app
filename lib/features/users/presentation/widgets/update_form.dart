@@ -94,6 +94,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                     // Lógica para manejar el formulario válido
                     final data = UserModel(
                       id: widget.item.id,
+                      image: widget.item.image,
                       name: _nameController.text,
                       email: _emailController.text,
                       status: _isActive,

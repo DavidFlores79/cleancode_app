@@ -1,5 +1,7 @@
+import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:cleancode_app/core/constants/message_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class NotFound extends StatelessWidget {
   final String? message;
@@ -16,12 +18,11 @@ class NotFound extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(vertical: 15),
-              height: 200,
-              child: Image.asset('assets/images/box.png'),
+              child: HugeIcon(icon: HugeIcons.strokeRoundedDeliveryBox01, size: 75, color: ColorConstants.grey,),
             ),
             Text(
-              message ?? AppMessages.unloadedRecords,
-              style: TextStyle(fontSize: 20, fontFamily: 'Roboto'),
+              message ?? MessagesConstants.noRecords,
+              style: TextStyle(fontSize: 20, fontFamily: 'Roboto', color: ColorConstants.grey),
               textAlign: TextAlign.center,
             ),
           ],

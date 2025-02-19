@@ -26,6 +26,7 @@ dependencies:
   flutter_pdfview: ^1.4.0
   just_audio: ^0.9.46
   audio_session: ^0.1.25
+  hugeicons: ^0.0.7
 
 dev_dependencies:
   flutter_test:

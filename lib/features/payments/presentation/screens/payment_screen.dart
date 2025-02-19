@@ -8,8 +8,6 @@ import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_state.dart';
 import 'package:cleancode_app/features/payments/presentation/widgets/create_form.dart';
 import 'package:cleancode_app/features/payments/presentation/widgets/update_form.dart';
-import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
-import 'package:cleancode_app/features/users/presentation/bloc/user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -35,7 +33,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
-      overlayColor: Theme.of(context).cardColor.withOpacity(0.6),
+      overlayColor: Theme.of(context).cardColor.withOpacity(0.8),
       overlayWidgetBuilder: (_) {
         return Center(
           child: CircularProgressIndicator(),
@@ -91,14 +89,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Pagos'), 
-            centerTitle: true, 
+            title: const Text('Pagos'),
+            centerTitle: true,
             actions: [
-              IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))
+              IconButton(
+                  onPressed: () => showCreateModal(context),
+                  icon: Icon(Icons.add_rounded))
             ],
           ),
-          body: items.isNotEmpty || !context.loaderOverlay.visible
-              ? ListView.builder(
+          body: items.isEmpty
+              ? NotFound()
+              : ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
@@ -114,20 +115,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                       subtitle: Text(item.owner?.name ?? ''),
                       itemId: item.id!,
-                      onDelete:(context) {
+                      onDelete: (context) {
                         debugPrint("Item: ${item.id}");
-                        context.read<PaymentBloc>().add(DeletePayment(item.id!));
+                        context
+                            .read<PaymentBloc>()
+                            .add(DeletePayment(item.id!));
                       },
-                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
+                      onDismissed: () =>
+                          items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
-                        context.read<PaymentBloc>().add(DeletePayment(item.id!));
-                        await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
+                        context
+                            .read<PaymentBloc>()
+                            .add(DeletePayment(item.id!));
+                        await Future.delayed(
+                            Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
                     );
                   },
-                )
-              : NotFound(),
+                ),
         ),
       ),
     );
@@ -149,7 +155,9 @@ Future<void> showUpdateModal(BuildContext context, PaymentModel item) async {
         behavior: HitTestBehavior.opaque,
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
-          child: SimpleUpdateForm(item: item,),
+          child: SimpleUpdateForm(
+            item: item,
+          ),
         ),
       );
     },
@@ -157,7 +165,6 @@ Future<void> showUpdateModal(BuildContext context, PaymentModel item) async {
 }
 
 Future<void> showCreateModal(BuildContext context) async {
-  // context.read<UserBloc>().add(GetAllUsers());
 
   showModalBottomSheet(
     context: context,
