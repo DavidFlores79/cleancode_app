@@ -112,7 +112,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           Text(item.amount.toString()),
                         ],
                       ),
-                      subtitle: Text(item.owner.name ?? ''),
+                      subtitle: Text(item.owner?.name ?? ''),
                       itemId: item.id!,
                       onDelete:(context) {
                         debugPrint("Item: ${item.id}");

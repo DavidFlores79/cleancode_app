@@ -1,9 +1,9 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiConfig {
   static const String debugBaseUrl = 'http://192.168.152.72:3001'; // Reemplaza con la URL de tu API
   static const String productionBaseUrl = 'https://congreso-backend-production.up.railway.app'; // Reemplaza con la URL de tu API
-  static const String baseUrl = AppConstants.isDebug ? debugBaseUrl : productionBaseUrl; // Reemplaza con la URL de tu API
+  static const String baseUrl = kReleaseMode ? productionBaseUrl : debugBaseUrl; // Reemplaza con la URL de tu API
   static const String loginEndpoint = "${ApiConfig.baseUrl}/auth/login";
   static const String registerEndpoint = '${ApiConfig.baseUrl}/auth/register';
   static const String productsEndpoint = '${ApiConfig.baseUrl}/api/posters';

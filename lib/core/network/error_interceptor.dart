@@ -21,7 +21,7 @@ class ErrorInterceptor extends Interceptor {
         debugPrint("paso 1b");
         debugPrint("${err.response?.statusCode}");
         // Si hay algún error en el parseo, lanzamos una excepción genérica.
-        throw DioException(requestOptions: err.requestOptions, message: "Error desconocido (111)");
+        throw DioException(requestOptions: err.requestOptions, message: "Error desconocido (111) ${err.message}");
       }
     } else {
       // En caso de que no tengamos respuesta, mandamos un error generico.
