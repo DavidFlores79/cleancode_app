@@ -6,7 +6,6 @@ import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.
 import 'package:cleancode_app/features/payments/presentation/search/user_search_delegate.dart';
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
 import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
-import 'package:cleancode_app/features/users/presentation/bloc/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

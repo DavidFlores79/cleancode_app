@@ -76,7 +76,6 @@ class SearchUsersDelegate extends SearchDelegate<UserModel?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    debugPrint("Query ==================> $query");
     userBloc.add(SearchUsers(query));
 
     // Muestra sugerencias mientras el usuario escribe

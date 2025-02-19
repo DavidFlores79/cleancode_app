@@ -4,18 +4,18 @@ import 'package:cleancode_app/features/users/data/models/item_req_params.dart';
 import 'package:cleancode_app/service_locator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 abstract class UserApiService {
-    Future<Either> getAllItems();
-    Future<Either> searchItems(String query);
-    Future<Either> getItem(UserReqParams params);
-    Future<Either> postItem(UserReqParams params);
-    Future<Either> updateItem(UserReqParams params);
-    Future<Either> deleteItem(UserReqParams params);
+  Future<Either> getAllItems();
+  Future<Either> searchItems(String query);
+  Future<Either> getItem(UserReqParams params);
+  Future<Either> postItem(UserReqParams params);
+  Future<Either> updateItem(UserReqParams params);
+  Future<Either> deleteItem(UserReqParams params);
 }
 
 class UserApiServiceImpl implements UserApiService {
-
   @override
   Future<Either> getAllItems() async {
     try {
@@ -30,21 +30,25 @@ class UserApiServiceImpl implements UserApiService {
   @override
   Future<Either> getItem(UserReqParams params) async {
     try {
-      final response = await sl<DioClient>().get('${ApiConfig.usersEndpoint}/${params.id}');
+      final response =
+          await sl<DioClient>().get('${ApiConfig.usersEndpoint}/${params.id}');
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data?['msg'] ?? e.message; //nodejs & standar API
+      final message =
+          e.response?.data?['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }
 
-    @override
+  @override
   Future<Either> postItem(UserReqParams params) async {
     try {
-      final response = await sl<DioClient>().post(ApiConfig.usersEndpoint, data: params.toMap());
+      final response = await sl<DioClient>()
+          .post(ApiConfig.usersEndpoint, data: params.toMap());
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data['msg'] ?? e.message; //nodejs & standar API
+      final message =
+          e.response?.data['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }
@@ -52,10 +56,12 @@ class UserApiServiceImpl implements UserApiService {
   @override
   Future<Either> updateItem(UserReqParams params) async {
     try {
-      final response = await sl<DioClient>().put('${ApiConfig.usersEndpoint}/${params.id}', data: params.toMap());
+      final response = await sl<DioClient>()
+          .put('${ApiConfig.usersEndpoint}/${params.id}', data: params.toMap());
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data['msg'] ?? e.message; //nodejs & standar API
+      final message =
+          e.response?.data['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }
@@ -63,21 +69,26 @@ class UserApiServiceImpl implements UserApiService {
   @override
   Future<Either> deleteItem(UserReqParams params) async {
     try {
-      final response = await sl<DioClient>().delete('${ApiConfig.usersEndpoint}/${params.id}');
+      final response = await sl<DioClient>()
+          .delete('${ApiConfig.usersEndpoint}/${params.id}');
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data['msg'] ?? e.message; //nodejs & standar API
+      final message =
+          e.response?.data['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }
-  
+
   @override
   Future<Either> searchItems(String query) async {
-   try {
-      final response = await sl<DioClient>().post('${ApiConfig.searchEndpoint}/users', data: { query: query });
+    final Map<String, dynamic> dataRaw = {"query": query};
+    try {
+      final response = await sl<DioClient>()
+          .post('${ApiConfig.searchEndpoint}/users', data: dataRaw);
       return Right(response);
     } on DioException catch (e) {
-      final message = e.response?.data?['msg'] ?? e.message; //nodejs & standar API
+      final message =
+          e.response?.data?['msg'] ?? e.message; //nodejs & standar API
       return Left(message);
     }
   }
