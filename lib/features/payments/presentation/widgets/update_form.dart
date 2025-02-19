@@ -9,7 +9,9 @@ import 'package:cleancode_app/features/payment_methods/presentation/bloc/payment
 import 'package:cleancode_app/features/payments/data/models/payment_model.dart';
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_bloc.dart';
 import 'package:cleancode_app/features/payments/presentation/bloc/payment_event.dart';
+import 'package:cleancode_app/features/payments/presentation/search/user_search_delegate.dart';
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:cleancode_app/features/users/presentation/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +27,8 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   final _commentsController = TextEditingController();
+  final _amountController = TextEditingController();
+  final _ownerController = TextEditingController();
   bool _isActive = false; // Estado del switch
   List<UserModel> users = [];
   List<PaymentMethodModel> options = [];
@@ -34,10 +38,15 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
   @override
   void initState() {
     context.read<PaymentMethodBloc>().add(GetAllPaymentMethods());
+    _intializeFormValues();
+    super.initState();
+  }
+
+  void _intializeFormValues() {
     _descriptionController.text = widget.item.description!;
     _commentsController.text = widget.item.comments!;
+    _amountController.text = widget.item.amount.toString();
     _isActive = widget.item.status!;
-    super.initState();
   }
 
   @override
@@ -47,13 +56,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
         BlocListener<PaymentMethodBloc, PaymentMethodState>(
           listener: (context, state) {
             if (state is GetAllPaymentMethodsSuccessState) {
-              setState(() {
-                final currentOwner = (widget.item.owner is String) ? widget.item.owner : widget.item.owner as User;
-                final currentMethod = (widget.item.paymentMethod is String) ? widget.item.paymentMethod : widget.item.paymentMethod as PaymentMethodModel;
-                selectedPaymentMethodId = currentMethod.id!;
-                selectedUserId = currentOwner.id!;
-                options = state.items;
-              });
+              _initializeSelectValues(state);
             }
           },
         ),
@@ -64,6 +67,35 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
           key: _formKey,
           child: Column(
             children: [
+              CustomInputField(
+                onTap: () async {
+                  selectedUserId = '';
+                  _ownerController.text = '';
+                  final user = await showSearch(
+                    context: context,
+                    delegate: SearchUsersDelegate(
+                      userBloc: context.read<UserBloc>(),
+                    ),
+                  );
+                  if (user is UserModel) {
+                    selectedUserId = user.id.toString();
+                    _ownerController.text = user.name.toString();
+                  }
+                },
+                suffixIcon: Icon(Icons.search),
+                readOnly: true,
+                labelText: 'Cliente',
+                hintText: 'Buscar usuario...',
+                maxLines: 1,
+                controller: _ownerController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'El Cliente es obligatorio';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
               // Campo para el nombre usando CustomInputField
               CustomInputField(
                 labelText: 'Concepto',
@@ -73,6 +105,20 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'El concepto es obligatorio';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              CustomInputField(
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                labelText: 'Cantidad',
+                hintText: 'Ingresa la cantidad',
+                maxLines: 1,
+                controller: _amountController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'La cantidad es obligatoria';
                   }
                   return null;
                 },
@@ -143,7 +189,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                         id: widget.item.id,
                         owner: selectedUserId,
                         paymentMethod: selectedPaymentMethodId,
-                        amount: 0,
+                        amount: double.tryParse(_amountController.text),
                         description: _descriptionController.text,
                         comments: _commentsController.text,
                         status: _isActive,
@@ -158,5 +204,16 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
         ),
       ),
     );
+  }
+
+  void _initializeSelectValues(GetAllPaymentMethodsSuccessState state) {
+    setState(() {
+      final currentOwner = (widget.item.owner is String) ? widget.item.owner : widget.item.owner as User;
+      final currentMethod = (widget.item.paymentMethod is String) ? widget.item.paymentMethod : widget.item.paymentMethod as PaymentMethodModel;
+      _ownerController.text = (widget.item.owner is String) ? currentOwner : currentOwner.name;
+      selectedPaymentMethodId = (widget.item.paymentMethod is String) ? currentMethod : currentMethod.id!;
+      selectedUserId = currentOwner.id!;
+      options = state.items;
+    });
   }
 }

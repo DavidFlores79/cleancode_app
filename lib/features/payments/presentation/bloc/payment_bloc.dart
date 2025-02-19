@@ -75,7 +75,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         paymentMethod: event.item.paymentMethod,
         amount: event.item.amount,
         owner: event.item.owner,
-        comments: event.item.description,
+        comments: event.item.comments,
         status: event.item.status,
       ),
     );

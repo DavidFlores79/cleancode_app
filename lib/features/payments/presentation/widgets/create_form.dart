@@ -26,6 +26,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
   final _ownerController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _commentsController = TextEditingController();
+  final _amountController = TextEditingController();
   bool _isActive = true; // Estado del switch
   List<UserModel> users = [];
   List<PaymentMethodModel> options = [];
@@ -105,13 +106,14 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
               ),
               SizedBox(height: 20),
               CustomInputField(
-                labelText: 'Comentarios',
-                hintText: 'Ingresa algún comentario',
-                maxLines: 2,
-                controller: _commentsController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                labelText: 'Cantidad',
+                hintText: 'Ingresa la cantidad',
+                maxLines: 1,
+                controller: _amountController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Comentarios es obligatorio';
+                    return 'La cantidad es obligatoria';
                   }
                   return null;
                 },
@@ -144,6 +146,19 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                 ),
               ),
               SizedBox(height: 20),
+              CustomInputField(
+                labelText: 'Comentarios',
+                hintText: 'Ingresa algún comentario',
+                maxLines: 2,
+                controller: _commentsController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Comentarios es obligatorio';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
               // Switch para activar/desactivar el estado
               Row(
                 children: [
@@ -171,7 +186,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                       description: _descriptionController.text,
                       comments: _commentsController.text,
                       paymentMethod: selectedPaymentMethodId,
-                      amount: 0,
+                      amount: double.tryParse(_amountController.text),
                       status: _isActive,
                     );
                     debugPrint('Crear - Datos del Registro: ${data.toJson()}');
