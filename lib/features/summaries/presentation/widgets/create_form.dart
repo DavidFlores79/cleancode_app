@@ -34,6 +34,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.text,
               labelText: 'Título',
               hintText: 'Ingresa el título',
               maxLines: 1,
@@ -47,6 +48,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
             ),
             SizedBox(height: 20),
             CustomInputField(
+              keyboardType: TextInputType.text,
               labelText: 'Comentarios',
               hintText: 'Ingresa algún comentario',
               maxLines: 5,
@@ -88,8 +90,8 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                     );
                     debugPrint('Crear - Datos del Registro: $data');
                     context.read<SummaryBloc>().add(CreateSummary(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

@@ -33,6 +33,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.name,
               labelText: 'Nombre',
               hintText: 'Ingresa el nombre',
               maxLines: 5,
@@ -73,8 +74,8 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                     );
                     debugPrint('Crear - Datos del Registro: $data');
                     context.read<PaymentMethodBloc>().add(CreatePaymentMethod(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

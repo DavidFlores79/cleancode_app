@@ -17,6 +17,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _isActive = true; // Estado del switch
 
   @override
@@ -34,6 +35,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.name,
               labelText: 'Nombre',
               hintText: 'Ingresa el nombre',
               maxLines: 1,
@@ -47,6 +49,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
             ),
             SizedBox(height: 20),
             CustomInputField(
+              keyboardType: TextInputType.emailAddress,
               labelText: 'Email',
               hintText: 'Ingresa el correo',
               maxLines: 1,
@@ -55,6 +58,36 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                 if (value == null || value.isEmpty) {
                   return 'Email es obligatorio';
                 }
+                // Expresión regular para validar email
+                final emailRegExp =
+                    RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+                if (!emailRegExp.hasMatch(value)) {
+                  return 'Ingresa un correo válido';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20),
+            CustomInputField(
+              obscureText: true,
+              keyboardType: TextInputType.text,
+              labelText: 'Password',
+              hintText: 'Ingresa su contraseña',
+              maxLines: 1,
+              controller: _passwordController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'La Contraseña es obligatoria';
+                }
+                // Expresión regular para validar contraseña segura
+                final passwordRegExp =
+                    RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+
+                if (!passwordRegExp.hasMatch(value)) {
+                  return '1 mayúscula 1 minúscula y 1 número (8 caracteres)';
+                }
+
                 return null;
               },
             ),
@@ -88,8 +121,8 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                     );
                     debugPrint('Crear - Datos del Registro: $data');
                     context.read<UserBloc>().add(CreateUser(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

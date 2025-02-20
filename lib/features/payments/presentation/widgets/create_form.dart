@@ -43,10 +43,9 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<PaymentMethodBloc,PaymentMethodState>(
-          listener:(context, state) {
-
-            if(state is GetAllPaymentMethodsSuccessState) {
+        BlocListener<PaymentMethodBloc, PaymentMethodState>(
+          listener: (context, state) {
+            if (state is GetAllPaymentMethodsSuccessState) {
               setState(() {
                 options = state.items;
                 selectedPaymentMethodId = options.first.id!;
@@ -80,19 +79,20 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                 },
                 suffixIcon: Icon(Icons.search),
                 readOnly: true,
-                labelText: 'Cliente',
+                labelText: 'Usuario',
                 hintText: 'Buscar usuario...',
                 maxLines: 1,
                 controller: _ownerController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'El Cliente es obligatorio';
+                    return 'El Usuario es obligatorio';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 20),
               CustomInputField(
+                keyboardType: TextInputType.text,
                 labelText: 'Concepto',
                 hintText: 'Ingresa el concepto',
                 maxLines: 1,
@@ -115,6 +115,15 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                   if (value == null || value.isEmpty) {
                     return 'La cantidad es obligatoria';
                   }
+                  final amount = double.tryParse(value);
+
+                  if (amount == null) {
+                    return 'Ingresa un número válido';
+                  }
+
+                  if (amount <= 0) {
+                    return 'La cantidad debe ser mayor a 0';
+                  }
                   return null;
                 },
               ),
@@ -122,7 +131,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: ColorConstants.grey),
-                   borderRadius: BorderRadius.circular(8), // Borde redondeado
+                  borderRadius: BorderRadius.circular(8), // Borde redondeado
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 child: DropdownButton<String>(
@@ -130,14 +139,14 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                   underline: SizedBox(),
                   value: selectedPaymentMethodId,
                   hint: Text('Mètodo de Pago'),
-                  onChanged:(value) {
+                  onChanged: (value) {
                     debugPrint("Valor escogido: $value");
                     setState(() {
-                      if(value != null) selectedPaymentMethodId = value;
-                      
+                      if (value != null) selectedPaymentMethodId = value;
                     });
                   },
-                  items: options.map<DropdownMenuItem<String>>((PaymentMethodModel option) {
+                  items: options.map<DropdownMenuItem<String>>(
+                      (PaymentMethodModel option) {
                     return DropdownMenuItem<String>(
                       value: option.id,
                       child: Text(option.name ?? ''),
@@ -147,6 +156,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
               ),
               SizedBox(height: 20),
               CustomInputField(
+                keyboardType: TextInputType.text,
                 labelText: 'Comentarios',
                 hintText: 'Ingresa algún comentario',
                 maxLines: 2,
@@ -191,8 +201,8 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                     );
                     debugPrint('Crear - Datos del Registro: ${data.toJson()}');
                     context.read<PaymentBloc>().add(CreatePayment(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 },
               ),
             ],

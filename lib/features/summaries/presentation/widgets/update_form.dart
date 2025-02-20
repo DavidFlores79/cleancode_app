@@ -38,6 +38,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.name,
               labelText: 'Título',
               hintText: 'Ingresa el título',
               maxLines: 1,
@@ -51,6 +52,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             ),
             SizedBox(height: 20),
             CustomInputField(
+              keyboardType: TextInputType.emailAddress,
               labelText: 'Comentarios',
               hintText: 'Ingresa algún comentario',
               maxLines: 5,
@@ -92,8 +94,8 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                     );
                     debugPrint('Update - Datos del Registro: ${data.toJson()}');
                     context.read<SummaryBloc>().add(UpdateSummary(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

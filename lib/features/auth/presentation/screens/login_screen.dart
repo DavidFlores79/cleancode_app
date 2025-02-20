@@ -50,11 +50,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextFormField(
+                    keyboardType: TextInputType.name,
                     controller: _emailController,
                     decoration: const InputDecoration(labelText: 'Email'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, ingresa tu email';
+                      }
+                      // Expresión regular para validar email
+                      final emailRegExp = RegExp(
+                          r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+                      if (!emailRegExp.hasMatch(value)) {
+                        return 'Ingresa un correo válido';
                       }
                       return null;
                     },

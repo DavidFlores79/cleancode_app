@@ -36,6 +36,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
           children: [
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.name,
               labelText: 'Nombre',
               hintText: 'Ingresa el nombre',
               maxLines: 5,
@@ -76,8 +77,8 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                     );
                     debugPrint('Update - Datos del Registro: $data');
                     context.read<PaymentMethodBloc>().add(UpdatePaymentMethod(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

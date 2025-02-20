@@ -49,6 +49,24 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
     _isActive = widget.item.status!;
   }
 
+  void _initializeSelectValues(GetAllPaymentMethodsSuccessState state) {
+    setState(() {
+      final currentOwner = (widget.item.owner is String)
+          ? widget.item.owner
+          : widget.item.owner as User;
+      final currentMethod = (widget.item.paymentMethod is String)
+          ? widget.item.paymentMethod
+          : widget.item.paymentMethod as PaymentMethodModel;
+      _ownerController.text =
+          (widget.item.owner is String) ? currentOwner : currentOwner.name;
+      selectedPaymentMethodId = (widget.item.paymentMethod is String)
+          ? currentMethod
+          : currentMethod.id!;
+      selectedUserId = currentOwner.id!;
+      options = state.items;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -69,8 +87,8 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             children: [
               CustomInputField(
                 onTap: () async {
-                  selectedUserId = '';
-                  _ownerController.text = '';
+                  // selectedUserId = '';
+                  // _ownerController.text = '';
                   final user = await showSearch(
                     context: context,
                     delegate: SearchUsersDelegate(
@@ -84,13 +102,13 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                 },
                 suffixIcon: Icon(Icons.search),
                 readOnly: true,
-                labelText: 'Cliente',
+                labelText: 'Usuario',
                 hintText: 'Buscar usuario...',
                 maxLines: 1,
                 controller: _ownerController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'El Cliente es obligatorio';
+                    return 'El Usuario es obligatorio';
                   }
                   return null;
                 },
@@ -98,6 +116,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
               SizedBox(height: 20),
               // Campo para el nombre usando CustomInputField
               CustomInputField(
+                keyboardType: TextInputType.text,
                 labelText: 'Concepto',
                 hintText: 'Ingresa el concepto de pago',
                 maxLines: 1,
@@ -120,11 +139,19 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                   if (value == null || value.isEmpty) {
                     return 'La cantidad es obligatoria';
                   }
+                  final amount = double.tryParse(value);
+                  if (amount == null) {
+                    return 'Ingresa un número válido';
+                  }
+                  if (amount <= 0) {
+                    return 'La cantidad debe ser mayor a 0';
+                  }
                   return null;
                 },
               ),
               SizedBox(height: 20),
               CustomInputField(
+                keyboardType: TextInputType.text,
                 labelText: 'Comentarios',
                 hintText: 'Ingresa algún comentario',
                 maxLines: 2,
@@ -140,7 +167,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: ColorConstants.grey),
-                   borderRadius: BorderRadius.circular(8), // Borde redondeado
+                  borderRadius: BorderRadius.circular(8), // Borde redondeado
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 child: DropdownButton<String>(
@@ -148,14 +175,14 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                   underline: SizedBox(),
                   value: selectedPaymentMethodId,
                   hint: Text('Mètodo de Pago'),
-                  onChanged:(value) {
+                  onChanged: (value) {
                     debugPrint("Valor escogido: $value");
                     setState(() {
-                      if(value != null) selectedPaymentMethodId = value;
-                      
+                      if (value != null) selectedPaymentMethodId = value;
                     });
                   },
-                  items: options.map<DropdownMenuItem<String>>((PaymentMethodModel option) {
+                  items: options.map<DropdownMenuItem<String>>(
+                      (PaymentMethodModel option) {
                     return DropdownMenuItem<String>(
                       value: option.id,
                       child: Text(option.name ?? ''),
@@ -196,24 +223,13 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                       );
                       debugPrint('Update - Datos del Registro: $data');
                       context.read<PaymentBloc>().add(UpdatePayment(data));
+                      Navigator.pop(context);
                     }
-                    Navigator.pop(context);
                   }),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _initializeSelectValues(GetAllPaymentMethodsSuccessState state) {
-    setState(() {
-      final currentOwner = (widget.item.owner is String) ? widget.item.owner : widget.item.owner as User;
-      final currentMethod = (widget.item.paymentMethod is String) ? widget.item.paymentMethod : widget.item.paymentMethod as PaymentMethodModel;
-      _ownerController.text = (widget.item.owner is String) ? currentOwner : currentOwner.name;
-      selectedPaymentMethodId = (widget.item.paymentMethod is String) ? currentMethod : currentMethod.id!;
-      selectedUserId = currentOwner.id!;
-      options = state.items;
-    });
   }
 }

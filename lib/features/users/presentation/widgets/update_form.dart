@@ -46,6 +46,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             const SizedBox(height: 30),
             // Campo para el nombre usando CustomInputField
             CustomInputField(
+              keyboardType: TextInputType.name,
               labelText: 'Nombre',
               hintText: 'Ingresa el nombre',
               maxLines: 1,
@@ -59,6 +60,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
             ),
             SizedBox(height: 20),
             CustomInputField(
+              keyboardType: TextInputType.emailAddress,
               labelText: 'Email',
               hintText: 'Ingresa el correo',
               maxLines: 1,
@@ -66,6 +68,13 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Email es obligatorio';
+                }
+                // Expresión regular para validar email
+                final emailRegExp =
+                    RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+                if (!emailRegExp.hasMatch(value)) {
+                  return 'Ingresa un correo válido';
                 }
                 return null;
               },
@@ -101,8 +110,8 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                     );
                     debugPrint('Update - Datos del Registro: ${data.toJson()}');
                     context.read<UserBloc>().add(UpdateUser(data));
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }),
           ],
         ),

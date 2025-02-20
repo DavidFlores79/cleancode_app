@@ -96,8 +96,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               IconButton(onPressed:() => showCreateModal(context), icon: Icon(Icons.add_rounded))
             ],
           ),
-          body: items.isNotEmpty || !context.loaderOverlay.visible
-              ? ListView.builder(
+          body: items.isNotEmpty ? ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
