@@ -49,7 +49,7 @@ class CustomListTile extends StatelessWidget {
             backgroundColor: ColorConstants.red,
             foregroundColor: ColorConstants.white,
             icon: Icons.delete,
-            label: 'Delete',
+            label: 'Eliminar',
           ),
         ],
       ),
@@ -62,7 +62,6 @@ class CustomListTile extends StatelessWidget {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
