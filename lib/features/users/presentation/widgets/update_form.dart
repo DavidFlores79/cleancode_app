@@ -106,6 +106,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
                       image: widget.item.image,
                       name: _nameController.text,
                       email: _emailController.text,
+                      role: widget.item.role.id,
                       status: _isActive,
                     );
                     debugPrint('Update - Datos del Registro: ${data.toJson()}');

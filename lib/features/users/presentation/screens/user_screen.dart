@@ -1,4 +1,6 @@
 import 'package:cleancode_app/core/constants/app_constants.dart';
+import 'package:cleancode_app/core/constants/color_constants.dart';
+import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
@@ -93,8 +95,9 @@ class _UserScreenState extends State<UserScreen> {
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => showCreateModal(context),
-                  icon: Icon(Icons.add_rounded))
+                onPressed: () => showCreateModal(context),
+                icon: Icon(Icons.add_rounded),
+              )
             ],
           ),
           body: items.isNotEmpty
@@ -106,14 +109,30 @@ class _UserScreenState extends State<UserScreen> {
                       status: item.status ?? false,
                       onTap: () => showUpdateModal(context, item),
                       leading: SizedBox(
-                        height: 50,
-                        width: 50,
+                        height: 30,
+                        width: 30,
                         child: CircleAvatar(
                           backgroundImage: NetworkImage('${item.image}'),
                         ),
                       ),
-                      title: Text(item.name ?? ''),
-                      subtitle: Text(item.email ?? ''),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.name ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          UserRoleLabel(item: item),
+                        ],
+                      ),
+                      subtitle: Text(
+                        item.email ?? '',
+                        style: TextStyle(color: ColorConstants.grey),
+                      ),
                       itemId: item.id!,
                       onDelete: (context) {
                         debugPrint("Item: ${item.id}");
@@ -137,9 +156,34 @@ class _UserScreenState extends State<UserScreen> {
   }
 }
 
-Future<void> showUpdateModal(BuildContext context, UserModel item) async {
-  // context.read<UserBloc>().add(GetOneUser(item.id!));
+class UserRoleLabel extends StatelessWidget {
+  const UserRoleLabel({
+    super.key,
+    required this.item,
+  });
 
+  final UserModel item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 95, 95, 95),
+          borderRadius: BorderRadius.circular(10)),
+      child: Text(
+        item.role.name.replaceAll('_ROLE', '') ?? '',
+        style: TextStyle(
+          color: ColorConstants.white,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+Future<void> showUpdateModal(BuildContext context, UserModel item) async {
   showModalBottomSheet(
     context: context,
     sheetAnimationStyle: AnimationStyle(duration: Duration(seconds: 1)),
