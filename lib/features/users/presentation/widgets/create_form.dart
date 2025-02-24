@@ -117,9 +117,10 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                       id: '0',
                       name: _nameController.text,
                       email: _emailController.text,
+                      password: _passwordController.text,
                       status: _isActive,
                     );
-                    debugPrint('Crear - Datos del Registro: $data');
+                    debugPrint('Crear - Datos del Registro: ${data.toJson()}');
                     context.read<UserBloc>().add(CreateUser(data));
                     Navigator.pop(context);
                   }

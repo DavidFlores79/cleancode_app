@@ -127,8 +127,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         context
                             .read<PaymentBloc>()
                             .add(DeletePayment(item.id!));
-                        await Future.delayed(
-                            Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
                     );

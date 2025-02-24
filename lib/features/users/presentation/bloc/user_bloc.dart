@@ -77,8 +77,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         id: '',
         name: event.item.name,
         email: event.item.email,
+        password: event.item.password,
         image: event.item.image,
-        role: event.item.role,
         status: event.item.status,
       ),
     );
@@ -100,7 +100,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       name: event.item.name,
         email: event.item.email,
         image: event.item.image,
-        role: event.item.role,
         status: event.item.status,
     ));
     result.fold(

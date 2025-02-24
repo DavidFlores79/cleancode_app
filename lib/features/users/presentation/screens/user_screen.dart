@@ -1,6 +1,5 @@
 import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/constants/color_constants.dart';
-import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';
@@ -138,12 +137,10 @@ class _UserScreenState extends State<UserScreen> {
                         debugPrint("Item: ${item.id}");
                         context.read<UserBloc>().add(DeleteUser(item.id!));
                       },
-                      onDismissed: () =>
-                          items.removeWhere((element) => element.id == item.id),
+                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
                       confirmDismiss: () async {
                         context.read<UserBloc>().add(DeleteUser(item.id!));
-                        await Future.delayed(
-                            Duration(seconds: AppConstants.deleteSecondsDelay));
+                        // await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
                         return isDeleted;
                       },
                     );

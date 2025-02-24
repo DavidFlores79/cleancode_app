@@ -42,6 +42,7 @@ class UserApiServiceImpl implements UserApiService {
 
   @override
   Future<Either> postItem(UserReqParams params) async {
+    debugPrint("${params.toMap()}");
     try {
       final response = await sl<DioClient>()
           .post(ApiConfig.usersEndpoint, data: params.toMap());

@@ -88,7 +88,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                       comments: _commentsController.text,
                       status: _isActive,
                     );
-                    debugPrint('Crear - Datos del Registro: $data');
+                    debugPrint('Crear - Datos del Registro: ${data.toJson()}');
                     context.read<SummaryBloc>().add(CreateSummary(data));
                     Navigator.pop(context);
                   }

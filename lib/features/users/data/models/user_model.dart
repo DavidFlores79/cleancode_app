@@ -4,6 +4,7 @@ class UserModel {
     String? id;
     String? name;
     String? email;
+    String? password;
     String? image;
     dynamic role;
     bool? status;
@@ -15,6 +16,7 @@ class UserModel {
         this.id,
         this.name,
         this.email,
+        this.password,
         this.image,
         this.role,
         this.status,
@@ -31,6 +33,7 @@ class UserModel {
         id: json["_id"],
         name: json["name"],
         email: json["email"],
+        password: json["password"],
         image: json["image"],
         role: json["role"] == null
             ? null
@@ -47,6 +50,7 @@ class UserModel {
         "_id": id,
         "name": name,
         "email": email,
+        "password": password,
         "image": image,
         "role": role is Role
             ? (role as Role).toMap() // Si es un Role, lo convertimos a Map

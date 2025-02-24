@@ -72,7 +72,7 @@ class SimpleCreateFormState extends State<SimpleCreateForm> {
                       name: _nameController.text,
                       status: _isActive,
                     );
-                    debugPrint('Crear - Datos del Registro: $data');
+                    debugPrint('Crear - Datos del Registro: ${data.toJson()}');
                     context.read<CategoryBloc>().add(CreateCategory(data));
                     Navigator.pop(context);
                   }
