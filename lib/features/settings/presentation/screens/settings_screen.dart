@@ -13,7 +13,6 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Settings')),
       body: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
-          print("Rebuilding SettingsScreen with state: ${state.isDarkMode}");
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [

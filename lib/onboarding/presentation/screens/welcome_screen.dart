@@ -1,5 +1,5 @@
-import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/core/widgets/custom_button.dart';
+import 'package:cleancode_app/core/widgets/custom_icon_button.dart';
 import 'package:cleancode_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,17 +18,17 @@ class WelcomeScreen extends StatelessWidget {
               Image.asset('assets/images/economics.png', width: 200),
               SizedBox(height: 20),
               Text(
-                'Welcome to TGD!',
+                'Welcome to Mi Empresa!',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
-              Text(
-                'A one-stop portal for you to learn the latest technologies from SCRATCH',
+              Text('Este es mi slogan o una presentación, algo que se tenga que poner para la presentación',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 30),
-              CustomButton(
+              CustomIconButton(
+                icon: Icons.arrow_forward_ios_rounded,
                 text: 'Iniciar',
                 onPressed: () {
                   Navigator.push(

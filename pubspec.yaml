@@ -27,6 +27,8 @@ dependencies:
   just_audio: ^0.9.46
   audio_session: ^0.1.25
   hugeicons: ^0.0.7
+  font_awesome_flutter: ^10.8.0
+  rive_animated_icon: ^2.0.3
 
 dev_dependencies:
   flutter_test:

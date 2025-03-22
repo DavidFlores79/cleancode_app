@@ -1,6 +1,3 @@
-import 'package:cleancode_app/core/constants/color_constants.dart';
-import 'package:cleancode_app/core/theme/theme_manager.dart';
-import 'package:cleancode_app/main.dart';
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatelessWidget {
