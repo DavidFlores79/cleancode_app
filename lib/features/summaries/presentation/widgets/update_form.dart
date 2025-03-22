@@ -23,7 +23,7 @@ class SimpleUpdateFormState extends State<SimpleUpdateForm> {
   @override
   void initState() {
     _titleController.text = widget.item.title!;
-    _commentsController.text = widget.item.comments!;
+    _commentsController.text = widget.item.comments ?? '';
     _isActive = widget.item.status!;
     super.initState();
   }

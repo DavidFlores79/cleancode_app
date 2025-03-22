@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/widgets/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -49,10 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
+                  CustomInputField(
                     keyboardType: TextInputType.name,
                     controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, ingresa tu email';
@@ -66,6 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     },
+                    labelText: 'Email',
+                    hintText: 'Ingresa tu Email',
                   ),
                   TextFormField(
                     controller: _passwordController,

@@ -1,30 +1,30 @@
-part of 'settings_bloc.dart';
+part of 'theme_bloc.dart';
 
-class SettingsState {
+class ThemeState {
   final bool isDarkMode;
   final Color primaryBgColor;
   final Color primaryTxtColor;
 
-  const SettingsState({
+  const ThemeState({
     required this.isDarkMode,
     required this.primaryBgColor,
     required this.primaryTxtColor,
   });
 
-  factory SettingsState.initial() {
-    return SettingsState(
+  factory ThemeState.initial() {
+    return ThemeState(
       isDarkMode: false,
       primaryBgColor: ColorConstants.primaryBgColor,
       primaryTxtColor: ColorConstants.primaryTxtColor,
     );
   }
 
-  SettingsState copyWith({
+  ThemeState copyWith({
     bool? isDarkMode,
     Color? primaryBgColor,
     Color? primaryTxtColor,
   }) {
-    return SettingsState(
+    return ThemeState(
       isDarkMode: isDarkMode ?? this.isDarkMode,
       primaryBgColor: primaryBgColor ?? this.primaryBgColor,
       primaryTxtColor: primaryTxtColor ?? this.primaryTxtColor,

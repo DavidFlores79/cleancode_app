@@ -1,4 +1,3 @@
-import 'package:cleancode_app/core/constants/app_constants.dart';
 import 'package:cleancode_app/core/utils/app_utils.dart';
 import 'package:cleancode_app/core/widgets/custom_listtile.dart';
 import 'package:cleancode_app/core/widgets/not_found.dart';

@@ -1,5 +1,5 @@
-import 'package:cleancode_app/core/constants/color_constants.dart';
 import 'package:cleancode_app/core/domain/usecases/search_users_usecase.dart';
+import 'package:cleancode_app/core/theme/presentation/bloc/theme_bloc.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:cleancode_app/features/categories/domain/usecases/create_category_usecase.dart';
@@ -45,7 +45,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cleancode_app/core/network/dio_client.dart';
-import 'package:cleancode_app/core/theme/theme_manager.dart';
 import 'package:cleancode_app/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:cleancode_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:cleancode_app/features/auth/domain/repositories/auth_repository.dart';
@@ -60,6 +59,7 @@ final getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  getIt.registerFactory<ThemeBloc>(() => ThemeBloc());
 
   // Configuración de dependencias con GetIt
   final dioClient = DioClient();
@@ -99,30 +99,14 @@ void main() async {
   const storage = FlutterSecureStorage();
   getIt.registerSingleton<FlutterSecureStorage>(storage);
 
-  final themeManager = ThemeManager();
-  getIt.registerSingleton<ThemeManager>(themeManager);
-
   final navigatorKey = GlobalKey<NavigatorState>();
   getIt.registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
 
-  bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  String? primaryBgColorString = prefs.getString(ColorConstants.primaryColorName);
-  String? primaryTxtColorString = prefs.getString(ColorConstants.primaryTxtColorName);
-
-  Color primaryBgColor = ColorConstants.primaryBgColor;
-  if (primaryBgColorString != null) {
-    primaryBgColor = Color(int.parse(primaryBgColorString));
-  }
-  Color primaryTxtColor = ColorConstants.primaryTxtColor;
-  if (primaryTxtColorString != null) {
-    primaryTxtColor = Color(int.parse(primaryTxtColorString));
-  }
-
-  themeManager.initTheme(isDarkMode, primaryBgColor, primaryTxtColor);
   setupServiceLocator();
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => getIt<ThemeBloc>()),
         BlocProvider(create: (context) => SettingsBloc()),
         BlocProvider(
           create: (context) => AuthBloc(

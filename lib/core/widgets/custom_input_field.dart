@@ -1,4 +1,6 @@
 import 'package:cleancode_app/core/constants/color_constants.dart';
+import 'package:cleancode_app/core/theme/theme_manager.dart';
+import 'package:cleancode_app/main.dart';
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatelessWidget {
@@ -29,6 +31,7 @@ class CustomInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return TextFormField(
       onTap: onTap,
       readOnly: readOnly,
@@ -39,10 +42,13 @@ class CustomInputField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(
-          color: ColorConstants.grey
+          color: const Color.fromARGB(255, 142, 142, 142)
         ),
         alignLabelWithHint: true,
         hintText: hintText,
+        hintStyle: TextStyle(
+          color: const Color.fromARGB(255, 142, 142, 142)
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

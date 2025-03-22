@@ -33,7 +33,8 @@ class CustomBigButton extends StatelessWidget {
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.w400
+            fontWeight: FontWeight.w400,
+            fontSize: 24.0, // Ajusta el tamaño de la fuente aquí
          ),
        )
     );
