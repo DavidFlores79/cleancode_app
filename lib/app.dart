@@ -22,6 +22,8 @@ import 'package:cleancode_app/features/home/presentation/screens/home_screen.dar
 import 'package:cleancode_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:logger/logger.dart';
 
+import 'core/widgets/main_layout.dart';
+
 final navigatorKey = GetIt.I<GlobalKey<NavigatorState>>();
 
 final _router = GoRouter(
@@ -34,7 +36,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => MainLayout(child: const LoginScreen()),
     ),
     GoRoute(
       path: '/register',
@@ -42,7 +44,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => MainLayout(child: const HomeScreen()),
     ),
     GoRoute(
       path: '/users',
