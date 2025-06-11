@@ -22,13 +22,17 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   UserModel item = UserModel();
-  List<UserModel> items = [];
-  bool isDeleted = false;
+  // List<UserModel> items = []; // Replaced by allLoadedUsers
+  List<UserModel> allLoadedUsers = [];
+  bool isLoadingMore = false;
+  bool canLoadMore = true;
+  bool isDeleted = false; // Keep for delete logic
 
   @override
   void initState() {
     super.initState();
-    context.read<UserBloc>().add(GetAllUsers());
+    // Load first page
+    context.read<UserBloc>().add(GetAllUsers(page: 1, pageSize: AppConstants.defaultPageSize));
   }
 
   @override
@@ -46,44 +50,56 @@ class _UserScreenState extends State<UserScreen> {
             listener: (context, state) {
               if (state is UserLoadingState) {
                 context.loaderOverlay.show();
-              }
-
-              if (state is UserFailureState) {
+                setState(() {
+                  allLoadedUsers.clear();
+                  isLoadingMore = false;
+                  canLoadMore = true; // Reset on initial load
+                });
+              } else if (state is GetAllUsersSuccessState) {
                 context.loaderOverlay.hide();
+                setState(() {
+                  // Assuming pageableUsers.data is List<User> (domain entities)
+                  // and we need to map them to UserModel for the UI list.
+                  allLoadedUsers = state.pageableUsers.data.map((e) => UserModel.fromDomain(e)).toList();
+                  isLoadingMore = false;
+                  canLoadMore = allLoadedUsers.length < state.pageableUsers.totalItems;
+                });
+              } else if (state is UserLoadingMoreState) {
+                setState(() {
+                  isLoadingMore = true;
+                });
+              } else if (state is UserMaxReachedState) {
+                context.loaderOverlay.hide();
+                setState(() {
+                  allLoadedUsers = state.pageableUsers.data.map((e) => UserModel.fromDomain(e)).toList();
+                  isLoadingMore = false;
+                  canLoadMore = false;
+                });
+              } else if (state is UserFailureState) {
+                context.loaderOverlay.hide();
+                setState(() {
+                  isLoadingMore = false;
+                });
                 AppUtils.showSnackBar(context, state.message);
-              }
+              } else if (state is GetOneUserSuccessState) {
+                  context.loaderOverlay.hide();
+              } else if (state is UpdateUserSuccessState) {
+                context.loaderOverlay.hide();
+                // Refresh the list or update the specific item
+                // For simplicity, dispatching GetAllUsers to refresh.
+                // A more sophisticated approach would update the item in allLoadedUsers directly.
+                context.read<UserBloc>().add(GetAllUsers(page: 1, pageSize: AppConstants.defaultPageSize));
 
-              if (state is GetAllUsersSuccessState) {
-                setState(() {
-                  items = state.items;
-                  context.loaderOverlay.hide();
-                });
-              }
-              if (state is GetOneUserSuccessState) {
-                setState(() {
-                  context.loaderOverlay.hide();
-                });
-              }
-              if (state is UpdateUserSuccessState) {
-                setState(() {
-                  context.loaderOverlay.hide();
-                  int index =
-                      items.indexWhere((item) => item.id == state.item.id);
-                  if (index != -1) items[index] = state.item;
-                });
-              }
-              if (state is CreateUserSuccessState) {
-                setState(() {
-                  context.loaderOverlay.hide();
-                  items.add(state.item);
-                });
-              }
-              if (state is DeleteUserSuccessState) {
-                setState(() {
-                  context.loaderOverlay.hide();
-                  isDeleted = true;
-                  context.read<UserBloc>().add(GetAllUsers());
-                });
+              } else if (state is CreateUserSuccessState) {
+                 context.loaderOverlay.hide();
+                 // Refresh the list
+                 context.read<UserBloc>().add(GetAllUsers(page: 1, pageSize: AppConstants.defaultPageSize));
+
+              } else if (state is DeleteUserSuccessState) {
+                context.loaderOverlay.hide();
+                isDeleted = true; // Assuming isDeleted is part of your delete confirmation logic
+                // Refresh the list. Pass current page to try to stay on it, or page 1.
+                context.read<UserBloc>().add(GetAllUsers(page: 1, pageSize: AppConstants.defaultPageSize));
               }
             },
           ),
@@ -99,11 +115,31 @@ class _UserScreenState extends State<UserScreen> {
               )
             ],
           ),
-          body: items.isNotEmpty
-              ? ListView.builder(
-                  itemCount: items.length,
+          body: allLoadedUsers.isEmpty && !context.loaderOverlay.visible && !isLoadingMore
+              ? NotFound()
+              : ListView.builder(
+                  itemCount: allLoadedUsers.length + (canLoadMore ? 1 : 0),
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    if (index == allLoadedUsers.length && canLoadMore) {
+                      return Center(
+                        child: isLoadingMore
+                            ? CircularProgressIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  if (!isLoadingMore) {
+                                    // Access currentPage from UserBloc instance
+                                    context.read<UserBloc>().add(GetAllUsers(page: context.read<UserBloc>().currentPage, pageSize: AppConstants.defaultPageSize));
+                                  }
+                                },
+                                child: Text("Load More"),
+                              ),
+                      );
+                    }
+                    // Guard against index out of bounds if itemCount logic is tricky
+                    if (index >= allLoadedUsers.length) {
+                       return SizedBox.shrink(); // Should not happen with correct itemCount
+                    }
+                    final item = allLoadedUsers[index];
                     return CustomListTile(
                       status: item.status ?? false,
                       onTap: () => showUpdateModal(context, item),
@@ -137,16 +173,17 @@ class _UserScreenState extends State<UserScreen> {
                         debugPrint("Item: ${item.id}");
                         context.read<UserBloc>().add(DeleteUser(item.id!));
                       },
-                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
+                      onDismissed: () => allLoadedUsers.removeWhere((element) => element.id == item.id), // Update allLoadedUsers
                       confirmDismiss: () async {
+                        // This confirmDismiss might need re-evaluation with pagination.
+                        // Deleting an item might require refreshing the current page or re-fetching.
                         context.read<UserBloc>().add(DeleteUser(item.id!));
                         // await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
-                        return isDeleted;
+                        return isDeleted; // isDeleted should be set true upon successful deletion in BlocListener
                       },
                     );
                   },
                 )
-              : NotFound(),
         ),
       ),
     );

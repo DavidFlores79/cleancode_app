@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 abstract class UserApiService {
-  Future<Either> getAllItems();
+  Future<Either> getAllItems({int? page, int? pageSize});
   Future<Either> searchItems(String query);
   Future<Either> getItem(UserReqParams params);
   Future<Either> postItem(UserReqParams params);
@@ -17,9 +17,20 @@ abstract class UserApiService {
 
 class UserApiServiceImpl implements UserApiService {
   @override
-  Future<Either> getAllItems() async {
+  Future<Either> getAllItems({int? page, int? pageSize}) async {
     try {
-      final response = await sl<DioClient>().get(ApiConfig.usersEndpoint);
+      final Map<String, dynamic> queryParameters = {};
+      if (page != null) {
+        queryParameters['page'] = page;
+      }
+      if (pageSize != null) {
+        queryParameters['pageSize'] = pageSize;
+      }
+
+      final response = await sl<DioClient>().get(
+        ApiConfig.usersEndpoint,
+        queryParameters: queryParameters.isNotEmpty ? queryParameters : null,
+      );
       return Right(response);
     } on DioException catch (e) {
       final message = e.response?.data['msg'] ?? e.message;

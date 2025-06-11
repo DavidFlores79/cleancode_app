@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cleancode_app/features/users/domain/entities/user.dart' as UserEntity;
 
 class UserModel {
     String? id;
@@ -28,6 +29,25 @@ class UserModel {
     factory UserModel.fromJson(String str) => UserModel.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
+
+    factory UserModel.fromDomain(User domainUser) {
+      return UserModel(
+        id: domainUser.id,
+        name: domainUser.name,
+        email: domainUser.email,
+        // password: domainUser.password, // Domain User doesn't have password
+        image: domainUser.image,
+        role: domainUser.role == null
+            ? null
+            : (domainUser.role is String
+                ? domainUser.role
+                : Role.fromDomain(domainUser.role as UserEntity.Role)),
+        status: domainUser.status,
+        google: domainUser.google,
+        createdAt: domainUser.createdAt,
+        updatedAt: domainUser.updatedAt,
+      );
+    }
 
     factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
@@ -82,6 +102,17 @@ class Role {
     factory Role.fromJson(String str) => Role.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
+
+    factory Role.fromDomain(UserEntity.Role domainRole) { // Corrected type here
+      return Role(
+        id: domainRole.id,
+        name: domainRole.name,
+        status: domainRole.status,
+        deleted: domainRole.deleted,
+        createdAt: domainRole.createdAt,
+        updatedAt: domainRole.updatedAt,
+      );
+    }
 
     factory Role.fromMap(Map<String, dynamic> json) => Role(
         id: json["_id"],

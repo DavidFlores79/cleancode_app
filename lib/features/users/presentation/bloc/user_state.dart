@@ -1,13 +1,22 @@
 import 'package:cleancode_app/features/users/data/models/user_model.dart';
+import 'package:cleancode_app/features/users/domain/entities/pageable_users.dart';
 
 abstract class UserState {}
 
 class UserInitialState implements UserState {}
 class UserLoadingState implements UserState {}
+class UserLoadingMoreState extends UserState {} // New state for loading more users
+
 class GetAllUsersSuccessState implements UserState {
-  final List<UserModel> items;
-  GetAllUsersSuccessState(this.items);
+  final PageableUsers pageableUsers; // Changed from List<UserModel> to PageableUsers
+  GetAllUsersSuccessState(this.pageableUsers);
 }
+
+class UserMaxReachedState extends UserState { // New state for max users reached
+  final PageableUsers pageableUsers;
+  UserMaxReachedState(this.pageableUsers);
+}
+
 class GetOneUserSuccessState implements UserState {
   final UserModel item;
   GetOneUserSuccessState(this.item);

@@ -7,8 +7,8 @@ import 'package:dartz/dartz.dart';
 class UserRepositoryImpl implements UserRepository {
 
   @override
-  Future<Either> getAllItems() {
-    return sl<UserApiService>().getAllItems();
+  Future<Either> getAllItems({int? page, int? pageSize}) {
+    return sl<UserApiService>().getAllItems(page: page, pageSize: pageSize);
   }
 
   @override
