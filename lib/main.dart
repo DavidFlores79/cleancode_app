@@ -1,3 +1,4 @@
+import 'package:cleancode_app/core/blocs/connectivity_cubit.dart';
 import 'package:cleancode_app/core/domain/usecases/search_users_usecase.dart';
 import 'package:cleancode_app/core/theme/presentation/bloc/theme_bloc.dart';
 import 'package:cleancode_app/features/auth/domain/usecases/is_logged_in_usecase.dart';
@@ -68,7 +69,8 @@ void main() async {
   final authRemoteDataSource = AuthRemoteDataSourceImpl(dioClient: dioClient);
   getIt.registerSingleton<AuthRemoteDataSource>(authRemoteDataSource);
 
-  final authRepository = AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
+  final authRepository =
+      AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
   getIt.registerSingleton<AuthRepository>(authRepository);
 
   final loginUseCase = LoginUseCase(repository: authRepository);
@@ -83,8 +85,7 @@ void main() async {
   final registerUseCase = RegisterUseCase(repository: authRepository);
   getIt.registerSingleton<RegisterUseCase>(registerUseCase);
 
-  final roleRemoteDataSource =
-      RoleRemoteDataSourceImpl(dioClient: dioClient);
+  final roleRemoteDataSource = RoleRemoteDataSourceImpl(dioClient: dioClient);
   getIt.registerSingleton<RoleRemoteDataSource>(roleRemoteDataSource);
 
   final roleRepository =
@@ -106,18 +107,20 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider<ConnectivityCubit>(create: (_) => ConnectivityCubit()),
         BlocProvider(create: (_) => getIt<ThemeBloc>()),
         BlocProvider(create: (context) => SettingsBloc()),
         BlocProvider(
           create: (context) => AuthBloc(
             loginUseCase: getIt<LoginUseCase>(),
             registerUseCase: getIt<RegisterUseCase>(),
-            logoutUseCase: getIt<LogoutUseCase>(), 
+            logoutUseCase: getIt<LogoutUseCase>(),
             isLoggedInUseCase: getIt<IsLoggedInUsecase>(),
           ),
         ),
         BlocProvider(
-          create: (context) => PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
+          create: (context) =>
+              PosterBloc(getAllPostersUseCase: getIt<GetAllPostersUsecase>()),
         ),
         BlocProvider(
           create: (context) => UserBloc(
