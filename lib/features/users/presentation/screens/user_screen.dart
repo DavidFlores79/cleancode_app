@@ -99,54 +99,67 @@ class _UserScreenState extends State<UserScreen> {
               )
             ],
           ),
-          body: items.isNotEmpty
-              ? ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return CustomListTile(
-                      status: item.status ?? false,
-                      onTap: () => showUpdateModal(context, item),
-                      leading: SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage('${item.image}'),
-                        ),
-                      ),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.name ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              context.read<UserBloc>().add(GetAllUsers());
+            },
+            child: items.isNotEmpty
+                ? ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return CustomListTile(
+                        status: item.status ?? false,
+                        onTap: () => showUpdateModal(context, item),
+                        leading: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage('${item.image}'),
                           ),
-                          SizedBox(width: 10),
-                          UserRoleLabel(item: item),
-                        ],
-                      ),
-                      subtitle: Text(
-                        item.email ?? '',
-                        style: TextStyle(color: ColorConstants.grey),
-                      ),
-                      itemId: item.id!,
-                      onDelete: (context) {
-                        debugPrint("Item: ${item.id}");
-                        context.read<UserBloc>().add(DeleteUser(item.id!));
-                      },
-                      onDismissed: () => items.removeWhere((element) => element.id == item.id),
-                      confirmDismiss: () async {
-                        context.read<UserBloc>().add(DeleteUser(item.id!));
-                        // await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
-                        return isDeleted;
-                      },
-                    );
-                  },
-                )
-              : NotFound(),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                item.name ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            UserRoleLabel(item: item),
+                          ],
+                        ),
+                        subtitle: Text(
+                          item.email ?? '',
+                          style: TextStyle(color: ColorConstants.grey),
+                        ),
+                        itemId: item.id!,
+                        onDelete: (context) {
+                          debugPrint("Item: ${item.id}");
+                          context.read<UserBloc>().add(DeleteUser(item.id!));
+                        },
+                        onDismissed: () => items.removeWhere((element) => element.id == item.id),
+                        confirmDismiss: () async {
+                          context.read<UserBloc>().add(DeleteUser(item.id!));
+                          // await Future.delayed(Duration(seconds: AppConstants.deleteSecondsDelay));
+                          return isDeleted;
+                        },
+                      );
+                    },
+                  )
+                : SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      alignment: Alignment.center,
+                      child: NotFound(),
+                    ),
+                  ),
+          ),
         ),
       ),
     );
