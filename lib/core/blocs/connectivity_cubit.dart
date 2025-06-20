@@ -11,7 +11,8 @@ class ConnectivityCubit extends Cubit<ConnectivityResult> {
       for (var result in results) {
         debugPrint("Result Connectivity ===> ${result.name}");
       }
-      final result = results.isNotEmpty ? results.first : ConnectivityResult.none;
+      final result =
+          results.isNotEmpty ? results.first : ConnectivityResult.none;
       emit(result);
     });
   }
